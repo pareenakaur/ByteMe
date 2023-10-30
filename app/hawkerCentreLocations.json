@@ -1,0 +1,1002 @@
+{
+    "Market Street Hawker Centr": {
+        "name": "Market Street Hawker Centr",
+        "latitude": 1.284425,
+        "longtitude": 103.850165,
+        "address_street_name": "Market Street",
+        "address_postal_code": "48940",
+        "status": "Existing (replacement)"
+    },
+    "Marsiling Mall Hawker Centr": {
+        "name": "Marsiling Mall Hawker Centr",
+        "latitude": 1.433539,
+        "longtitude": 103.779785,
+        "address_street_name": "Woodlands Street 12",
+        "address_postal_code": "738623",
+        "status": "Existing (replacement)"
+    },
+    "Margaret Drive Hawker Centr": {
+        "name": "Margaret Drive Hawker Centr",
+        "latitude": 1.297486,
+        "longtitude": 103.804715,
+        "address_street_name": "Margaret Drive",
+        "address_postal_code": "142038",
+        "status": "Existing (replacement)"
+    },
+    "Fernvale Hawker Centre & Marke": {
+        "name": "Fernvale Hawker Centre & Marke",
+        "latitude": 1.391592,
+        "longtitude": 103.87706,
+        "address_street_name": "Sengkang West Avenue",
+        "address_postal_code": "797650",
+        "status": "Existing (new)"
+    },
+    "One Punggol Hawker Centr": {
+        "name": "One Punggol Hawker Centr",
+        "latitude": 1.40819,
+        "longtitude": 103.904806,
+        "address_street_name": "Punggol Drive",
+        "address_postal_code": "828629",
+        "status": "Existing (new)"
+    },
+    "Bukit Canberra Hawker Centr": {
+        "name": "Bukit Canberra Hawker Centr",
+        "latitude": 1.449017,
+        "longtitude": 103.822485,
+        "address_street_name": "Canberra Link",
+        "address_postal_code": "756973",
+        "status": "Existing (new)"
+    },
+    "Senja Hawker Centr": {
+        "name": "Senja Hawker Centr",
+        "latitude": 1.387136,
+        "longtitude": 103.761018,
+        "address_street_name": "Senja Close",
+        "address_postal_code": "677632",
+        "status": "Existing (new)"
+    },
+    "Buangkok Hawker Centr": {
+        "name": "Buangkok Hawker Centr",
+        "latitude": 1.382388,
+        "longtitude": 103.892403,
+        "address_street_name": "Compassvale Bow",
+        "address_postal_code": "544692",
+        "status": "Under Construction"
+    },
+    "Bukit Batok West Hawker Centr": {
+        "name": "Bukit Batok West Hawker Centr",
+        "latitude": 1.355215,
+        "longtitude": 103.741826,
+        "address_street_name": "Bukit Batok West Avenue 9",
+        "address_postal_code": "651469",
+        "status": "Under Construction"
+    },
+    "Telok Blangah Hawker Centre & Marke": {
+        "name": "Telok Blangah Hawker Centre & Marke",
+        "latitude": 1.273249,
+        "longtitude": 103.808079,
+        "address_street_name": "Telok Blangah Drive",
+        "address_postal_code": "103078",
+        "status": "Under Construction"
+    },
+    "Bedok North Street 3 Blk 53": {
+        "name": "Bedok North Street 3 Blk 53",
+        "latitude": 1.331781,
+        "longtitude": 103.924844,
+        "address_street_name": "Bedok North Street 3",
+        "address_postal_code": "460538",
+        "status": "Existing"
+    },
+    "85 Fengshan Centre": {
+        "name": "85 Fengshan Centre",
+        "latitude": 1.331987,
+        "longtitude": 103.938733,
+        "address_street_name": "Bedok North Street 4",
+        "address_postal_code": "460085",
+        "status": "Existing"
+    },
+    "Adam Road Food Centr": {
+        "name": "Adam Road Food Centr",
+        "latitude": 1.324134,
+        "longtitude": 103.814165,
+        "address_street_name": "Adam Road",
+        "address_postal_code": "289876",
+        "status": "Existing"
+    },
+    "Blk 117 Aljunied Market and Food Centre": {
+        "name": "Blk 117 Aljunied Market and Food Centre",
+        "latitude": 1.320648,
+        "longtitude": 103.887019,
+        "address_street_name": "Aljunied Ave 2",
+        "address_postal_code": "380117",
+        "status": "Existing"
+    },
+    "Telok Ayer Food Centre": {
+        "name": "Telok Ayer Food Centre",
+        "latitude": 1.279218,
+        "longtitude": 103.846607,
+        "address_street_name": "Telok Ayer Street",
+        "address_postal_code": "69111",
+        "status": "Existing"
+    },
+    "Kebun Baru Market and Food Centre": {
+        "name": "Kebun Baru Market and Food Centre",
+        "latitude": 1.366788,
+        "longtitude": 103.839231,
+        "address_street_name": "Ang Mo Kio Ave 1",
+        "address_postal_code": "564226",
+        "status": "Existing"
+    },
+    "Teck Ghee Court": {
+        "name": "Teck Ghee Court",
+        "latitude": 1.364105,
+        "longtitude": 103.848254,
+        "address_street_name": "Ang Mo Kio Ave 1",
+        "address_postal_code": "560341",
+        "status": "Existing"
+    },
+    "Teck Ghee Square": {
+        "name": "Teck Ghee Square",
+        "latitude": 1.362769,
+        "longtitude": 103.85537,
+        "address_street_name": "Ang Mo Kio Ave 10",
+        "address_postal_code": "560409",
+        "status": "Existing"
+    },
+    "Chong Boon Market and Food Centre": {
+        "name": "Chong Boon Market and Food Centre",
+        "latitude": 1.36824,
+        "longtitude": 103.856351,
+        "address_street_name": "Ang Mo Kio Ave 10",
+        "address_postal_code": "561453",
+        "status": "Existing"
+    },
+    "Cheng San Market and Cooked Food Centre": {
+        "name": "Cheng San Market and Cooked Food Centre",
+        "latitude": 1.37277,
+        "longtitude": 103.854483,
+        "address_street_name": "Ang Mo Kio Ave 10",
+        "address_postal_code": "560527",
+        "status": "Existing"
+    },
+    "Mayflower Market": {
+        "name": "Mayflower Market",
+        "latitude": 1.374489,
+        "longtitude": 103.839214,
+        "address_street_name": "Ang Mo Kio Ave 4",
+        "address_postal_code": "560160",
+        "status": "Existing"
+    },
+    "Ang Mo Kio 628 Market": {
+        "name": "Ang Mo Kio 628 Market",
+        "latitude": 1.381025,
+        "longtitude": 103.840682,
+        "address_street_name": "Ang Mo Kio Ave 4",
+        "address_postal_code": "560628",
+        "status": "Existing"
+    },
+    "Blk 724 Ang Mo Kio Market": {
+        "name": "Blk 724 Ang Mo Kio Market",
+        "latitude": 1.372197,
+        "longtitude": 103.846519,
+        "address_street_name": "Ang Mo Kio Ave 6",
+        "address_postal_code": "560724",
+        "status": "Existing"
+    },
+    "Kebun Baru Food Centre": {
+        "name": "Kebun Baru Food Centre",
+        "latitude": 1.36723,
+        "longtitude": 103.839953,
+        "address_street_name": "Ang Mo Kio Street 22",
+        "address_postal_code": "568226",
+        "status": "Existing"
+    },
+    "Bedok Food Centr": {
+        "name": "Bedok Food Centr",
+        "latitude": 1.320356,
+        "longtitude": 103.955474,
+        "address_street_name": "Bedok Road",
+        "address_postal_code": "469572",
+        "status": "Existing"
+    },
+    "Bedok North Street 1 Blk 21": {
+        "name": "Bedok North Street 1 Blk 21",
+        "latitude": 1.327062,
+        "longtitude": 103.933222,
+        "address_street_name": "Bedok North Street 1",
+        "address_postal_code": "460216",
+        "status": "Existing"
+    },
+    "Kaki Bukit 511 Market and Food Centre": {
+        "name": "Kaki Bukit 511 Market and Food Centre",
+        "latitude": 1.333246,
+        "longtitude": 103.930602,
+        "address_street_name": "Bedok North Street 3",
+        "address_postal_code": "460511",
+        "status": "Existing"
+    },
+    "Bedok Reservoir Road Blk 63": {
+        "name": "Bedok Reservoir Road Blk 63",
+        "latitude": 1.333159,
+        "longtitude": 103.914054,
+        "address_street_name": "Bedok Reservoir Road",
+        "address_postal_code": "470630",
+        "status": "Existing"
+    },
+    "Bedok South Road Blk 1": {
+        "name": "Bedok South Road Blk 1",
+        "latitude": 1.320552,
+        "longtitude": 103.935539,
+        "address_street_name": "Bedok South Road",
+        "address_postal_code": "460016",
+        "status": "Existing"
+    },
+    "Bendemeer Market and Food Centre": {
+        "name": "Bendemeer Market and Food Centre",
+        "latitude": 1.319217,
+        "longtitude": 103.863021,
+        "address_street_name": "Bendemeer Road",
+        "address_postal_code": "330029",
+        "status": "Existing"
+    },
+    "Beo Crescent Marke": {
+        "name": "Beo Crescent Marke",
+        "latitude": 1.288822,
+        "longtitude": 103.827358,
+        "address_street_name": "Beo Crescent",
+        "address_postal_code": "169982",
+        "status": "Existing"
+    },
+    "Berseh Food Centr": {
+        "name": "Berseh Food Centr",
+        "latitude": 1.307337,
+        "longtitude": 103.856854,
+        "address_street_name": "Jalan Besar",
+        "address_postal_code": "208877",
+        "status": "Existing"
+    },
+    "Boon Lay Place Market and Food Village": {
+        "name": "Boon Lay Place Market and Food Village",
+        "latitude": 1.345223,
+        "longtitude": 103.7128,
+        "address_street_name": "Boon Lay Place",
+        "address_postal_code": "641221",
+        "status": "Existing"
+    },
+    "Tekka Centre/Zhu Jiao Market": {
+        "name": "Tekka Centre/Zhu Jiao Market",
+        "latitude": 1.306206,
+        "longtitude": 103.850531,
+        "address_street_name": "Buffalo Road",
+        "address_postal_code": "210665",
+        "status": "Existing"
+    },
+    "Bukit Merah Central Food Centre": {
+        "name": "Bukit Merah Central Food Centre",
+        "latitude": 1.283693,
+        "longtitude": 103.816992,
+        "address_street_name": "Bukit Merah Central",
+        "address_postal_code": "150163",
+        "status": "Existing"
+    },
+    "Alexandra Village Food Centre": {
+        "name": "Alexandra Village Food Centre",
+        "latitude": 1.286298,
+        "longtitude": 103.804489,
+        "address_street_name": "Bukit Merah Lane 1",
+        "address_postal_code": "150120",
+        "status": "Existing"
+    },
+    "Blk 115 Bukit Merah View Market and Food Centre": {
+        "name": "Blk 115 Bukit Merah View Market and Food Centre",
+        "latitude": 1.285505,
+        "longtitude": 103.822049,
+        "address_street_name": "Bukit Merah View",
+        "address_postal_code": "151115",
+        "status": "Existing"
+    },
+    "Bukit Panjang Hawker Centr": {
+        "name": "Bukit Panjang Hawker Centr",
+        "latitude": 1.377601,
+        "longtitude": 103.77249,
+        "address_street_name": "Bukit Panjang Ring Road",
+        "address_postal_code": "679947",
+        "status": "Existing (new)"
+    },
+    "Bukit Timah Marke": {
+        "name": "Bukit Timah Marke",
+        "latitude": 1.339376,
+        "longtitude": 103.775995,
+        "address_street_name": "Upper Bukit Timah Road",
+        "address_postal_code": "588215",
+        "status": "Existing"
+    },
+    "Pek Kio Market and Food Centre": {
+        "name": "Pek Kio Market and Food Centre",
+        "latitude": 1.31616,
+        "longtitude": 103.850225,
+        "address_street_name": "Cambridge Road",
+        "address_postal_code": "211041",
+        "status": "Existing"
+    },
+    "Changi Village Blk 2 and ": {
+        "name": "Changi Village Blk 2 and ",
+        "latitude": 1.389152,
+        "longtitude": 103.988246,
+        "address_street_name": "Changi Village Road",
+        "address_postal_code": "500002",
+        "status": "Existing"
+    },
+    "Chomp Chomp Food Centr": {
+        "name": "Chomp Chomp Food Centr",
+        "latitude": 1.364229,
+        "longtitude": 103.866536,
+        "address_street_name": "Kensington Park Road",
+        "address_postal_code": "557269",
+        "status": "Existing"
+    },
+    "Ci Yuan Hawker Centr": {
+        "name": "Ci Yuan Hawker Centr",
+        "latitude": 1.375429,
+        "longtitude": 103.882978,
+        "address_street_name": "Hougang Avenue 9",
+        "address_postal_code": "538776",
+        "status": "Existing (new)"
+    },
+    "Circuit Road Blk 79/79": {
+        "name": "Circuit Road Blk 79/79",
+        "latitude": 1.32645,
+        "longtitude": 103.885044,
+        "address_street_name": "Circuit Road",
+        "address_postal_code": "370079",
+        "status": "Existing"
+    },
+    "80 Circuit Road Market and Food Centre": {
+        "name": "80 Circuit Road Market and Food Centre",
+        "latitude": 1.32785,
+        "longtitude": 103.887129,
+        "address_street_name": "Circuit Road",
+        "address_postal_code": "370080",
+        "status": "Existing"
+    },
+    "Circuit Road Blk 8": {
+        "name": "Circuit Road Blk 8",
+        "latitude": 1.323445,
+        "longtitude": 103.885449,
+        "address_street_name": "Circuit Road",
+        "address_postal_code": "370089",
+        "status": "Existing"
+    },
+    "Clementi Ave 2 Market/Cooked Food Centre": {
+        "name": "Clementi Ave 2 Market/Cooked Food Centre",
+        "latitude": 1.314368,
+        "longtitude": 103.770837,
+        "address_street_name": "Clementi Ave 2",
+        "address_postal_code": "120353",
+        "status": "Existing"
+    },
+    "Clementi Ave 3 Blk 44": {
+        "name": "Clementi Ave 3 Blk 44",
+        "latitude": 1.313265,
+        "longtitude": 103.764511,
+        "address_street_name": "Clementi Ave 3",
+        "address_postal_code": "120448",
+        "status": "Existing"
+    },
+    "Clementi West Street 2 Blk 72": {
+        "name": "Clementi West Street 2 Blk 72",
+        "latitude": 1.303782,
+        "longtitude": 103.764264,
+        "address_street_name": "Clementi West Street 2",
+        "address_postal_code": "120726",
+        "status": "Existing"
+    },
+    "Commonwealth Crescent Marke": {
+        "name": "Commonwealth Crescent Marke",
+        "latitude": 1.306892,
+        "longtitude": 103.800363,
+        "address_street_name": "Commonwealth Crescent",
+        "address_postal_code": "149644",
+        "status": "Existing"
+    },
+    "Tanglin Halt Food Centre/Commonwealth Drive Food Centre": {
+        "name": "Tanglin Halt Food Centre/Commonwealth Drive Food Centre",
+        "latitude": 1.299713,
+        "longtitude": 103.797875,
+        "address_street_name": "Commonwealth Drive",
+        "address_postal_code": "141001",
+        "status": "Existing"
+    },
+    "Dunman Food Centr": {
+        "name": "Dunman Food Centr",
+        "latitude": 1.309414,
+        "longtitude": 103.901825,
+        "address_street_name": "Onan Road",
+        "address_postal_code": "424768",
+        "status": "Existing"
+    },
+    "East Coast Lagoon Food Villag": {
+        "name": "East Coast Lagoon Food Villag",
+        "latitude": 1.306684,
+        "longtitude": 103.935017,
+        "address_street_name": "East Coast Parkway",
+        "address_postal_code": "468960",
+        "status": "Existing"
+    },
+    "Empress Road Market and Food Centre": {
+        "name": "Empress Road Market and Food Centre",
+        "latitude": 1.316246,
+        "longtitude": 103.805636,
+        "address_street_name": "Empress Road",
+        "address_postal_code": "260007",
+        "status": "Existing"
+    },
+    "Blk 69 Geylang Bahru Market and Food Centre": {
+        "name": "Blk 69 Geylang Bahru Market and Food Centre",
+        "latitude": 1.321462,
+        "longtitude": 103.870004,
+        "address_street_name": "Geylang Bahru",
+        "address_postal_code": "330069",
+        "status": "Existing"
+    },
+    "Geylang Serai Marke": {
+        "name": "Geylang Serai Marke",
+        "latitude": 1.316728,
+        "longtitude": 103.898224,
+        "address_street_name": "Geylang Serai",
+        "address_postal_code": "402001",
+        "status": "Existing"
+    },
+    "Ghim Moh Road Blk 2": {
+        "name": "Ghim Moh Road Blk 2",
+        "latitude": 1.310996,
+        "longtitude": 103.788231,
+        "address_street_name": "Ghim Moh Road",
+        "address_postal_code": "270020",
+        "status": "Existing"
+    },
+    "Golden Mile Food Centr": {
+        "name": "Golden Mile Food Centr",
+        "latitude": 1.302875,
+        "longtitude": 103.863883,
+        "address_street_name": "Beach Road",
+        "address_postal_code": "199583",
+        "status": "Existing"
+    },
+    "Haig Road Market and Cooked Food Centre": {
+        "name": "Haig Road Market and Cooked Food Centre",
+        "latitude": 1.315142,
+        "longtitude": 103.895609,
+        "address_street_name": "Haig Road",
+        "address_postal_code": "430013",
+        "status": "Existing"
+    },
+    "Havelock Road Cooked Food Centre": {
+        "name": "Havelock Road Cooked Food Centre",
+        "latitude": 1.287975,
+        "longtitude": 103.829627,
+        "address_street_name": "Havelock Road",
+        "address_postal_code": "161022",
+        "status": "Existing"
+    },
+    "Hawker Centre @ Our Tampines Hu": {
+        "name": "Hawker Centre @ Our Tampines Hu",
+        "latitude": 1.353862,
+        "longtitude": 103.939726,
+        "address_street_name": "Tampines Walk",
+        "address_postal_code": "528523",
+        "status": "Existing (new)"
+    },
+    "Shunfu Mart": {
+        "name": "Shunfu Mart",
+        "latitude": 1.352007,
+        "longtitude": 103.837032,
+        "address_street_name": "Shunfu Road",
+        "address_postal_code": "570320",
+        "status": "Existing"
+    },
+    "Sims Vista Market and Food Centre": {
+        "name": "Sims Vista Market and Food Centre",
+        "latitude": 1.317083,
+        "longtitude": 103.879417,
+        "address_street_name": "Sims Place",
+        "address_postal_code": "380049",
+        "status": "Existing"
+    },
+    "Chinatown Complex Market": {
+        "name": "Chinatown Complex Market",
+        "latitude": 1.282235,
+        "longtitude": 103.843178,
+        "address_street_name": "Smith Street",
+        "address_postal_code": "50335",
+        "status": "Existing"
+    },
+    "Taman Jurong Market and Food Centr": {
+        "name": "Taman Jurong Market and Food Centr",
+        "latitude": 1.334589,
+        "longtitude": 103.72152,
+        "address_street_name": "Yung Sheng Road",
+        "address_postal_code": "618499",
+        "status": "Existing"
+    },
+    "Tampines Round Market and Food Centre": {
+        "name": "Tampines Round Market and Food Centre",
+        "latitude": 1.34564,
+        "longtitude": 103.944624,
+        "address_street_name": "Tampines Street 11",
+        "address_postal_code": "521137",
+        "status": "Existing"
+    },
+    "Tanglin Halt Marke": {
+        "name": "Tanglin Halt Marke",
+        "latitude": 1.300789,
+        "longtitude": 103.797626,
+        "address_street_name": "Tanglin Halt Road",
+        "address_postal_code": "148813",
+        "status": "Existing"
+    },
+    "Blk 6 Tanjong Pagar Plaza Market and Food Centre": {
+        "name": "Blk 6 Tanjong Pagar Plaza Market and Food Centre",
+        "latitude": 1.276615,
+        "longtitude": 103.843167,
+        "address_street_name": "Tanjong Pagar Plaza",
+        "address_postal_code": "81006",
+        "status": "Existing"
+    },
+    "Teban Gardens Market and Food Centre": {
+        "name": "Teban Gardens Market and Food Centre",
+        "latitude": 1.320848,
+        "longtitude": 103.742892,
+        "address_street_name": "Teban Gardens Road",
+        "address_postal_code": "601037",
+        "status": "Existing"
+    },
+    "11 Telok Blangah Crescent Market and Food Centre": {
+        "name": "11 Telok Blangah Crescent Market and Food Centre",
+        "latitude": 1.277367,
+        "longtitude": 103.818642,
+        "address_street_name": "Telok Blangah Crescent",
+        "address_postal_code": "90011",
+        "status": "Existing"
+    },
+    "Eunos Crescent Blk 4": {
+        "name": "Eunos Crescent Blk 4",
+        "latitude": 1.320332,
+        "longtitude": 103.904261,
+        "address_street_name": "Eunos Crescent",
+        "address_postal_code": "402004",
+        "status": "Existing"
+    },
+    "Telok Blangah Food Centre": {
+        "name": "Telok Blangah Food Centre",
+        "latitude": 1.273368,
+        "longtitude": 103.807627,
+        "address_street_name": "Telok Blangah Drive",
+        "address_postal_code": "100079",
+        "status": "Existing"
+    },
+    "Zion Riverside Food Centr": {
+        "name": "Zion Riverside Food Centr",
+        "latitude": 1.292342,
+        "longtitude": 103.831189,
+        "address_street_name": "Zion Road",
+        "address_postal_code": "247792",
+        "status": "Existing"
+    },
+    "Woodleigh Village Hawker Centr": {
+        "name": "Woodleigh Village Hawker Centr",
+        "latitude": 1.339796,
+        "longtitude": 103.87209,
+        "address_street_name": "Woodleigh Link",
+        "address_postal_code": "363202",
+        "status": "Under Construction"
+    },
+    "Anchorvale Village Hawker Centr": {
+        "name": "Anchorvale Village Hawker Centr",
+        "latitude": 1.396914,
+        "longtitude": 103.88849,
+        "address_street_name": "Anchorvale Road",
+        "address_postal_code": "540339",
+        "status": "Under Construction"
+    },
+    "Punggol Digital District Hawker Centr": {
+        "name": "Punggol Digital District Hawker Centr",
+        "latitude": 1.414567,
+        "longtitude": 103.908253,
+        "address_street_name": "Ponggol Seventeenth Avenue",
+        "address_postal_code": "",
+        "status": "Under Construction"
+    },
+    "Holland Drive Market and Food Centre": {
+        "name": "Holland Drive Market and Food Centre",
+        "latitude": 1.308118,
+        "longtitude": 103.792774,
+        "address_street_name": "Holland Drive",
+        "address_postal_code": "270044",
+        "status": "Existing"
+    },
+    "Holland Village Market and Food Centr": {
+        "name": "Holland Village Market and Food Centr",
+        "latitude": 1.310908,
+        "longtitude": 103.794863,
+        "address_street_name": "Lorong Mambong",
+        "address_postal_code": "277700",
+        "status": "Existing"
+    },
+    "Hougang 105 Hainanese Village Centre": {
+        "name": "Hougang 105 Hainanese Village Centre",
+        "latitude": 1.353837,
+        "longtitude": 103.890081,
+        "address_street_name": "Hougang Ave 1",
+        "address_postal_code": "530105",
+        "status": "Existing"
+    },
+    "Kovan Hougang Market and Food Centre": {
+        "name": "Kovan Hougang Market and Food Centre",
+        "latitude": 1.359119,
+        "longtitude": 103.885978,
+        "address_street_name": "Hougang Street 21",
+        "address_postal_code": "530209",
+        "status": "Existing"
+    },
+    "Blk 4A Jalan Batu Hawker Centre/Market": {
+        "name": "Blk 4A Jalan Batu Hawker Centre/Market",
+        "latitude": 1.302419,
+        "longtitude": 103.883941,
+        "address_street_name": "Jalan Batu",
+        "address_postal_code": "432004",
+        "status": "Existing"
+    },
+    "Blk 112 Jalan Bukit Merah Market and Food Centre": {
+        "name": "Blk 112 Jalan Bukit Merah Market and Food Centre",
+        "latitude": 1.280005,
+        "longtitude": 103.826013,
+        "address_street_name": "Jalan Bukit Merah",
+        "address_postal_code": "160112",
+        "status": "Existing"
+    },
+    "ABC Brickworks Market/Food Centre": {
+        "name": "ABC Brickworks Market/Food Centre",
+        "latitude": 1.286953,
+        "longtitude": 103.808128,
+        "address_street_name": "Jalan Bukit Merah",
+        "address_postal_code": "150006",
+        "status": "Existing"
+    },
+    "Kukoh 21 Food Centre": {
+        "name": "Kukoh 21 Food Centre",
+        "latitude": 1.288231,
+        "longtitude": 103.839946,
+        "address_street_name": "Jalan Kukoh",
+        "address_postal_code": "161001",
+        "status": "Existing"
+    },
+    "Yuhua Market and Hawker Centre": {
+        "name": "Yuhua Market and Hawker Centre",
+        "latitude": 1.345312,
+        "longtitude": 103.73158,
+        "address_street_name": "Jurong East Ave 1",
+        "address_postal_code": "600347",
+        "status": "Existing"
+    },
+    "Yuhua Village Market and Food Centre": {
+        "name": "Yuhua Village Market and Food Centre",
+        "latitude": 1.343442,
+        "longtitude": 103.737781,
+        "address_street_name": "Jurong East Street 24",
+        "address_postal_code": "600254",
+        "status": "Existing"
+    },
+    "Jurong West Hawker Centr": {
+        "name": "Jurong West Hawker Centr",
+        "latitude": 1.34126,
+        "longtitude": 103.697404,
+        "address_street_name": "Jurong West Street 61",
+        "address_postal_code": "648202",
+        "status": "Under Construction"
+    },
+    "Jurong West Street 52 Blk 50": {
+        "name": "Jurong West Street 52 Blk 50",
+        "latitude": 1.349642,
+        "longtitude": 103.718448,
+        "address_street_name": "Jurong West Street 52",
+        "address_postal_code": "640505",
+        "status": "Existing"
+    },
+    "Kallang Estate Fresh Market and Food Centr": {
+        "name": "Kallang Estate Fresh Market and Food Centr",
+        "latitude": 1.307396,
+        "longtitude": 103.88413,
+        "address_street_name": "Old Airport Road",
+        "address_postal_code": "397972",
+        "status": "Existing"
+    },
+    "Redhill Food Centre": {
+        "name": "Redhill Food Centre",
+        "latitude": 1.287331,
+        "longtitude": 103.818339,
+        "address_street_name": "Redhill Lane",
+        "address_postal_code": "150085",
+        "status": "Existing"
+    },
+    "Kampung Admiralty Hawker Centr": {
+        "name": "Kampung Admiralty Hawker Centr",
+        "latitude": 1.439933,
+        "longtitude": 103.800696,
+        "address_street_name": "Woodlands Drive 71",
+        "address_postal_code": "730676",
+        "status": "Existing (new)"
+    },
+    "84 Marine Parade Central Market and Food Centre": {
+        "name": "84 Marine Parade Central Market and Food Centre",
+        "latitude": 1.302285,
+        "longtitude": 103.906339,
+        "address_street_name": "Marine Parade Central",
+        "address_postal_code": "440084",
+        "status": "Existing"
+    },
+    "50A Marine Terrace": {
+        "name": "50A Marine Terrace",
+        "latitude": 1.305775,
+        "longtitude": 103.915762,
+        "address_street_name": "Marine Terrace",
+        "address_postal_code": "441050",
+        "status": "Existing"
+    },
+    "Marsiling Lane Blk 20/2": {
+        "name": "Marsiling Lane Blk 20/2",
+        "latitude": 1.443882,
+        "longtitude": 103.777203,
+        "address_street_name": "Marsiling Lane",
+        "address_postal_code": "730020",
+        "status": "Existing"
+    },
+    "Kim Hua Market": {
+        "name": "Kim Hua Market",
+        "latitude": 1.280112,
+        "longtitude": 103.844828,
+        "address_street_name": "Kadayanallur Street",
+        "address_postal_code": "69184",
+        "status": "Existing"
+    },
+    "Mei Chin Road Market": {
+        "name": "Mei Chin Road Market",
+        "latitude": 1.293236,
+        "longtitude": 103.802904,
+        "address_street_name": "Mei Chin Road",
+        "address_postal_code": "140159",
+        "status": "Existing"
+    },
+    "People's Park Food Centre": {
+        "name": "People's Park Food Centre",
+        "latitude": 1.284991,
+        "longtitude": 103.842579,
+        "address_street_name": "New Market Road",
+        "address_postal_code": "50032",
+        "status": "Existing"
+    },
+    "New Upper Changi Road Blk 208": {
+        "name": "New Upper Changi Road Blk 208",
+        "latitude": 1.324739,
+        "longtitude": 103.93056,
+        "address_street_name": "New Upper Changi Road",
+        "address_postal_code": "462208",
+        "status": "Existing"
+    },
+    "New Upper Changi Road Blk 5": {
+        "name": "New Upper Changi Road Blk 5",
+        "latitude": 1.324188,
+        "longtitude": 103.941132,
+        "address_street_name": "New Upper Changi Road",
+        "address_postal_code": "461058",
+        "status": "Existing"
+    },
+    "Newton Food Centr": {
+        "name": "Newton Food Centr",
+        "latitude": 1.311892,
+        "longtitude": 103.839563,
+        "address_street_name": "Clemenceau Ave North",
+        "address_postal_code": "229495",
+        "status": "Existing"
+    },
+    "North Bridge Road Marke": {
+        "name": "North Bridge Road Marke",
+        "latitude": 1.305765,
+        "longtitude": 103.863891,
+        "address_street_name": "North Bridge Road",
+        "address_postal_code": "198783",
+        "status": "Existing"
+    },
+    "51 Old Airport Road Food Centre and Shopping Mall": {
+        "name": "51 Old Airport Road Food Centre and Shopping Mall",
+        "latitude": 1.308252,
+        "longtitude": 103.885833,
+        "address_street_name": "Old Airport Road",
+        "address_postal_code": "390051",
+        "status": "Existing"
+    },
+    "Pasir Panjang Food Centr": {
+        "name": "Pasir Panjang Food Centr",
+        "latitude": 1.275908,
+        "longtitude": 103.791403,
+        "address_street_name": "Pasir Panjang Road",
+        "address_postal_code": "118543",
+        "status": "Existing"
+    },
+    "Pasir Ris Central Hawker Centr": {
+        "name": "Pasir Ris Central Hawker Centr",
+        "latitude": 1.373434,
+        "longtitude": 103.951543,
+        "address_street_name": "Pasir Ris Central",
+        "address_postal_code": "519641",
+        "status": "Existing (new)"
+    },
+    "Albert Centre": {
+        "name": "Albert Centre",
+        "latitude": 1.301001,
+        "longtitude": 103.854212,
+        "address_street_name": "Queen Street",
+        "address_postal_code": "180270",
+        "status": "Existing"
+    },
+    "Redhill Market": {
+        "name": "Redhill Market",
+        "latitude": 1.287858,
+        "longtitude": 103.818403,
+        "address_street_name": "Redhill Lane",
+        "address_postal_code": "150079",
+        "status": "Existing"
+    },
+    "Jalan Leban Food Centre": {
+        "name": "Jalan Leban Food Centre",
+        "latitude": 1.372385,
+        "longtitude": 103.828994,
+        "address_street_name": "Upper Thomson Road",
+        "address_postal_code": "574419",
+        "status": "Existing"
+    },
+    "Serangoon Garden Marke": {
+        "name": "Serangoon Garden Marke",
+        "latitude": 1.363157,
+        "longtitude": 103.866737,
+        "address_street_name": "Serangoon Garden Way",
+        "address_postal_code": "555945",
+        "status": "Existing"
+    },
+    "Telok Blangah Market": {
+        "name": "Telok Blangah Market",
+        "latitude": 1.273914,
+        "longtitude": 103.807944,
+        "address_street_name": "Telok Blangah Drive",
+        "address_postal_code": "100082",
+        "status": "Existing"
+    },
+    "Telok Blangah Rise Market": {
+        "name": "Telok Blangah Rise Market",
+        "latitude": 1.272716,
+        "longtitude": 103.822117,
+        "address_street_name": "Telok Blangah Rise",
+        "address_postal_code": "90036",
+        "status": "Existing"
+    },
+    "Tiong Bahru Marke": {
+        "name": "Tiong Bahru Marke",
+        "latitude": 1.285088,
+        "longtitude": 103.832349,
+        "address_street_name": "Seng Poh Road",
+        "address_postal_code": "168898",
+        "status": "Existing"
+    },
+    "Toa Payoh West Market and Food Court": {
+        "name": "Toa Payoh West Market and Food Court",
+        "latitude": 1.338093,
+        "longtitude": 103.844732,
+        "address_street_name": "Lorong 1 Toa Payoh",
+        "address_postal_code": "310127",
+        "status": "Existing"
+    },
+    "Toa Payoh Vista Market": {
+        "name": "Toa Payoh Vista Market",
+        "latitude": 1.334548,
+        "longtitude": 103.851999,
+        "address_street_name": "Lorong 4 Toa Payoh",
+        "address_postal_code": "310074",
+        "status": "Existing"
+    },
+    "Toa Payoh Lorong 4 Blk 9": {
+        "name": "Toa Payoh Lorong 4 Blk 9",
+        "latitude": 1.338475,
+        "longtitude": 103.849513,
+        "address_street_name": "Lorong 4 Toa Payoh",
+        "address_postal_code": "310093",
+        "status": "Existing"
+    },
+    "Toa Payoh Lorong 5 Blk 7": {
+        "name": "Toa Payoh Lorong 5 Blk 7",
+        "latitude": 1.336039,
+        "longtitude": 103.852942,
+        "address_street_name": "Lorong 5 Toa Payoh",
+        "address_postal_code": "310075",
+        "status": "Existing"
+    },
+    "Kim Keat Palm Market and Food Centre": {
+        "name": "Kim Keat Palm Market and Food Centre",
+        "latitude": 1.335231,
+        "longtitude": 103.857036,
+        "address_street_name": "Lorong 7 Toa Payoh",
+        "address_postal_code": "310022",
+        "status": "Existing"
+    },
+    "Toa Payoh Lorong 8 Blk 21": {
+        "name": "Toa Payoh Lorong 8 Blk 21",
+        "latitude": 1.340261,
+        "longtitude": 103.854395,
+        "address_street_name": "Lorong 8 Toa Payoh",
+        "address_postal_code": "310210",
+        "status": "Existing"
+    },
+    "Blk 17 Upper Boon Keng Market and Food Centre": {
+        "name": "Blk 17 Upper Boon Keng Market and Food Centre",
+        "latitude": 1.315028,
+        "longtitude": 103.87162,
+        "address_street_name": "Upper Boon Keng Road",
+        "address_postal_code": "380017",
+        "status": "Existing"
+    },
+    "Hong Lim Food Centre and Market": {
+        "name": "Hong Lim Food Centre and Market",
+        "latitude": 1.285246,
+        "longtitude": 103.845819,
+        "address_street_name": "Upper Cross Street",
+        "address_postal_code": "51531",
+        "status": "Existing"
+    },
+    "Ayer Rajah Market": {
+        "name": "Ayer Rajah Market",
+        "latitude": 1.31189,
+        "longtitude": 103.759166,
+        "address_street_name": "West Coast Drive",
+        "address_postal_code": "120502",
+        "status": "Existing"
+    },
+    "Ayer Rajah Food Centre": {
+        "name": "Ayer Rajah Food Centre",
+        "latitude": 1.311803,
+        "longtitude": 103.759751,
+        "address_street_name": "West Coast Drive",
+        "address_postal_code": "120503",
+        "status": "Existing"
+    },
+    "Whampoa Drive Makan Place/Whampoa Food Centre": {
+        "name": "Whampoa Drive Makan Place/Whampoa Food Centre",
+        "latitude": 1.322943,
+        "longtitude": 103.855138,
+        "address_street_name": "Whampoa Drive",
+        "address_postal_code": "320090",
+        "status": "Existing"
+    },
+    "Whampoa Drive Makan Place/Whampoa Market": {
+        "name": "Whampoa Drive Makan Place/Whampoa Market",
+        "latitude": 1.323422,
+        "longtitude": 103.854068,
+        "address_street_name": "Whampoa Drive",
+        "address_postal_code": "320091",
+        "status": "Existing"
+    },
+    "Yishun Park Hawker Centr": {
+        "name": "Yishun Park Hawker Centr",
+        "latitude": 1.425018,
+        "longtitude": 103.844748,
+        "address_street_name": "Yishun Avenue 11",
+        "address_postal_code": "768867",
+        "status": "Existing (new)"
+    },
+    "Chong Pang Market and Food Centre": {
+        "name": "Chong Pang Market and Food Centre",
+        "latitude": 1.431448,
+        "longtitude": 103.828538,
+        "address_street_name": "Yishun Ring Road",
+        "address_postal_code": "760104",
+        "status": "Existing"
+    }
+}
