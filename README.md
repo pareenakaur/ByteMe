@@ -1,6 +1,11 @@
 # ByteMe
 
-## Nagivate to 'pages' to view all screens:
+## To run the app
+- add your api_key in MapInput
+- run npx expo start
+- download expo go on ios/android, scan QR code in terminal to view app in expo go 
+
+## Nagivate to 'pages' to view all screens
 - UserScreen, HeartScreen, ProfileScreen are included in TabNavigation to add the bottom navigation bar
 - FirstScreen contains the FirstPage and Login/Register Pages without the bottom navigation bar
 - Imported FirstScreen and TabNavigation in App.js 
