@@ -5,21 +5,21 @@ import { Ionicons } from '@expo/vector-icons';
 import Banner from '../hawker-stall-profile/Banner';
 import Summary from './HawkerCenterSummary';
 import SimilarHawkersList from './SimilarHawkersList';
+import { getNearbyHawkerCenters, getHawkerStallDetails } from '../../utils/RetrieveDetails';
 
+//need to retrieve place id from explore function --> figure out which component in which js file to import to call function and/or get place id
 
 const MainPage = ({nearbyHawkers, navigation}) => {
 
-    const report = {
-        image: require("../../assets/HawkerStallImage.jpg"),
-        username: "User1",
-        date: "7 Sept 2023, 11:00 am",
-        profilePic:  require("../../assets/img5.jpg"),
-        upvote: 100,
-        downvote: 50,
-        description: "It's CLOSED!"
-    }
+    //get Hawker Stall Details from backend:
+    const placeId = null; //get placeid from some function
+    //const HawkerCenterDetails = getHawkerStallDetails(placeId); //not sure if can reuse this for hawker center also
+    //const NearbyHawkersArray = getNearbyHawkerCenters(placeId);
+    //for each nearby hawker center also get details --> write function depending on how backend send over details
+    //also need to get reviews from backend
 
-    const review = {
+
+    const review = { //replace with review details array from backend
         image: require("../../assets/Uncles_Best_Fried_Rice.png"),
         username: "User1",
         date: "7 Sept 2023, 11:00 am",
@@ -30,7 +30,7 @@ const MainPage = ({nearbyHawkers, navigation}) => {
         description: "Very nice"
     }
 
-    const HawkerCentre = {
+    const HawkerCentre = { //replace with hawker centre details array values
         image: require("../../assets/adam-food-centre.jpg"),
         name: "Adam Road Food Centre",
         crowdLevel: "Moderate",
@@ -41,7 +41,7 @@ const MainPage = ({nearbyHawkers, navigation}) => {
         reviews: [review, review, review, review],
     }
 
-    const similarHawkerDetails = {
+    const similarHawkerDetails = { //replace with nearby hawkers array values
         image: require("../../assets/adam-food-centre.jpg"),
         name: "Adam Road Food Centre",
         crowdLevel: "Moderate",
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0
     },
     headerText: {
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
         fontSize: 26
     },
     

@@ -7,6 +7,9 @@ import Banner  from './Banner';
 import Details from './HawkerStallDetails';
 import ReportsList from './ReportsList';
 import ReviewsList from './ReviewsList';
+import { getHawkerStallDetails } from '../../utils/RetrieveDetails';
+
+//need to retrieve place id from explore function --> figure out which component in which js file to import to call function and/or get place id
 
 const Profile = ({place, navigation}) => {
 
@@ -31,7 +34,12 @@ const Profile = ({place, navigation}) => {
         description: "Very nice! Honestly the best fried rice I have eaten ever :>"
     }
 
-    const HawkerStall = {
+    //get Hawker Stall Details from backend:
+    const placeId = null; //get placeid from some function
+    //const HawkerStallArray = getHawkerStallDetails(placeId);
+    //also need to get reviews and reports from backend
+
+    const HawkerStall = { // replace the stuff below HawkerStallArray values & reviews and reports
         image: require("../../assets/HawkerStallImage.jpg"),
         name: "Adam Fishball Noodle",
         cuisine: "Chinese Cuisine",
@@ -206,7 +214,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     text: {
-        fontFamily: 'Open-Sans-Bold',
+        //fontFamily: 'Open-Sans-Bold',
         fontSize: 20,
         color: '#EB6C05',
 
@@ -236,7 +244,7 @@ const styles = StyleSheet.create({
     
     
     viewAllReportText: {
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
         color: 'black',
         textDecorationLine: 'underline',
         textAlign: 'center',
@@ -301,7 +309,7 @@ const styles = StyleSheet.create({
     },
     
     viewAllReviewText: {
-        fontFamily: 'Open-Sans-Regular',
+        //fontFamily: 'Open-Sans-Regular',
         color: 'black',
         textDecorationLine: 'underline',
         textAlign: 'center',

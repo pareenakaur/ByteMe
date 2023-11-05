@@ -19,7 +19,7 @@ function MapInput(props) {
         props.notifyChange(details.geometry.location);
       }}
       query={{
-        key: API_KEY, 
+        key: '', 
         language: "en",
         components: "country:sg",
       }}

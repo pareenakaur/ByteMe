@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableHighlight, TouchableOpacity } from "react-native";
 import { Button } from 'react-native-paper';
 
-export default function SubmitBtn({label, navigation, navigateTo, ...props }) {
+export default function SubmitBtn({label, navigation, navigateTo }) {
     return (
     <TouchableOpacity style={styles.button}>
         <Button labelStyle={styles.text} onPress={() => navigation.navigate(navigateTo)}>{label}</Button>

@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, StyleSheet } from "react-native";
 import { Button } from 'react-native-paper';
 
-export default function StartBtn({style, navigation, ...props }) {
+export default function StartBtn({ style, navigation }) {
     return (
     <View style={styles.button}>
         <Button labelStyle={styles.text} onPress={() => navigation.navigate('RegisterLogin')} >Get Started Here!</Button>

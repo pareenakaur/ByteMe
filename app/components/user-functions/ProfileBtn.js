@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Button, IconButton } from 'react-native-paper';
 
-export default function ProfileBtn({label,style, ...props }) {
+export default function ProfileBtn({label,style }) {
     return (
     <View>
         <TouchableOpacity style={styles.button}>

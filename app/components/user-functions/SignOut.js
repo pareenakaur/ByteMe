@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Button } from 'react-native-paper';
 
-export default function SignOut({style, navigation, ...props }) {
+export default function SignOut({style, navigation }) {
     return (
     <TouchableOpacity style={styles.button}>
         <Button labelStyle={styles.text} onPress={() => navigation.navigate('FirstPage')}>Sign Out</Button>

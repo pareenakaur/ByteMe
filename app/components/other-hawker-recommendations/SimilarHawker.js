@@ -102,21 +102,21 @@ const styles = StyleSheet.create({
         
     },
     name: {
-        fontFamily: 'Open-Sans-Bold',
+        //fontFamily: 'Open-Sans-Bold',
         fontSize: 16,
         paddingTop: 5
     },
     crowd: {
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
         paddingTop: 5,
         fontSize: 12
     },
     distance: {
-        fontFamily: 'Open-Sans-Regular',
+        //fontFamily: 'Open-Sans-Regular',
         fontSize: 12
     },
     header: {
-        fontFamily: 'Open-Sans-Bold',
+        //fontFamily: 'Open-Sans-Bold',
         fontSize: 16,
         padding: 10,
     },

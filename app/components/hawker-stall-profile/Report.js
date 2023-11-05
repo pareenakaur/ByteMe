@@ -177,13 +177,13 @@ const styles = StyleSheet.create({
     
     name: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Bold',
+       // fontFamily: 'Open-Sans-Bold',
         color: 'black',
 
     },
     date: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+      //  fontFamily: 'Open-Sans-Regular',
         color: 'black',
     },
     
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     },
     voteNum: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
     },
     
     text: {
@@ -307,13 +307,13 @@ const viewStyles = StyleSheet.create({
     
     name: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Bold',
+        //fontFamily: 'Open-Sans-Bold',
         color: 'black',
 
     },
     date: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
         color: 'black',
     },
     
@@ -335,7 +335,7 @@ const viewStyles = StyleSheet.create({
     },
     voteNum: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+        //fontFamily: 'Open-Sans-Regular',
     },
     
     text: {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import StarRating from './StarRating';
@@ -165,13 +166,13 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 12,
-        fontFamily: 'Open-Sans-Regular',
+        //fontFamily: 'Open-Sans-Regular',
         color: 'black',
         fontWeight: 'bold',
     },
     date: {
         fontSize: 7,
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
         color: 'black',
         fontWeight: 'bold',
     },
@@ -216,11 +217,11 @@ const styles = StyleSheet.create({
     },
     voteNum: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
     },
     voteNum: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
     },
     emptyView: {
         flex: 1
@@ -298,13 +299,13 @@ const viewStyles = StyleSheet.create({
     },
     name: {
         fontSize: 12,
-        fontFamily: 'Open-Sans-Regular',
+      //  fontFamily: 'Open-Sans-Regular',
         color: 'black',
         fontWeight: 'bold',
     },
     date: {
         fontSize: 7,
-        fontFamily: 'Open-Sans-Regular',
+      // fontFamily: 'Open-Sans-Regular',
         color: 'black',
         fontWeight: 'bold',
     },
@@ -349,11 +350,11 @@ const viewStyles = StyleSheet.create({
     },
     voteNum: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
     },
     voteNum: {
         fontSize: 8,
-        fontFamily: 'Open-Sans-Regular',
+       // fontFamily: 'Open-Sans-Regular',
     },
     emptyView: {
         flex: 1

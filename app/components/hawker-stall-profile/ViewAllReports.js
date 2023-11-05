@@ -43,14 +43,14 @@ const styles = StyleSheet.create({
         
     },
     text: {
-        fontFamily: 'Open-Sans-Bold',
+       // fontFamily: 'Open-Sans-Bold',
         fontSize: 20,
         color: '#EB6C05',
         textAlign: 'center'
 
     },
     viewAllReportText: {
-        fontFamily: 'Open-Sans-Regular',
+      //  fontFamily: 'Open-Sans-Regular',
         color: 'black',
         textDecorationLine: 'underline',
         textAlign: 'center',

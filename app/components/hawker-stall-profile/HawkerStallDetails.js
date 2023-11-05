@@ -1,11 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { useFonts } from 'expo-font';
-import { useCallback } from 'react';
-import * as SplashScreen from 'expo-splash-screen';
+import { StyleSheet, Text, View } from 'react-native';
 import StarRating from './StarRating';
 
-SplashScreen.preventAutoHideAsync();
 
 const Details = ({image, name, cuisine, address, contact, openingHours, rating, reviews}) => {
 
@@ -33,28 +29,12 @@ const Details = ({image, name, cuisine, address, contact, openingHours, rating, 
 
     const statusText = isOpenNow ? 'Open' : 'Close';
 
-
-
-    //LOAD FONTS
-    const [fontsLoaded, fontError] = useFonts({
-        'Open-Sans': require('../../assets/fonts/Open_Sans/static/OpenSans-Regular.ttf'), 
-    });
-    const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded || fontError) {
-          await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded, fontError]);
-    
-    if (!fontsLoaded && !fontError) {
-        return null;
-    }
-
     const numOfReviews = reviews.length;
 
 
     return (
         <View style={styles.overallContainer}>
-            <View style={styles.container} onLayout={onLayoutRootView}>
+            <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.name}>{name}</Text>
                     <View style={styles.keywordsContainer}>
@@ -110,7 +90,7 @@ const styles = StyleSheet.create({
 
     },
     name: {
-        fontFamily: 'Open-Sans-Regular', 
+        //fontFamily: 'Open-Sans-Regular', 
         fontSize: 24,
     },
     keywordsContainer: {

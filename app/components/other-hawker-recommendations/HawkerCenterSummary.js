@@ -1,27 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { useFonts } from 'expo-font';
-import { useCallback } from 'react';
-import * as SplashScreen from 'expo-splash-screen';
 import StarRating from '../hawker-stall-profile/StarRating';
 
-SplashScreen.preventAutoHideAsync();
 
 const Summary = ({ name, cuisineList, crowdLevel, address, openingHours, rating, reviews }) => {
-
-    //LOAD FONTS
-    const [fontsLoaded, fontError] = useFonts({
-        'Open-Sans': require('../../assets/fonts/Open_Sans/static/OpenSans-Regular.ttf'), 
-    });
-    const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded || fontError) {
-          await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded, fontError]);
-    
-    if (!fontsLoaded && !fontError) {
-        return null;
-    }
 
     const numOfReviews = reviews.length;
 
@@ -34,7 +16,8 @@ const Summary = ({ name, cuisineList, crowdLevel, address, openingHours, rating,
 
     return (
         <View style={styles.overallContainer}>
-            <View style={styles.container} onLayout={onLayoutRootView}>
+            
+            <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.name}>{name}</Text>
                     <View style={styles.keywordsContainer}>
@@ -97,7 +80,7 @@ const styles = StyleSheet.create({
 
     },
     name: {
-        fontFamily: 'Open-Sans-Regular', 
+      //  fontFamily: 'Open-Sans-Regular', 
         fontSize: 26,
     },
     keywordsContainer: {
@@ -207,7 +190,7 @@ const styles = StyleSheet.create({
         
     },
     crowd: {
-        fontFamily: 'Open-Sans-Bold',
+       // fontFamily: 'Open-Sans-Bold',
         color: 'black',
         marginTop: 5,
         marginBottom: 5,
