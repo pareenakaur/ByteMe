@@ -1,11 +1,12 @@
 import React from "react";
 import { Text, View, Image, StyleSheet, ScrollView } from "react-native";
 import StartBtn from "../user-functions/StartBtn";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function FirstPage({ navigation }){
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
                 <View style={styles.main}>
                     <View style={styles.logoContainer}>
                         <Image source={require('../../assets/logo.png')}/>
@@ -22,7 +23,7 @@ export default function FirstPage({ navigation }){
                 <View style={styles.bottom}>
                     <StartBtn navigation={ navigation }/>
                 </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

@@ -1,52 +1,42 @@
 import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, TextComponent, TouchableOpacity, View} from "react-native";
-import { Button, HelperText, Text, TextInput, } from "react-native-paper";
+import { Button, HelperText, IconButton, Text, TextInput, } from "react-native-paper";
 import RegisterTextBox from "./RegisterTextBox";
-import { emailValidator } from '../../utils/helpers/emailValidator';
 import { passwordValidator } from '../../utils/helpers/passwordValidator';
-import { nameValidator } from '../../utils/helpers/nameValidator';
 import { passwordMatcher } from '../../utils/helpers/passwordMatcher';
-import RegisterLogin from "../userscreen-pages/RegisterLogin";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { emailVerifier } from "../../utils/helpers/emailVerifier";
 
 
-export default function RegisterTab({navigation}){
-    const [name, setName] = useState({ value: '', error: '' })
+export default function ResetPassword({navigation}){
     const [email, setEmail] = useState({ value: '', error: '' })
     const [password, setPassword] = useState({ value: '', error: '' })
     const [password_, setPassword_] = useState({ value: '', error: '' })
 
-    const onSignUpPressed = () => {
-        const nameError = nameValidator(name.value)
-        const emailError = emailValidator(email.value)
+    const onSubmitPressed = () => {
+        const emailError = emailVerifier(email.value)
         const passwordError = passwordValidator(password.value)
         const mismatchPassword = passwordMatcher(password.value, password_.value)
     
-        if (emailError || passwordError || nameError || mismatchPassword) {
-            setName({ ...name, error: nameError })
+        if (emailError || passwordError || mismatchPassword) {
             setEmail({ ...email, error: emailError })
             setPassword({ ...password, error: passwordError })
             setPassword_({...password_, error: mismatchPassword})
             return
         }
-        navigation.navigate("TabNavigation")
+        //send api to update the new password
+        navigation.navigate("LoginTab")
+       
     }
     return(
         <SafeAreaView style={{flex:1}}>
             <Image style={styles.thumbnail} source={require('../../assets/thumbnail.png')}/>
+            <View style={{justifyContent: "flex-end"}}>
+                <IconButton icon={"chevron-left-box"} iconColor="black" size={35} onPress={()=>navigation.navigate("LoginTab")} style={{position: "absolute", justifyContent: "center"}} ></IconButton>
+            </View>
             <View style={styles.container}>
                 <ScrollView>
-                    <Text style={{fontSize:30, fontWeight: "bold", alignSelf: "center", paddingBottom: 10, color: "#3C4142"}}>Create An Account</Text>
-                    <RegisterTextBox 
-                        label="Name"
-                        returnKeyType="next"
-                        value={name.value}
-                        onChangeText={(text) => setName({ value: text, error: '' })}
-                        error={!!name.error}
-                    />
-                    {(name.error)? <HelperText type="error" padding='none'>{name.error}</HelperText> : null}
-
-
+                    <Text style={{fontSize:30, fontWeight: "bold", alignSelf: "center", paddingBottom: 10, color: "#3C4142"}}>Reset Password</Text>
                     <RegisterTextBox
                         label="Email"
                         returnKeyType="next"
@@ -80,14 +70,7 @@ export default function RegisterTab({navigation}){
                     />
                     {password_.error ? <HelperText type="error" padding='none'>{password_.error}</HelperText> : null }
 
-                    <Button style={styles.button} labelStyle={styles.text} onPress={onSignUpPressed}>Register</Button>
-                    
-                    <View style={styles.row}>
-                        <Text>Already have an account? </Text>
-                        <TouchableOpacity onPress={() => navigation.replace('LoginTab')}>
-                            <Text style={styles.link}>Login</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Button style={styles.button} labelStyle={styles.text} onPress={onSubmitPressed}>Submit</Button>
                 </ScrollView>
             </View>        
         </SafeAreaView>

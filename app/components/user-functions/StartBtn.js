@@ -2,11 +2,10 @@ import React from 'react'
 import { Text, View, StyleSheet } from "react-native";
 import { Button } from 'react-native-paper';
 
-export default function StartBtn({ style, navigation }) {
+export default function StartBtn({ navigation }) {
     return (
-    <View style={styles.button}>
-        <Button labelStyle={styles.text} onPress={() => navigation.navigate('RegisterLogin')} >Get Started Here!</Button>
-    </View>
+    <Button style={styles.button} labelStyle={styles.text} onPress={() => navigation.navigate('LoginTab')}>Get Started Here!
+    </Button>
     );
 }
 

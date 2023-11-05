@@ -11,6 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "pluggins": [
+      ["expo-media-library", 
+      {
+        "photosPermission": "Allow ${PRODUCT_NAME} to access your photos.",
+        "savePhotosPermission": "Allow ${PRODUCT_NAME} to save photos.",
+        "isAccessMediaLocationEnabled": "true"
+      }]
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -27,4 +35,5 @@
       "favicon": "./assets/favicon.png"
     }
   }
+  
 }

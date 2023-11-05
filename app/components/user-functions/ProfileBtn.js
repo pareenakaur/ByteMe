@@ -2,10 +2,10 @@ import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Button, IconButton } from 'react-native-paper';
 
-export default function ProfileBtn({label,style }) {
+export default function ProfileBtn({label, navigation, navigateTo}) {
     return (
     <View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate(navigateTo)}>
             <Text style={styles.text}>{label}</Text>
             <IconButton icon={"chevron-right"}></IconButton>
         </TouchableOpacity>
@@ -24,10 +24,8 @@ const styles = StyleSheet.create({
         paddingLeft: 20
     },
     text: {
-        // fontWeight: 'bold',
         flex:1,
         fontSize: 18,
         color: 'black',
-        // alignSelf: "left"
     },
   })

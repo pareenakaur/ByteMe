@@ -1,16 +1,15 @@
 import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { IconButton } from "react-native-paper";
-// import { Rating } from '@rneui/themed';
-import Camera from 'react-native-camera';
 import CameraBtn from "../user-functions/CameraBtn";
 import TextBox from "../user-functions/TextBox";
 import SubmitBtn from "../user-functions/SubmitBtn";
 import DropdownCat from "../user-functions/DropdwnCat";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ReviewForm({navigation}){
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.topbar}>
                     <Text style={{paddingBottom: 8, color: "#FA4A0C", fontStyle: "italic", fontSize: 18}} onPress={() => navigation.navigate('Profile')}>return to main</Text>
@@ -18,13 +17,13 @@ export default function ReviewForm({navigation}){
                 </View>
                 <View style={styles.main}>
                     <DropdownCat />
-                    <CameraBtn />
+                    <CameraBtn navigation={navigation}/>
                     <TextBox name={"Report"}/>
                     <SubmitBtn label={"Submit"} navigation={navigation} navigateTo={"Profile"}/>
                 </View>                
-                <View style={styles.navbar}></View>
+                {/* <View style={styles.navbar}></View> */}
             </ScrollView>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -44,10 +43,6 @@ const styles = StyleSheet.create({
         alignItems:"center",
         paddingHorizontal: 10,
         paddingVertical: 10,
-    },
-    navbar: {
-        flex: 2,
     }
-
 })
 

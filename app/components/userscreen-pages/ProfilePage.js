@@ -3,7 +3,7 @@ import { Text, View, Image, StyleSheet } from "react-native";
 import SignOut from "../user-functions/SignOut";
 import FavouriteHawkers from "./FavouriteHawkers";
 import ProfileBtn from "../user-functions/ProfileBtn";
-
+import SafeAreaView from "react-native-safe-area-view";
 
 
 export default function ProfilePage({navigation}){
@@ -14,7 +14,7 @@ export default function ProfilePage({navigation}){
     // };
     return (
         <View style={styles.container}>
-            <View>
+            <SafeAreaView>
                 <View style={styles.topbar}>
                     <Text style={{color: "#3C4142",fontSize: 35, fontWeight: 'bold'}}>Welcome Back</Text>
                 </View>
@@ -45,7 +45,7 @@ export default function ProfilePage({navigation}){
                 </View>
 
                 <View style={styles.container_bottom}>
-                    <ProfileBtn label={"Favourite Hawkers"}></ProfileBtn>
+                    <ProfileBtn label={"Favourite Hawkers"} navigation={navigation} navigateTo={"FavouriteHawkers"}></ProfileBtn>
                     {/* if (showFavHawkers) {
                             <FavouriteHawkers />
                         } */}
@@ -54,9 +54,7 @@ export default function ProfilePage({navigation}){
                     <SignOut navigation={navigation}/>
 
                 </View>
-
-                <View style={styles.navBar}></View>
-            </View>
+            </SafeAreaView>
         </View>
     )
 }
@@ -117,11 +115,5 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         justifyContent: "space-evenly"
 
-    },
-    navBar: {
-        flex:2,
-        // backgroundColor: "black"
     }
-
-
 })

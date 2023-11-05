@@ -7,11 +7,12 @@ import { Rating } from "react-native-ratings";
 import CameraBtn from "../user-functions/CameraBtn";
 import TextBox from "../user-functions/TextBox";
 import SubmitBtn from "../user-functions/SubmitBtn";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ReviewForm({navigation}){
     const [ratings, setRatings] = useState(0);
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.topbar}>
                     <Text style={{paddingBottom: 8, color: "#FA4A0C", fontStyle: "italic", fontSize: 18}} onPress={() => navigation.navigate('Profile')}>return to main</Text>
@@ -19,13 +20,12 @@ export default function ReviewForm({navigation}){
                 </View>
                 <View style={styles.main}>
                     <Rating type={"custom"} showRating={true} tintColor={"#F5F5F8"} ratingTextColor={"#FA4A0C"} ratingColor={"#FA4A0C"} startingValue={0} style={{paddingVertical: 20}} onFinishRating={setRatings}/>
-                    <CameraBtn/>
+                    <CameraBtn navigation={navigation}/>
                     <TextBox name={"Review"}/>
                     <SubmitBtn label={"Submit"} navigation={navigation} navigateTo={"Profile"}/>
                 </View>                
-                <View style={styles.navbar}></View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -45,9 +45,6 @@ const styles = StyleSheet.create({
         // backgroundColor: "orange",
         alignItems:"center",
         paddingHorizontal: 10,
-    },
-    navbar: {
-        flex: 2,
     }
 
 })
