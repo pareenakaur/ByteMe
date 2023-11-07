@@ -39,7 +39,14 @@ class AccountManager(object):
     
     def addFavouriteStall(username, stallID):
         if(not AccountManager.validateUsername(username)):
-            user_dict = usersColl.document(username).update({"votes": firestore.ArrayUnion([stallID])})
+            usersColl.document(username).update({"votes": firestore.ArrayUnion([stallID])})
+            return "Success"
+        else:
+            return "Username does not exist"
+    
+    def resetPassword(username, password):
+        if(not AccountManager.validateUsername(username)):
+            usersColl.document(username).update({"password": password})
             return "Success"
         else:
             return "Username does not exist"

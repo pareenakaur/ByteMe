@@ -36,6 +36,15 @@ def addFavouriteStall():
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error Occured: {e}"
+    
+@userAPI.route('/resetPassword', methods=['POST'])
+def resetPassword():
+    try:
+        resp = request.json
+        res = AccountManager.resetPassword(resp["username"],resp["password"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error Occured: {e}"
 
 # @userAPI.route('/list', methods=['GET'])
 # def read():
