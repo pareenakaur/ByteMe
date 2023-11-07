@@ -5,28 +5,45 @@ import RegisterTextBox from "./RegisterTextBox";
 import { passwordValidator } from '../../utils/helpers/passwordValidator';
 import { passwordMatcher } from '../../utils/helpers/passwordMatcher';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { emailVerifier } from "../../utils/helpers/emailVerifier";
+import { emailValidator } from "../../utils/helpers/emailValidator";
 
 
 export default function ResetPassword({navigation}){
-    const [email, setEmail] = useState({ value: '', error: '' })
+    const [name, setName] = useState({ value: '', error: '' })
     const [password, setPassword] = useState({ value: '', error: '' })
     const [password_, setPassword_] = useState({ value: '', error: '' })
 
-    const onSubmitPressed = () => {
-        const emailError = emailVerifier(email.value)
+    const onSubmitPressed = async() => {
+        const nameError = emailValidator(name.value)
         const passwordError = passwordValidator(password.value)
         const mismatchPassword = passwordMatcher(password.value, password_.value)
     
-        if (emailError || passwordError || mismatchPassword) {
-            setEmail({ ...email, error: emailError })
+        if (nameError || passwordError || mismatchPassword) {
+            setName({ ...name, error: nameError })
             setPassword({ ...password, error: passwordError })
             setPassword_({...password_, error: mismatchPassword})
             return
         }
-        //send api to update the new password
-        navigation.navigate("LoginTab")
-       
+        try {
+            const requestOptions = { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({
+                    "username": name.value,
+                    "password": password.value
+                })
+            };
+            const response = await fetch('http://127.0.0.1:5000/user/resetPassword', requestOptions);
+            const data = await response.json();
+            console.log(data.result);
+            if (data.result == "Invalid username"){
+                setName({...name, error: data.result});
+                return
+            }
+            navigation.navigate("LoginTab")
+        } catch (error) {
+            console.error(error);
+        }
     }
     return(
         <SafeAreaView style={{flex:1}}>
@@ -38,17 +55,13 @@ export default function ResetPassword({navigation}){
                 <ScrollView>
                     <Text style={{fontSize:30, fontWeight: "bold", alignSelf: "center", paddingBottom: 10, color: "#3C4142"}}>Reset Password</Text>
                     <RegisterTextBox
-                        label="Email"
+                        label="Name"
                         returnKeyType="next"
-                        value={email.value}
-                        onChangeText={(text) => setEmail({ value: text, error: '' })}
-                        error={!!email.error}
-                        autoCapitalize="none"
-                        autoCompleteType="email"
-                        textContentType="emailAddress"
-                        keyboardType="email-address"
+                        value={name.value}
+                        onChangeText={(text) => setName({ value: text, error: '' })}
+                        error={!!name.error}
                     />
-                    {email.error? <HelperText type="error" padding='none'>{email.error}</HelperText> : null}
+                    {name.error? <HelperText type="error" padding='none'>{name.error}</HelperText> : null}
 
                     <RegisterTextBox
                         label="Password"

@@ -3,24 +3,51 @@ import { Text, Image, View, ScrollView, StyleSheet, TouchableOpacity } from "rea
 import RegisterTextBox from "./RegisterTextBox";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, HelperText } from "react-native-paper";
-import { emailVerifier } from "../../utils/helpers/emailVerifier";
-import { passwordVerifier } from "../../utils/helpers/passwordVerifier";
+import { nameValidator } from "../../utils/helpers/nameValidator";
+import { passwordValidator } from "../../utils/helpers/passwordValidator";
 
 export default function LoginTab({navigation}){
-    const [email, setEmail] = useState({ value: '', error: '' })
+    const [name, setName] = useState({ value: '', error: '' })
     const [password, setPassword] = useState({ value: '', error: '' })
 
-    const onLoginPressed = () => {
-        const emailError = emailVerifier(email.value)
-        const passwordError = passwordVerifier(email.value, password.value)
+    const onLoginPressed = async() => {
         
-        if (emailError || passwordError) {
-        setEmail({ ...email, error: emailError })
+        const nameError = nameValidator(name.value)
+        const passwordError = passwordValidator(password.value)
+        
+        //frontend checking
+        if (nameError || passwordError) {
+        setName({ ...name, error: nameError })
         setPassword({ ...password, error: passwordError })
         return
         }
-        navigation.navigate("TabNavigation")
+        //backend checking
+        try {
+            const requestOptions = { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({
+                    "username": name.value,
+                    "password": password.value
+                })
+            };
+            const response = await fetch('http://127.0.0.1:5000/user/login', requestOptions);
+            const data = await response.json();
+            console.log(data.result);
+            if (data.result == "Invalid username"){
+                setName({...name, error: data.result});
+                return
+            }else if (data.result == "Wrong password"){
+                setPassword({...password, error: data.result});
+                return
+            }
+            navigation.navigate("TabNavigation")
+        } catch (error) {
+            console.error(error);
+        }
     }
+
+    
     return(
         <SafeAreaView style={{flex:1}}>
             <Image style={styles.thumbnail} source={require('../../assets/thumbnail.png')}/>
@@ -28,17 +55,13 @@ export default function LoginTab({navigation}){
             <ScrollView>
             <Text style={{fontSize:30, fontWeight: "bold", alignSelf: "center", paddingBottom: 10, color: "#3C4142"}}>Welcome Back!</Text>
                 <RegisterTextBox
-                    label="Email"
+                    label="Name"
                     returnKeyType="next"
-                    value={email.value}
-                    onChangeText={(text) => setEmail({ value: text, error: '' })}
-                    error={!!email.error}
-                    autoCapitalize="none"
-                    autoCompleteType="email"
-                    textContentType="emailAddress"
-                    keyboardType="email-address"
+                    value={name.value}
+                    onChangeText={(text) => setName({ value: text, error: '' })}
+                    error={!!name.error}
                 />
-                {email.error ? <HelperText type="error" padding='none'>{email.error}</HelperText> : null }
+                {name.error ? <HelperText type="error" padding='none'>{name.error}</HelperText> : null }
 
                 <RegisterTextBox
                     label="Password"
@@ -80,8 +103,6 @@ const styles = StyleSheet.create({
     thumbnail: {
         flex: 3,
         width: "100%",
-        // borderBottomLeftRadius: 10,
-        // borderBottomRightRadius: 10
     }, 
     forgotPassword: {
         alignSelf: "flex-end",
@@ -108,5 +129,4 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
     }
-
 })

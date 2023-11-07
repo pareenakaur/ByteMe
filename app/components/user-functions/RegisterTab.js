@@ -6,7 +6,6 @@ import { emailValidator } from '../../utils/helpers/emailValidator';
 import { passwordValidator } from '../../utils/helpers/passwordValidator';
 import { nameValidator } from '../../utils/helpers/nameValidator';
 import { passwordMatcher } from '../../utils/helpers/passwordMatcher';
-import RegisterLogin from "../userscreen-pages/RegisterLogin";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
@@ -16,7 +15,7 @@ export default function RegisterTab({navigation}){
     const [password, setPassword] = useState({ value: '', error: '' })
     const [password_, setPassword_] = useState({ value: '', error: '' })
 
-    const onSignUpPressed = () => {
+    const onSignUpPressed = async() => {
         const nameError = nameValidator(name.value)
         const emailError = emailValidator(email.value)
         const passwordError = passwordValidator(password.value)
@@ -29,7 +28,28 @@ export default function RegisterTab({navigation}){
             setPassword_({...password_, error: mismatchPassword})
             return
         }
-        navigation.navigate("TabNavigation")
+
+        try {
+            const requestOptions = { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ 
+                    "username": name.value,
+                    "email": email.value,
+                    "password": password.value
+                }) 
+            };
+            const response = await fetch('http://127.0.0.1:5000/user/register', requestOptions);
+            const data = await response.json();
+            console.log(data.result);
+            if (data.result == "username Taken"){
+                setName({...name, error: data.result});
+                return
+            }
+            navigation.navigate("TabNavigation")
+        } catch (error) {
+            console.error(error);
+        }        
     }
     return(
         <SafeAreaView style={{flex:1}}>
