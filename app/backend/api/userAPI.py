@@ -19,21 +19,30 @@ def register():
     except Exception as e:
         return f"An Error Occured: {e}"
 
-@userAPI.route('/login', methods=['GET'])
+@userAPI.route('/login', methods=['POST'])
 def login():
     try:
-        resp = request.args
+        resp = request.json
         res = AccountManager.validateLogin(resp["username"],resp["password"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error Occured: {e}"
-    
-@userAPI.route('/list')
-def read():
+
+@userAPI.route('/addFavouriteStall', methods=['GET'])
+def addFavouriteStall():
     try:
-        all_users = [doc.to_dict() for doc in usersColl.stream()]
-        return jsonify(all_users)
+        resp = request.args
+        res = AccountManager.addFavouriteStall(resp["username"],resp["stallID"])
+        return jsonify({"result": res})
     except Exception as e:
-        return f"An Error has Occured: {e}"
+        return f"An Error Occured: {e}"
+
+# @userAPI.route('/list', methods=['GET'])
+# def read():
+#     try:
+#         all_users = [doc.to_dict() for doc in usersColl.stream()]
+#         return jsonify(all_users)
+#     except Exception as e:
+#         return f"An Error has Occured: {e}"
     
         

@@ -7,15 +7,15 @@ db = firestore.client()
 usersColl = db.collection('users')
 class AccountManager(object):
     
-    def validateRegister(username, password, email):
+    def validateUsername(username):
         user_dict = usersColl.document(username).get().to_dict()
-        if (usersColl.document(username).get().to_dict() == None): # Username must be unique, password and email need not be unique
+        if (user_dict == None): # Username must be unique, password and email need not be unique
             return True
         else:
             return False
 
     def registerUser(username,password,email):
-        if(AccountManager.validateRegister(username,password,email)==True):
+        if(AccountManager.validateUsername(username)):
             createdDate = datetime.datetime.now()
             usersColl.document(username).set({"username": username, "password": password, "email": email, "createdDate": createdDate,\
                                               "favourites": []})
@@ -32,15 +32,16 @@ class AccountManager(object):
         else:
             return "Wrong password"
 
-    def vote(userID,stallID,upvote):
-        # numvotes = query database
-        # newVote = Vote(userID,stallID,numvotes,upvote)
-        pass
-
     def getUser(username):
         user_dict = usersColl.document(username).get().to_dict()
-        print(user_dict)
         user = User( user_dict["userID"], username, user_dict["email"], user_dict["password"], user_dict["createdDate"])
         return user
+    
+    def addFavouriteStall(username, stallID):
+        if(not AccountManager.validateUsername(username)):
+            user_dict = usersColl.document(username).update({"votes": firestore.ArrayUnion([stallID])})
+            return "Success"
+        else:
+            return "Username does not exist"
     
 
