@@ -36,7 +36,7 @@ export default function ResetPassword({navigation}){
             const response = await fetch('http://127.0.0.1:5000/user/resetPassword', requestOptions);
             const data = await response.json();
             console.log(data.result);
-            if (data.result == "Invalid username"){
+            if (data.result == "Username does not exist"){
                 setName({...name, error: data.result});
                 return
             }

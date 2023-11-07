@@ -5,12 +5,37 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function FavouriteHawkers({navigation}){
     //call api to get a list of array of hawker
-    
-    const HawkerComps = [];
+    const getFavStalls = async() => {
+        try {
+            const requestOptions = { 
+                method: 'GET', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({
+                    "id": global.usrName
+                })
+            };
+            const response = await fetch('http://127.0.0.1:5000/hawkers/getFavouriteStalls', requestOptions);
+            const data = await response.json();
+            console.log(data.result);
+            if (data.favourite_stalls.length()){
+                return data.favourite_stalls.length()}
+        } catch (error) {
+            console.error(error);
+            return 
+        }
+    };
 
-    for (let i = 0; i < 6; i++) {
-        HawkerComps.push(<FavHawkerBtn key={i}/>);
+    const HawkerComps = [];
+    // let favStalls = getFavStalls();
+    let favStalls = 1;
+    if (favStalls){
+        for (let i = 0; i < 6; i++) {
+            HawkerComps.push(
+                <FavHawkerBtn key={i}/>);
+        }
     }
+    
+    
     
     return (
         <SafeAreaView style={styles.container}>

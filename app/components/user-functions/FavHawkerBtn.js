@@ -1,6 +1,6 @@
 import React from 'react'
-import { Share, Alert, Text, View, StyleSheet } from "react-native";
-import { Avatar, IconButton } from 'react-native-paper';
+import { Share, Alert, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Avatar, IconButton, Modal, Portal } from 'react-native-paper';
 
 export default function FavHawkerBtn({}){
 // export default function FavHawkerBtn({hawkerDetails}){ 
@@ -24,6 +24,10 @@ export default function FavHawkerBtn({}){
           Alert.alert(error.message);
         }
       };
+    
+    const removeFav = () => {
+        return
+    }
 
     const hawkerDetails = {stallName: "Adam Fishball Noodle", address: "Adam Road Hawker Centre", unit: "Floor 1, Stall 25", imageLink: "../../assets/stall.png"}
     return(
@@ -32,13 +36,15 @@ export default function FavHawkerBtn({}){
                 <Avatar.Image size={90} source={require('../../assets/stall.png')}></Avatar.Image>
             </View>
             <View style={styles.desc}>
+              <TouchableOpacity >
                 <Text style={{fontWeight: "bold", fontSize: 17, paddingBottom: 5}}>{hawkerDetails.stallName}</Text>
                 <Text style={{fontSize: 14, color: "#FA4A0C"}}>{hawkerDetails.address}</Text>
                 <Text style={{fontSize: 14, color: "#FA4A0C"}}>{hawkerDetails.unit}</Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.icon}>
                 <IconButton icon={"dots-vertical"} size={30} onPress={onShare}></IconButton>
-                <IconButton icon={"chevron-right"} size={30}></IconButton>
+                <IconButton icon={"heart-minus"} size={30} iconColor={"#FA4A0C"} style={{left: -10}} onPress={removeFav}></IconButton>
             </View>
         </View>
     )

@@ -41,10 +41,12 @@ export default function LoginTab({navigation}){
                 setPassword({...password, error: data.result});
                 return
             }
+            global.usrName = name.value
             navigation.navigate("TabNavigation")
         } catch (error) {
             console.error(error);
         }
+        // navigation.navigate("TabNavigation")
     }
 
     

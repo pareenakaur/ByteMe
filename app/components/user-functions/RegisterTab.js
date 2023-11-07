@@ -46,6 +46,7 @@ export default function RegisterTab({navigation}){
                 setName({...name, error: data.result});
                 return
             }
+            global.usrName = name.value
             navigation.navigate("TabNavigation")
         } catch (error) {
             console.error(error);
