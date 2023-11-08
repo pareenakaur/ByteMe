@@ -26,7 +26,8 @@ export default function FavHawkerBtn({}){
       };
     
     const removeFav = () => {
-        return
+      //api call to remove the element in the array
+      return
     }
 
     const hawkerDetails = {stallName: "Adam Fishball Noodle", address: "Adam Road Hawker Centre", unit: "Floor 1, Stall 25", imageLink: "../../assets/stall.png"}
