@@ -1,7 +1,6 @@
 import datetime
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
-from classes.User import User
 
 db = firestore.client()
 usersColl = db.collection('users')
@@ -33,14 +32,27 @@ class AccountManager(object):
             return "Wrong password"
 
     def getUser(username):
-        user_dict = usersColl.document(username).get().to_dict()
-        user = User( user_dict["userID"], username, user_dict["email"], user_dict["password"], user_dict["createdDate"])
-        return user
+        if (not AccountManager.validateUsername(username)):
+            user_dict = usersColl.document(username).get().to_dict()
+            return ("Success", user_dict)
+        else:
+            return ("Username does not exist",{})
     
     def addFavouriteStall(username, stallID):
         if(not AccountManager.validateUsername(username)):
-            usersColl.document(username).update({"votes": firestore.ArrayUnion([stallID])})
+            usersColl.document(username).update({"favourites": firestore.ArrayUnion([stallID])})
             return "Success"
+        else:
+            return "Username does not exist"
+        
+    def removeFavouriteStall(username, stallID):
+        if(not AccountManager.validateUsername(username)):
+            user_dict = usersColl.document(username).get().to_dict()
+            if(stallID in user_dict["favourites"]):
+                usersColl.document(username).update({"favourites": firestore.ArrayRemove([stallID])})
+                return "Success"
+            else:
+                return "stallID not in favourites list"
         else:
             return "Username does not exist"
     
