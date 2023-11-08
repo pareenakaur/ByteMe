@@ -9,16 +9,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 //Adam postal code: 289876
 
 const ExplorePage = ({ navigation }) => {
-  const [tap, setTap] = useState(0);
+  const [tap, setTap] = useState(false);
+  const [hawkerCentreInfo, setHawkerCentreInfo] = useState('{}');
+  const [hawkerStallInfo, setHawkerStallInfo] = useState('{}');
 
   return (
     
-      <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1.5 }}>
-          <MapContainer zoom ={tap? 20:0}/>
+          <MapContainer setHawkerCentreInfo={setHawkerCentreInfo} zoom ={tap? 15:0} userTap={setTap}/>
         </View>
-        {tap ? <HawkerStallCard navigation={navigation}/>:<HawkerCentreCard navigation={navigation}/>}
-      </View>
+        {tap ? <HawkerStallCard navigation={navigation}/>:<HawkerCentreCard hawkerCentreInfo={hawkerCentreInfo} navigation={navigation}/>}
+      </SafeAreaView>
    
   );
 }

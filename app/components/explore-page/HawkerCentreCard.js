@@ -12,7 +12,7 @@ import {
 import { useState } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
 
-export default function HawkerCentreCard({navigation}) {
+export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
   return (
     <Card style={styles.container}>
       <Card.Cover
@@ -47,9 +47,11 @@ export default function HawkerCentreCard({navigation}) {
         <Card.Content style={{ flex: 1.5 }}>
           <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
             Adam Road Food Centre
+            {/* {hawkerCentreInfo["name"]} */}
           </Text>
           <Text variant="bodySmall" style={{ color: "#FA4A0C" }}>
             2 Adam Rd, Singapore 289876
+            {/* {hawkerCentreInfo["formatted_address"]} */}
           </Text>
           <Text variant="bodySmall">Opening Hours: 6am - 3am</Text>
         </Card.Content>
