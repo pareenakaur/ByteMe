@@ -1,42 +1,47 @@
 import datetime
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
+from classes.User import User
 
 db = firestore.client()
 usersColl = db.collection('users')
 class AccountManager(object):
     
-    def validateRegister(username, password, email):
-        # query database
-        # if (username == and password == and email == ) return true
-        pass
-
-    def registerUser(self,username,password,email):
-        if(self.validateRegister(username,password,email)==True):
-            createdDate = datetime.datetime.now()
-            # usersColl.set(id).
-            # numUsers = querydatabase()
-            # newUser = User(numUsers, username, email, password, createdDate)
-            # add to database
+    def validateUsername(username):
+        user_dict = usersColl.document(username).get().to_dict()
+        if (user_dict == None): # Username must be unique, password and email need not be unique
+            return True
         else:
-            print("Error")
+            return False
+
+    def registerUser(username,password,email):
+        if(AccountManager.validateUsername(username)):
+            createdDate = datetime.datetime.now()
+            usersColl.document(username).set({"username": username, "password": password, "email": email, "createdDate": createdDate,\
+                                              "favourites": []})
+            return "Success"
+        else:
+            return "username Taken"
     
     def validateLogin(username,password):
-        #query database
-        #if(username== and password ==) return True
-        pass
+        user_dict = usersColl.document(username).get().to_dict()
+        if(user_dict == None):
+            return "Invalid username"
+        elif(password == user_dict["password"]):
+            return "Success"
+        else:
+            return "Wrong password"
 
-    def login():
-        # input username and password
-        pass
-
-    def vote(userID,stallID,upvote):
-        # numvotes = query database
-        # newVote = Vote(userID,stallID,numvotes,upvote)
-        pass
-
-    def getUser(userID):
-        # query database
-        # return user
-        pass
+    def getUser(username):
+        user_dict = usersColl.document(username).get().to_dict()
+        user = User( user_dict["userID"], username, user_dict["email"], user_dict["password"], user_dict["createdDate"])
+        return user
+    
+    def addFavouriteStall(username, stallID):
+        if(not AccountManager.validateUsername(username)):
+            user_dict = usersColl.document(username).update({"votes": firestore.ArrayUnion([stallID])})
+            return "Success"
+        else:
+            return "Username does not exist"
+    
 

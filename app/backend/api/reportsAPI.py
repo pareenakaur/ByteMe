@@ -1,7 +1,7 @@
 import uuid
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
-from ShopFeedbackManager import ShopFeedbackManager
+from classes.ReportManager import ReportManager
 
 db = firestore.client()
 
@@ -9,72 +9,63 @@ reportsColl = db.collection('reports')
 
 reportsAPI = Blueprint('reportsAPI',__name__)
 
-# @reviewsAPI.route('/get', methods=['GET'])
-# def get():
+@reportsAPI.route('/createReport', methods=['POST']) 
+def createReport():
+    try:
+        resp = request.json
+        res = ReportManager.createReport(resp["username"], resp["stallID"], resp["description"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
+
+@reportsAPI.route('/updateReport', methods=['POST']) 
+def updateReport():
+    try:
+        resp = request.json
+        res = ReportManager.updateReport(resp["username"], resp["stallID"], resp["description"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
+
+# @reportsAPI.route('/voteReport', methods=['POST']) 
+# def voteReport():
 #     try:
-#         id = uuid.uuid4()
-#         usersColl.document(id.hex).set(request.json)
-#         return jsonify({"success": True})
-#     except Exception as e:
-#         return f"An Error Occured: {e}"
-    
-# @reviewsAPI.route('/add', methods=['POST'])
-# def create():
-#     try:
-#         id = uuid.uuid4()
-#         usersColl.document(id.hex).set(request.json)
-#         return jsonify({"success": True})
-#     except Exception as e:
-#         return f"An Error Occured: {e}"
-    
-# @reviewsAPI.route('/list') # by hawker id
-# def read():
-#     try:
-#         all_users = [doc.to_dict() for doc in usersColl.stream()]
-#         return jsonify(all_users)
+#         resp = request.json
+#         res = ReportManager.voteReport(resp["username"], resp["stallID"], resp["upvote"])
+#         return jsonify({"result": res})
 #     except Exception as e:
 #         return f"An Error has Occured: {e}"
 
-@reportsAPI.route('/getShopReports') 
-def read():
+@reportsAPI.route('/deleteReport', methods=['POST']) 
+def deleteReport():
     try:
         resp = request.json
-        reports_list = ShopFeedbackManager.getShopReports(resp["stallID"])
-        return jsonify(reports_list)
+        res = ReportManager.deleteReport(resp["username"], resp["stallID"])
+        return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
 
-@reportsAPI.route('/getUserReports') 
-def read():
+@reportsAPI.route('/getStallReports', methods=['GET']) 
+def getStallReports():
     try:
-        resp = request.json
-        reports_list = ShopFeedbackManager.getUserReports(resp["stallID"])
-        return jsonify(reports_list)
-    except Exception as e:
-        return f"An Error has Occured: {e}"
-    
-@reportsAPI.route('/createReport') 
-def read():
-    try:
-        resp = request.json
-        res = ShopFeedbackManager.createReport(resp["username"], resp["stallID"], resp["description"])
-        if(res==True):
-            return True
+        resp = request.args
+        res,reports_list = ReportManager.getStallReports(resp["stallID"])
+        if(res == "Success"):
+            return jsonify({"result": res, "list":reports_list})
         else:
-            print("Error")
-        # return jsonify(reviews_list)
+            return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
 
-@reportsAPI.route('/updateReport') 
-def read():
+@reportsAPI.route('/getUserReports', methods=['GET']) 
+def getUserReports():
     try:
-        resp = request.json
-        res = ShopFeedbackManager.updateReport(resp["username"], resp["stallID"], resp["description"])
-        if(res==True):
-            return True
+        resp = request.args
+        res,reports_list = ReportManager.getUserReports(resp["username"])
+        if(res == "Success"):
+            return jsonify({"result": res, "list":reports_list})
         else:
-            print("Error")
-        # return jsonify(reviews_list)
+            return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
+        
