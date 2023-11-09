@@ -1,58 +1,58 @@
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
-
+from classes.AccountManager import AccountManager
 db = firestore.client()
 
 reportsColl = db.collection('reports')
 class ReportManager(object):
 
     def createReport(username,stallID,description):
-        if(not ReportManager.validateReport(username,stallID)):
-            reportsColl.document().set({"username": username, "stallID": stallID, "description": description})
-            return "Success"
+        if(ReportManager.validateCreateReport(username,stallID)):
+            _, review = reportsColl.add({"username": username, "stallID": stallID, "description": description,  "votes": 0})
+            return review.id
         else:
             return "user has already reported the stall"
 
-    def updateReport(username,stallID,description):
-        if(ReportManager.validateReport(username,stallID)):
-            report = reportsColl.where("username","==",username).where("stallID","==",stallID).get()
-            key = report[0].id
-            reportsColl.document(key).update({"description":description}) 
+    def updateReport(username,stallID,reportID,description):
+        if(ReportManager.validateReport(reportID)):
+            report = reportsColl.document(reportID).update({"description": description})
             return "Success"
         else:
             return "Report does not exist"    
-        
-    
-    # def voteReport(username,stallID,upvote:bool):
-    #     if(ReportManager.validateReport(username,stallID)):
-    #         report = reportsColl.where("username","==",username).where("stallID","==",stallID).get()
-    #         key = report[0].id
-    #         if(upvote):
-    #             reportsColl.document(key).update({"votes": firestore.Increment(1)})
-    #         else:
-    #             reportsColl.document(key).update({"votes": firestore.Increment(-1)})
-    #         return "Success"
-    #     else:
-    #         return "Report does not exist"
-    
-    def deleteReport(username, stallID):
-        if(ReportManager.validateReport(username,stallID)):
-            report = reportsColl.where("username","==",username).where("stallID","==",stallID).get()
-            key = report[0].id
-            reportsColl.document(key).delete()
+
+    def voteReport(username,stallID,reportID,upvote):
+        if(ReportManager.validateReport(reportID)):
+            voteUpdate = AccountManager.voteReport(username,stallID,reportID,upvote)
+            print("voteUpdate = " ,voteUpdate)
+            reportsColl.document(reportID).update({"votes": firestore.Increment(voteUpdate)})
             return "Success"
         else:
             return "Report does not exist"
+    
+    def deleteReport(reportID):
+        if(ReportManager.validateReport(reportID)):
+            reportsColl.document(reportID).delete()
+            return "Success"
+        else:
+            return "Report does not exist"   
             
 
 
-    def validateReport(username,stallID):
-        report = reportsColl.where("username","==",username).where("stallID","==",stallID).get()
-        if(report==[]):
-            return False
-        else:
+    def validateReport(reportID):
+        report = reportsColl.document(reportID).get()
+        if report.exists:
             return True
+        else:
+            return False
+
+# can't create report if user has already reported the stall
+    def validateCreateReport(username, stallID):
+        report = reportsColl.where("stallID","==",stallID).where("username","==",username).get()
+        if len(report) == 0:
+            return True
+        else:
+            return False
     
     def getStallReports(stallID):
         reports_list = reportsColl.where("stallID","==",stallID).get()

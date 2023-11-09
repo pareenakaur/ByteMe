@@ -22,25 +22,26 @@ def createReport():
 def updateReport():
     try:
         resp = request.json
-        res = ReportManager.updateReport(resp["username"], resp["stallID"], resp["description"])
+        res = ReportManager.updateReport(resp["reportID"], resp["rating"], resp["description"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
 
-# @reportsAPI.route('/voteReport', methods=['POST']) 
-# def voteReport():
-#     try:
-#         resp = request.json
-#         res = ReportManager.voteReport(resp["username"], resp["stallID"], resp["upvote"])
-#         return jsonify({"result": res})
-#     except Exception as e:
-#         return f"An Error has Occured: {e}"
+@reportsAPI.route('/voteReport', methods=['POST']) 
+def voteReview():
+    try:
+        resp = request.json
+        res = ReportManager.voteReport(resp["username"], resp["stallID"],resp['reportID'],resp["upvote"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
 
-@reportsAPI.route('/deleteReport', methods=['POST']) 
+
+@reportsAPI.route('/deleteReport', methods=['DELETE']) 
 def deleteReport():
     try:
         resp = request.json
-        res = ReportManager.deleteReport(resp["username"], resp["stallID"])
+        res = ReportManager.deleteReport(resp["reportID"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
