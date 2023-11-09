@@ -2,6 +2,7 @@ import datetime
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 from utils.functions import boolDiff
+from google.cloud.firestore_v1.base_query import FieldFilter
 
 db = firestore.client()
 usersColl = db.collection('users')
@@ -103,5 +104,8 @@ class AccountManager(object):
             return "Success"
         else:
             return "Username does not exist"
-    
 
+
+    def deleteReportVotes(reportID):
+        # for all users, for all its votes where reviewid/reo
+        usersColl.collection('votes').document(reportID).delete()

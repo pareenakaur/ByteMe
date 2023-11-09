@@ -32,6 +32,7 @@ class ReportManager(object):
     
     def deleteReport(reportID):
         if(ReportManager.validateReport(reportID)):
+            AccountManager.deleteReportVotes(reportID)
             reportsColl.document(reportID).delete()
             return "Success"
         else:
