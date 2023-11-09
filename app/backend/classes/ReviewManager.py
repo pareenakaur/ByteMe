@@ -74,3 +74,15 @@ class ReviewManager(object):
             return ("Success", res_list)
         else:
             return ("User has no reviews", [])
+
+    def getAvgReviewRating(stallID):
+        avgRating,totalRating = 0,0
+        reviews_list = reviewsColl.where("stallID", "==", stallID).get()
+        if(len(reviews_list) != 0):
+            for doc in reviews_list:
+                review = doc.to_dict()
+                totalRating += review.get('rating')
+            avgRating = totalRating / len(reviews_list)
+            return avgRating
+        else:
+            return ("User has no reviews")
