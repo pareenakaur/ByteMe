@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
 from classes.AccountManager import AccountManager
+from utils.functions import delete_collection,boolDiff
 
 db = firestore.client()
 
@@ -22,16 +23,7 @@ class ReviewManager(object):
             return "Success"
         else:
             return "Review does not exist"    
-        
 
-    def voteReview(username,stallID,reviewID,upvote):
-        if(ReviewManager.validateReview(reviewID)):
-            voteUpdate = AccountManager.voteReview(username,stallID,reviewID,upvote)
-            print("voteUpdate = " ,voteUpdate)
-            reviewsColl.document(reviewID).update({"votes": firestore.Increment(voteUpdate)})
-            return "Success"
-        else:
-            return "Review does not exist"
 
     def deleteReview(reviewID):
         if(ReviewManager.validateReview(reviewID)):
@@ -74,3 +66,47 @@ class ReviewManager(object):
             return ("Success", res_list)
         else:
             return ("User has no reviews", [])
+
+    def getAvgReviewRating(stallID):
+        avgRating,totalRating = 0,0
+        reviews_list = reviewsColl.where("stallID", "==", stallID).get()
+        if(len(reviews_list) != 0):
+            for doc in reviews_list:
+                review = doc.to_dict()
+                totalRating += review.get('rating')
+            avgRating = totalRating / len(reviews_list)
+            return avgRating
+        else:
+            return ("User has no reviews")
+    
+    def voteReview(username,reviewID,upvote):
+        if(ReviewManager.validateReview(reviewID)):
+            voteUpdate = ReviewManager.updateVote(username,reviewID,upvote)
+            print("voteUpdate = " ,voteUpdate)
+            reviewsColl.document(reviewID).update({"votes": firestore.Increment(voteUpdate)})
+            return "Success"
+        else:
+            return "Review does not exist"
+    
+    def updateVote(userID,reviewID,upvote):
+        query = reviewsColl.document(reviewID).collection('votes').document(userID).get()
+        if query.exists == 0 :
+            if upvote == None:
+                return 0
+            reviewsColl.document(reviewID).collection('votes').document(userID).set({"upvote": upvote})
+            voteUpdate = boolDiff(upvote,None)
+            return voteUpdate
+        
+        vote = query.to_dict().get("upvote")
+        # vote variable is the before value of review vote, upvote is the updating value
+        voteUpdate = boolDiff(upvote,vote)
+        if upvote == None:
+            reviewsColl.document(reviewID).collection('votes').document(userID).delete()
+        else:
+            reviewsColl.document(reviewID).collection('votes').document(userID).update({"upvote": upvote})
+        
+        return voteUpdate
+
+    def deleteReviewVotes(reviewID):
+        votesColl = reviewsColl.document(reviewID).collection('votes')
+        delete_collection(votesColl,10)

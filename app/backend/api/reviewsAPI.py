@@ -31,7 +31,7 @@ def updateReview():
 def voteReview():
     try:
         resp = request.json
-        res = ReviewManager.voteReview(resp["username"], resp["stallID"],resp['reviewID'],resp["upvote"])
+        res = ReviewManager.voteReview(resp["username"],resp['reviewID'],resp["upvote"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
@@ -66,6 +66,15 @@ def getUserReviews():
             return jsonify({"result": res, "list":reviews_list})
         else:
             return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
+
+@reviewsAPI.route('/getStallRating', methods=['GET']) 
+def getStallRating():
+    try:
+        resp = request.args
+        res = ReviewManager.getAvgReviewRating(resp["stallID"])
+        return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
         

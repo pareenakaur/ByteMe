@@ -1,0 +1,10 @@
+app/backend/api/__pycache__/__init__.cpython-312.pyc
+app/backend/api/__pycache__/hawkersAPI.cpython-312.pyc
+app/backend/api/__pycache__/reportsAPI.cpython-312.pyc
+app/backend/api/__pycache__/reviewsAPI.cpython-312.pyc
+app/backend/api/__pycache__/userAPI.cpython-312.pyc
+app/backend/classes/__pycache__/AccountManager.cpython-312.pyc
+app/backend/classes/__pycache__/HawkerManager.cpython-312.pyc
+app/backend/classes/__pycache__/ReportManager.cpython-312.pyc
+app/backend/classes/__pycache__/ReviewManager.cpython-312.pyc
+app/backend/classes/__pycache__/__init__.cpython-312.pyc

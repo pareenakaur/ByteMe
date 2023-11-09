@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
 from classes.AccountManager import AccountManager
+from utils.functions import delete_collection,boolDiff
+
 db = firestore.client()
 
 reportsColl = db.collection('reports')
@@ -20,18 +22,10 @@ class ReportManager(object):
             return "Success"
         else:
             return "Report does not exist"    
-
-    def voteReport(username,stallID,reportID,upvote):
-        if(ReportManager.validateReport(reportID)):
-            voteUpdate = AccountManager.voteReport(username,stallID,reportID,upvote)
-            print("voteUpdate = " ,voteUpdate)
-            reportsColl.document(reportID).update({"votes": firestore.Increment(voteUpdate)})
-            return "Success"
-        else:
-            return "Report does not exist"
-    
+  
     def deleteReport(reportID):
         if(ReportManager.validateReport(reportID)):
+            ReportManager.deleteReportVotes(reportID)
             reportsColl.document(reportID).delete()
             return "Success"
         else:
@@ -73,3 +67,36 @@ class ReportManager(object):
             return ("Success", res_list)
         else:
             return ("User has no reports", [])
+
+
+    def voteReport(username,reportID,upvote):
+        if(ReportManager.validateReport(reportID)):
+            voteUpdate = ReportManager.updateVote(username,reportID,upvote)
+            print("voteUpdate = " ,voteUpdate)
+            reportsColl.document(reportID).update({"votes": firestore.Increment(voteUpdate)})
+            return "Success"
+        else:
+            return "Report does not exist"
+    
+    def updateVote(userID,reportID,upvote):
+        query = reportsColl.document(reportID).collection('votes').document(userID).get()
+        if query.exists == 0 :
+            if upvote == None:
+                return 0
+            reportsColl.document(reportID).collection('votes').document(userID).set({"upvote": upvote})
+            voteUpdate = boolDiff(upvote,None)
+            return voteUpdate
+        
+        vote = query.to_dict().get("upvote")
+        # vote variable is the before value of review vote, upvote is the updating value
+        voteUpdate = boolDiff(upvote,vote)
+        if upvote == None:
+            reportsColl.document(reportID).collection('votes').document(userID).delete()
+        else:
+            reportsColl.document(reportID).collection('votes').document(userID).update({"upvote": upvote})
+        
+        return voteUpdate
+
+    def deleteReportVotes(reportID):
+        votesColl = reportsColl.document(reportID).collection('votes')
+        delete_collection(votesColl,10)

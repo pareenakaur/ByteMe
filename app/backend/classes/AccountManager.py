@@ -2,6 +2,7 @@ import datetime
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 from utils.functions import boolDiff
+from google.cloud.firestore_v1.base_query import FieldFilter
 
 db = firestore.client()
 usersColl = db.collection('users')
@@ -31,46 +32,6 @@ class AccountManager(object):
             return "Success"
         else:
             return "Wrong password"
-
-    def voteReview(userID,stallID,reviewID,upvote):
-        query = usersColl.document(userID).collection('votes').document(reviewID).get()
-        if query.exists == 0 :
-            if upvote == None:
-                return 0
-            usersColl.document(userID).collection('votes').document(reviewID).set({"stallID":stallID, "upvote": upvote})
-            voteUpdate = boolDiff(upvote,None)
-            return voteUpdate
-        
-        vote = query.to_dict().get("upvote")
-        # vote variable is the before value of review vote, upvote is the updating value
-        voteUpdate = boolDiff(upvote,vote)
-        if upvote == None:
-            usersColl.document(userID).collection('votes').document(reviewID).delete()
-        else:
-            usersColl.document(userID).collection('votes').document(reviewID).update({"upvote": upvote})
-            
-
-        return voteUpdate
-
-    def voteReport(userID,stallID,reportID,upvote):
-        query = usersColl.document(userID).collection('votes').document(reportID).get()
-        if query.exists == 0 :
-            if upvote == None:
-                return 0
-            usersColl.document(userID).collection('votes').document(reportID).set({"stallID":stallID, "upvote": upvote})
-            voteUpdate = boolDiff(upvote,None)
-            return voteUpdate
-        
-        vote = query.to_dict().get("upvote")
-        # vote variable is the before value of review vote, upvote is the updating value
-        voteUpdate = boolDiff(upvote,vote)
-        if upvote == None:
-            usersColl.document(userID).collection('votes').document(reportID).delete()
-        else:
-            usersColl.document(userID).collection('votes').document(reportID).update({"upvote": upvote})
-            
-
-        return voteUpdate
 
     def getUser(username):
         if (not AccountManager.validateUsername(username)):
@@ -103,5 +64,4 @@ class AccountManager(object):
             return "Success"
         else:
             return "Username does not exist"
-    
 
