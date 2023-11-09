@@ -31,7 +31,7 @@ def updateReview():
 def voteReview():
     try:
         resp = request.json
-        res = ReviewManager.voteReview(resp["username"], resp["stallID"],resp['reviewID'],resp["upvote"])
+        res = ReviewManager.voteReview(resp["username"],resp['reviewID'],resp["upvote"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"

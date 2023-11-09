@@ -31,7 +31,7 @@ def updateReport():
 def voteReview():
     try:
         resp = request.json
-        res = ReportManager.voteReport(resp["username"], resp["stallID"],resp['reportID'],resp["upvote"])
+        res = ReportManager.voteReport(resp["username"], resp['reportID'],resp["upvote"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
