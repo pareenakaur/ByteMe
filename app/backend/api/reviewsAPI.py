@@ -22,7 +22,7 @@ def createReview():
 def updateReview():
     try:
         resp = request.json
-        res = ReviewManager.updateReview(resp["username"], resp["stallID"], resp["reviewID"],resp["description"])
+        res = ReviewManager.updateReview(resp["username"], resp["reviewID"],resp["description"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
