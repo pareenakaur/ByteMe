@@ -13,7 +13,7 @@ reviewsAPI = Blueprint('reviewsAPI',__name__)
 def createReview():
     try:
         resp = request.json
-        res = ReviewManager.createReview(resp["username"], resp["stallID"], resp["description"])
+        res = ReviewManager.createReview(resp["username"], resp["stallID"],resp['rating'], resp["description"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
@@ -22,7 +22,7 @@ def createReview():
 def updateReview():
     try:
         resp = request.json
-        res = ReviewManager.updateReview(resp["username"], resp["stallID"], resp["description"])
+        res = ReviewManager.updateReview(resp["username"], resp["stallID"], resp["reviewID"],resp["description"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
@@ -31,16 +31,16 @@ def updateReview():
 def voteReview():
     try:
         resp = request.json
-        res = ReviewManager.voteReview(resp["username"], resp["stallID"], resp["upvote"])
+        res = ReviewManager.voteReview(resp["username"], resp["stallID"],resp['reviewID'],resp["upvote"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
 
-@reviewsAPI.route('/deleteReview', methods=['POST']) 
+@reviewsAPI.route('/deleteReview', methods=['DELETE']) 
 def deleteReview():
     try:
         resp = request.json
-        res = ReviewManager.deleteReview(resp["username"], resp["stallID"])
+        res = ReviewManager.deleteReview(resp["reviewID"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"

@@ -1,5 +1,16 @@
 import math
 
+# Calculate difference of bools, true = 1,none = 0, false = -1
+def boolDiff(value1, value2):
+    # Convert boolean values to the specified mapping
+        value1_mapped = 1 if value1 is True else (-1 if value1 is False else 0)
+        value2_mapped = 1 if value2 is True else (-1 if value2 is False else 0)
+        
+        # Calculate the difference
+        difference = value1_mapped - value2_mapped
+        
+        return difference
+
 def haversine(lat1, lon1, lat2, lon2):
     """
     Calculate the great-circle distance (in meters) between two points
