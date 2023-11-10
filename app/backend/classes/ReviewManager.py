@@ -3,6 +3,7 @@ from firebase_admin import firestore
 import datetime
 from classes.AccountManager import AccountManager
 from utils.functions import delete_collection,boolDiff
+from firebase_admin.firestore import SERVER_TIMESTAMP
 
 db = firestore.client()
 
@@ -12,7 +13,7 @@ class ReviewManager(object):
 
     def createReview(username,stallID,rating,description):
         if(ReviewManager.validateCreateReview(username,stallID)):
-            _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,  "votes": 0})
+            _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,"votes": 0})
             return review.id
         else:
             return "user has already reviewed the stall"
@@ -52,7 +53,9 @@ class ReviewManager(object):
         if(reviews_list!=[]):
             res_list = []
             for doc in reviews_list:
-                res_list.append(doc.to_dict())
+                review = doc.to_dict()
+                review['reviewID'] = doc.id 
+                res_list.append(review)
             return ("Success", res_list)
         else:
             return ("Stall has no reviews", [])
@@ -62,7 +65,9 @@ class ReviewManager(object):
         if(reviews_list!=[]):
             res_list = []
             for doc in reviews_list:
-                res_list.append(doc.to_dict())
+                review = doc.to_dict()
+                review['reviewID'] = doc.id 
+                res_list.append(review)
             return ("Success", res_list)
         else:
             return ("User has no reviews", [])
@@ -81,9 +86,8 @@ class ReviewManager(object):
     
     def getReviewCount(stallID):
         avgRating,totalRating = 0,0
-        reviews_list = reviewsColl.where("stallID", "==", stallID).get()
-        
-        return len(reviews_list)
+        reviewLength = reviewsColl.where("stallID", "==", stallID).count().get()
+        return reviewLength[0][0].value
 
     def voteReview(username,reviewID,upvote):
         if(ReviewManager.validateReview(reviewID)):
