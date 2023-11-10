@@ -22,7 +22,7 @@ class ReportManager(object):
             return "Success"
         else:
             return "Report does not exist"    
-  
+
     def deleteReport(reportID):
         if(ReportManager.validateReport(reportID)):
             ReportManager.deleteReportVotes(reportID)
@@ -53,7 +53,9 @@ class ReportManager(object):
         if(reports_list!=[]):
             res_list = []
             for doc in reports_list:
-                res_list.append(doc.to_dict())
+                report = doc.to_dict()
+                report['reportID'] = doc.id 
+                res_list.append(report)
             return ("Success", res_list)
         else:
             return ("Stall has no reports", [])
@@ -63,7 +65,9 @@ class ReportManager(object):
         if(reports_list!=[]):
             res_list = []
             for doc in reports_list:
-                res_list.append(doc.to_dict())
+                report = doc.to_dict()
+                report['reportID'] = doc.id 
+                res_list.append(report)
             return ("Success", res_list)
         else:
             return ("User has no reports", [])
