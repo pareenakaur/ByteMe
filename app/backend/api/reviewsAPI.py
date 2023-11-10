@@ -77,4 +77,13 @@ def getStallRating():
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
+    
+@reviewsAPI.route('/getStallReviewCount', methods=['GET']) 
+def getReviewCount():
+    try:
+        resp = request.args
+        res = ReviewManager.getReviewCount(resp["stallID"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
         
