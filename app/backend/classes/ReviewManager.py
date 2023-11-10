@@ -79,6 +79,12 @@ class ReviewManager(object):
         else:
             return ("User has no reviews")
     
+    def getReviewCount(stallID):
+        avgRating,totalRating = 0,0
+        reviews_list = reviewsColl.where("stallID", "==", stallID).get()
+        
+        return len(reviews_list)
+
     def voteReview(username,reviewID,upvote):
         if(ReviewManager.validateReview(reviewID)):
             voteUpdate = ReviewManager.updateVote(username,reviewID,upvote)
