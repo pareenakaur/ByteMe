@@ -3,6 +3,7 @@ from firebase_admin import firestore
 import datetime
 from classes.AccountManager import AccountManager
 from utils.functions import delete_collection,boolDiff
+from firebase_admin.firestore import SERVER_TIMESTAMP
 
 db = firestore.client()
 
@@ -11,7 +12,8 @@ class ReportManager(object):
 
     def createReport(username,stallID,description):
         if(ReportManager.validateCreateReport(username,stallID)):
-            _, review = reportsColl.add({"username": username, "stallID": stallID, "description": description,  "votes": 0})
+            _, review = reportsColl.add({"username": username, "stallID": stallID, "description": description
+                                         ,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
             return review.id
         else:
             return "user has already reported the stall"
@@ -49,7 +51,9 @@ class ReportManager(object):
             return False
     
     def getStallReports(stallID):
-        reports_list = reportsColl.where("stallID","==",stallID).get()
+        reports_list = reportsColl.where("stallID","==",stallID).order_by(
+            "timestamp", direction=firestore.Query.DESCENDING
+        ).get()
         if(reports_list!=[]):
             res_list = []
             for doc in reports_list:
@@ -61,7 +65,9 @@ class ReportManager(object):
             return ("Stall has no reports", [])
     
     def getUserReports(username):
-        reports_list = reportsColl.where("username", "==", username).get()
+        reports_list = reportsColl.where("username", "==", username).order_by(
+            "timestamp", direction=firestore.Query.DESCENDING
+        ).get()
         if(reports_list!=[]):
             res_list = []
             for doc in reports_list:
