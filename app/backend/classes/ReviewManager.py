@@ -13,7 +13,8 @@ class ReviewManager(object):
 
     def createReview(username,stallID,rating,description):
         if(ReviewManager.validateCreateReview(username,stallID)):
-            _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,"votes": 0})
+            _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,
+                                         "votes": 0, "timestamp": SERVER_TIMESTAMP})
             return review.id
         else:
             return "user has already reviewed the stall"
@@ -49,7 +50,9 @@ class ReviewManager(object):
         else:
             return False
     def getStallReviews(stallID):
-        reviews_list = reviewsColl.where("stallID","==",stallID).get()
+        reviews_list = reviewsColl.where("stallID","==",stallID).order_by(
+            "timestamp", direction=firestore.Query.DESCENDING
+        ).get()
         if(reviews_list!=[]):
             res_list = []
             for doc in reviews_list:
@@ -61,7 +64,9 @@ class ReviewManager(object):
             return ("Stall has no reviews", [])
     
     def getUserReviews(username):
-        reviews_list = reviewsColl.where("username", "==", username).get()
+        reviews_list = reviewsColl.where("username", "==", username).order_by(
+            "timestamp", direction=firestore.Query.DESCENDING
+        ).get()
         if(reviews_list!=[]):
             res_list = []
             for doc in reviews_list:
