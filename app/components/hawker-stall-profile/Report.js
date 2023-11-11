@@ -61,14 +61,14 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
                                 <View style={styleType.vote}>
                                     <TouchableOpacity onPress={handleUpvote} disabled={downvoted}>
                                         <View style={styleType.upvote}>
-                                        <FontAwesome name="thumbs-o-up" size={20} color={upvoted ? 'orange' : 'black'} />
+                                        <FontAwesome name="thumbs-o-up" size={15} color={upvoted ? 'orange' : 'black'} />
                                         <Text style={styleType.voteNum}>{upvoteCount}</Text>
                                         </View>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity onPress={handleDownvote} disabled={upvoted}>
                                         <View style={styleType.downvote}>
-                                            <FontAwesome name="thumbs-o-down" size={20} color={downvoted ? 'orange' : 'black'} />
+                                            <FontAwesome name="thumbs-o-down" size={15} color={downvoted ? 'orange' : 'black'} />
                                             <Text style={styleType.voteNum}>{downvoteCount}</Text>
                                         </View>
                                     </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
@@ -11,12 +11,33 @@ import { getNearbyHawkerCenters, getHawkerStallDetails } from '../../utils/Retri
 
 const MainPage = ({nearbyHawkers, navigation}) => {
 
-    //get Hawker Stall Details from backend:
-    const placeId = null; //get placeid from some function
-    //const HawkerCenterDetails = getHawkerStallDetails(placeId); //not sure if can reuse this for hawker center also
-    //const NearbyHawkersArray = getNearbyHawkerCenters(placeId);
-    //for each nearby hawker center also get details --> write function depending on how backend send over details
-    //also need to get reviews from backend
+    const [nearbyHawkerCentres, setNearbyHawkerCentres] = useState(null);
+    const longitude = 103.81412810881211;
+    const latitude = 1.3244235882227136;
+    useEffect(() => {
+        async function fetchData() {
+            try {
+              const url = `http://127.0.0.1:5000/hawkers/getNearbyHawkerCentres?longitude=${longitude}&latitude=${latitude}&distance=${1000}`;
+          
+              const response = await fetch(url, {
+                method: 'GET'
+              });
+          
+              if (response.status === 200) {
+                const jsonString = await response.text();
+                const parsedData = JSON.parse(jsonString);
+                setNearbyHawkerCentres(parsedData);
+              } else {
+                throw new Error('Error retrieving stall information: ' + response.status);
+              }
+            } catch (error) {
+              console.error('Error getting stall information:', error);
+            }
+          }
+    
+        // Call the async function
+        fetchData();
+      },[longitude, latitude]); 
 
 
     const review = { //replace with review details array from backend

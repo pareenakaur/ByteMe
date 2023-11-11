@@ -16,8 +16,8 @@ export default function UserScreen() {
           <UserStack.Screen name="ExplorePage" component={ExplorePage} />
           <UserStack.Screen name="MainPage" component={MainPage} />
           <UserStack.Screen name="Profile" component={Profile} />
-          <UserStack.Screen name="ReportForm" component={ReportForm} />
-          <UserStack.Screen name="ReviewForm" component={ReviewForm} />
+          {/* <UserStack.Screen name="ReportForm" component={ReportForm} />
+          <UserStack.Screen name="ReviewForm" component={ReviewForm} /> */}
           <UserStack.Screen name="ViewAllReports" component={ViewAllReports} />
           <UserStack.Screen name="ViewAllReviews" component={ViewAllReviews} />
           <UserStack.Screen name="TakePic" component={TakePic} />

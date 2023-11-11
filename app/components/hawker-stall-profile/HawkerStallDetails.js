@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import StarRating from './StarRating';
 
 
-const Details = ({image, name, cuisine, address, contact, openingHours, rating, reviews}) => {
+const Details = ({image, name, address, contact, openingHours, rating, reviews}) => {
 
     //SEE IF STALL IS OPEN OR NOT
     const currentTime = new Date();
@@ -38,10 +38,10 @@ const Details = ({image, name, cuisine, address, contact, openingHours, rating, 
                 <View style={styles.header}>
                     <Text style={styles.name}>{name}</Text>
                     <View style={styles.keywordsContainer}>
-                        <View style={styles.cuisineWord}>
+                        {/* <View style={styles.cuisineWord}>
                             <Text style={styles.text} >{cuisine}</Text>
                         
-                        </View>
+                        </View> */}
                         <View style={styles.openWord}>
                             <Text style={styles.text}>{statusText}</Text>
                         </View>   
