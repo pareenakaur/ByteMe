@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Button, HelperText, TextInput } from "react-native-paper";
 import Camera from 'react-native-camera';
 import { Rating } from "react-native-ratings";
@@ -11,7 +11,7 @@ export default function ReviewForm({navigation}){
     const [ratings, setRatings] = useState(0);
     const [myText, setText] = useState({value:'', error: ''});
 
-    const onSubmitPressed = async() => {
+    const onSubmitPressed = () => {
         
         const textError = descValidator(myText.value)        
         if (textError) {
@@ -25,7 +25,9 @@ export default function ReviewForm({navigation}){
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.topbar}>
-                    <Text style={{paddingBottom: 8, color: "#FA4A0C", fontStyle: "italic", fontSize: 18}} onPress={() => navigation.navigate('Profile')}>return to main</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+                        <Text style={{paddingBottom: 8, color: "#FA4A0C", fontStyle: "italic", fontSize: 18}}>return to main</Text>
+                    </TouchableOpacity>                    
                     <Text style={{color: "#3C4142",fontSize: 30, fontWeight: 'bold'}}>Create A New Review</Text>
                 </View>
                 <View style={styles.main}>

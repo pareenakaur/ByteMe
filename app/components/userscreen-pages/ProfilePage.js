@@ -28,7 +28,7 @@ export default function ProfilePage({navigation}){
                     </View>
                     <View style={styles.detailSection}>
                         <View style={{borderBottomColor: "grey", borderBottomWidth: 1}}>
-                            <Text style={{fontSize: 20, bottom: 5}}>Name</Text>
+                            <Text style={{fontSize: 20, bottom: 5}}>{global.usrName}</Text>
                         </View>
                         <View style={styles.badge}>
                             <Text style={{fontWeight: "bold"}}>Superstar</Text>

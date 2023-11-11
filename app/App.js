@@ -25,6 +25,7 @@ import {
   BottomNavigation,
 } from "react-native-paper";
 import TabNavigation from "./pages/TabNavigation";
+import ResetPassword from "./components/user-functions/ResetPassword";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,12 +36,14 @@ export default function App() {
     <PaperProvider>
       <NavigationContainer> 
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="FirstPage" component={FirstPage} /> 
+          <Stack.Screen name="FirstPage" component={FirstPage} />
           <Stack.Screen name="RegisterTab" component={RegisterTab} />
           <Stack.Screen name="LoginTab" component={LoginTab} /> 
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
-          <Stack.Screen name="ReportForm" component={ReportForm} />
-          <Stack.Screen name="ReviewForm" component={ReviewForm} />  
+          <Stack.Screen name="ResetPassword" component={ResetPassword} />
+
+          {/* <Stack.Screen name="FirstScreen" component={FirstScreen} />
+          <Stack.Screen name="TabNavigation" component={TabNavigation} /> */}  
         </Stack.Navigator>
       </NavigationContainer>
     

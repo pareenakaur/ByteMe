@@ -21,6 +21,7 @@ export default function LoginTab({navigation}){
         setPassword({ ...password, error: passwordError })
         return
         }
+        // navigation.navigate("TabNavigation")
         //backend checking
         try {
             const requestOptions = { 
@@ -46,7 +47,7 @@ export default function LoginTab({navigation}){
         } catch (error) {
             console.error(error);
         }
-        // navigation.navigate("TabNavigation")
+        
     }
 
     
