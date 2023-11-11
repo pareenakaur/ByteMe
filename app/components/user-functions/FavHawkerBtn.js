@@ -2,14 +2,14 @@ import React from 'react'
 import { Share, Alert, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Avatar, IconButton, Modal, Portal } from 'react-native-paper';
 
-export default function FavHawkerBtn({}){
+export default function FavHawkerBtn({name, address, stall_id}){
 // export default function FavHawkerBtn({hawkerDetails}){ 
     const onShare = async () => {
         try {
           const result = await Share.share({
             message:
-              //change to address of the hawker stall
-              'React Native | A framework for building native apps using React',
+              name+'\n'+address,
+              // 'React Native | A framework for building native apps using React',
           });
           if (result.action === Share.sharedAction) {
             if (result.activityType) {
@@ -25,12 +25,18 @@ export default function FavHawkerBtn({}){
         }
       };
     
-    const removeFav = () => {
+    const removeFav = async() => {
       //api call to remove the element in the array
-      return
+      try {
+        const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' +stall_id);
+        const data = await response.json();
+        console.log(data.result);
+        
+      }catch(error){
+        console.log(error)
+      }
     }
 
-    const hawkerDetails = {stallName: "Adam Fishball Noodle", address: "Adam Road Hawker Centre", unit: "Floor 1, Stall 25", imageLink: "../../assets/stall.png"}
     return(
         <View style={styles.container}>
             <View style ={styles.stall_image}>
@@ -38,9 +44,9 @@ export default function FavHawkerBtn({}){
             </View>
             <View style={styles.desc}>
               <TouchableOpacity >
-                <Text style={{fontWeight: "bold", fontSize: 17, paddingBottom: 5}}>{hawkerDetails.stallName}</Text>
-                <Text style={{fontSize: 14, color: "#FA4A0C"}}>{hawkerDetails.address}</Text>
-                <Text style={{fontSize: 14, color: "#FA4A0C"}}>{hawkerDetails.unit}</Text>
+                <Text style={{fontWeight: "bold", fontSize: 17, paddingBottom: 5}}>{name}</Text>
+                <Text style={{fontSize: 14, color: "#FA4A0C"}}>{address}</Text>
+                {/* <Text style={{fontSize: 14, color: "#FA4A0C"}}>{hawkerDetails.unit}</Text> */}
               </TouchableOpacity>
             </View>
             <View style={styles.icon}>
