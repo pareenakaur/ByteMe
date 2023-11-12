@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
+from classes.HawkerManager import HawkerManager
 from classes.AccountManager import AccountManager
 from utils.functions import delete_collection,boolDiff
 from firebase_admin.firestore import SERVER_TIMESTAMP
@@ -15,6 +16,7 @@ class ReviewManager(object):
         if(ReviewManager.validateCreateReview(username,stallID)):
             _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,
                                          "votes": 0, "timestamp": SERVER_TIMESTAMP})
+            HawkerManager.addHawkerReview(stallID,review.id)
             return review.id
         else:
             return "user has already reviewed the stall"
@@ -29,7 +31,10 @@ class ReviewManager(object):
 
     def deleteReview(reviewID):
         if(ReviewManager.validateReview(reviewID)):
-            review = reviewsColl.document(reviewID).delete()
+            review = reviewsColl.document(reviewID).get()
+            reviewDict = review.to_dict()
+            res = reviewsColl.document(reviewID).delete()
+            HawkerManager.deleteHawkerReview(reviewDict["stallID"],review.id)
             return "Success"
         else:
             return "Review does not exist"
@@ -49,6 +54,7 @@ class ReviewManager(object):
             return True
         else:
             return False
+
     def getStallReviews(stallID):
         reviews_list = reviewsColl.where("stallID","==",stallID).order_by(
             "timestamp", direction=firestore.Query.DESCENDING

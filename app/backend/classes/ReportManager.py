@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
 from classes.AccountManager import AccountManager
+from classes.HawkerManager import HawkerManager
 from utils.functions import delete_collection,boolDiff
 from firebase_admin.firestore import SERVER_TIMESTAMP
 
@@ -12,10 +13,11 @@ class ReportManager(object):
 
     def createReport(username,stallID,description):
         if(ReportManager.validateCreateReport(username,stallID)):
-            _, review = reportsColl.add({"username": username, "stallID": stallID, "description": description
+            _, report = reportsColl.add({"username": username, "stallID": stallID, "description": description
                                          ,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
-            return review.id
-        else:
+            HawkerManager.addHawkerReport(stallID,report.id)
+            return report.id
+        else:   
             return "user has already reported the stall"
 
     def updateReport(username,stallID,reportID,description):
@@ -27,8 +29,10 @@ class ReportManager(object):
 
     def deleteReport(reportID):
         if(ReportManager.validateReport(reportID)):
-            ReportManager.deleteReportVotes(reportID)
-            reportsColl.document(reportID).delete()
+            report = reportsColl.document(reportID).get()
+            reportDict = report.to_dict()
+            res = reportsColl.document(reportID).delete()
+            HawkerManager.deleteHawkerReport(reportDict["stallID"],report.id)
             return "Success"
         else:
             return "Report does not exist"   
