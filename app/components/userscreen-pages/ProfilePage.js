@@ -1,17 +1,47 @@
-import React, { useState } from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import SignOut from "../user-functions/SignOut";
-import FavouriteHawkers from "./FavouriteHawkers";
+// import FavouriteHawkers from "./FavouriteHawkers";
 import ProfileBtn from "../user-functions/ProfileBtn";
 import SafeAreaView from "react-native-safe-area-view";
+import { IconButton } from "react-native-paper";
 
 
 export default function ProfilePage({navigation}){
-    // const [showFavHawkers, setFavHawkers] = useState(false);
+    const [numReports, setNumRep] = useState(0);
+    const [numReviews, setNumRev] = useState(0);
 
-    // function handlePressFavHawkers(){
-    //     setFavHawkers(true);
-    // };
+    const getReport = async() => {
+        try{
+            const response = await fetch('http://127.0.0.1:5000/reports/getUserReports?username='+ global.usrName);
+            const data = await response.json();
+            // console.log(data.list.length)
+            if (data.result == "Success"){
+                setNumRep(data.list.length);
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+    
+    const getReview = async() => {
+        try{
+            const response = await fetch('http://127.0.0.1:5000/reviews/getUserReviews?username='+ global.usrName);
+            const data = await response.json();
+            // console.log(data.list.length)
+            if (data.result == "Success"){
+                setNumRev(data.list.length);
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    useEffect(()=> {
+        getReport();
+        getReview();
+    }, [])
+    
     return (
         <View style={styles.container}>
             <SafeAreaView>
@@ -34,23 +64,31 @@ export default function ProfilePage({navigation}){
                             <Text style={{fontWeight: "bold"}}>Superstar</Text>
                         </View>
                         <View style={{top: 20, borderTopWidth: 1, borderTopColor: "grey"}}> 
-                            <Text style={{top: 5}}>10 Reviews
+                            <Text style={{top: 5}}>{numReviews} Reviews
                             </Text>
-                            <Text style={{top: 5}}>3 Reports
+                            <Text style={{top: 5}}>{numReports} Reports
                             </Text>
-                            <Text style={{top: 5}}>140 Upvotes
+                            <Text style={{top: 5}}>0 Upvotes
                             </Text>
                         </View>
                     </View>
                 </View>
 
                 <View style={styles.container_bottom}>
-                    <ProfileBtn label={"Favourite Hawkers"} navigation={navigation} navigateTo={"FavouriteHawkers"}></ProfileBtn>
-                    {/* if (showFavHawkers) {
-                            <FavouriteHawkers />
-                        } */}
-                    <ProfileBtn label={"Past Reviews"}> </ProfileBtn>
-                    <ProfileBtn label={"Past Reports"}> </ProfileBtn>
+                    <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("FavouriteHawkers")}>
+                        <Text style={styles.text}>Favourite Hawkers</Text>
+                        <IconButton icon={"chevron-right"}></IconButton>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("ViewAllReviews")}>
+                        <Text style={styles.text}>Past Reviews</Text>
+                        <IconButton icon={"chevron-right"}></IconButton>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("ViewAllReports")}>
+                        <Text style={styles.text}>Past Reports</Text>
+                        <IconButton icon={"chevron-right"}></IconButton>
+                    </TouchableOpacity>
                     <SignOut navigation={navigation}/>
 
                 </View>
@@ -114,6 +152,19 @@ const styles = StyleSheet.create({
         flex:8,
         paddingTop: 5,
         justifyContent: "space-evenly"
-
-    }
+    },
+    button: {
+        height: 60,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        backgroundColor: "white",
+        flexDirection: "row",
+        paddingLeft: 20
+    },
+    text: {
+        flex:1,
+        fontSize: 18,
+        color: 'black',
+    },
 })

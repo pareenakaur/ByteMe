@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View, ScrollView } from "react-native";
+import { Dimensions, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import React from 'react';
 
 import {
@@ -11,9 +11,10 @@ import {
 } from "react-native-paper";
 import { useState } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
-  return (
+  return (  
     <Card style={styles.container}>
       <Card.Cover
         style={{
@@ -36,15 +37,15 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
       >
         <IconButton
           style={{}}
-          icon="arrow-right-thick"
-          mode="contained-tonal"
+          icon="chevron-right-box"
+          // mode="contained-tonal"
           iconColor="#FA4A0C"
-          size={25}
+          size={35}
           onPress={() => navigation.navigate('Profile')} //for now
         ></IconButton>
       </View>
       <View style={{ flexDirection: "row", marginVertical: 5 }}>
-        <Card.Content style={{ flex: 1.5 }}>
+        <Card.Content style={{ flex: 1.5, marginVertical: 5}}>
           <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
             Adam Road Food Centre
             {/* {hawkerCentreInfo["name"]} */}
@@ -62,7 +63,7 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
             buttonColor="#FCC827"
             textColor="#000000"
             compact={true}
-            labelStyle={{ fontSize: 12 }}
+            labelStyle={{ fontSize: 12 , fontWeight: "bold"}}
           >
             Moderate Crowd
           </Button>
@@ -74,7 +75,7 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
           <View style={styles.foodOptionsContainer}>
             <Text
               variant="titleMedium"
-              style={{fontSize:12, color: "#787878", marginLeft: 5, marginBottom: 5 }}
+              style={{fontSize:18, color: "black", marginBottom: 5 }}
             >
               Food Options Available
             </Text>
@@ -109,16 +110,16 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
           alignItems: "center",
         }}
       >
-        <Text
-          style={{
-            color: "#787878",
-            textDecorationLine: "underline",
-            marginHorizontal: 10,
-          }}
-          onPress={() => navigation.navigate('MainPage')}
-        >
-          Too crowded? Find alternative hawker centres!
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('MainPage')}>
+          <Text
+            style={{
+              color: "#787878",
+              textDecorationLine: "underline",
+              marginHorizontal: 10 }}
+          >
+            Too crowded? Find alternative hawker centres!
+          </Text>
+        </TouchableOpacity>
       </Card.Content>
     </Card>
   );

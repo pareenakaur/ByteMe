@@ -15,12 +15,12 @@ const ExplorePage = ({ navigation }) => {
 
   return (
     
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1.3 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1.7 }}>
           <MapContainer setHawkerCentreInfo={setHawkerCentreInfo} zoom ={tap? 15:0} userTap={setTap}/>
         </View>
         {tap ? <HawkerStallCard navigation={navigation}/>:<HawkerCentreCard navigation={navigation}/>}
-      </View>
+      </SafeAreaView>
    
   );
 }
