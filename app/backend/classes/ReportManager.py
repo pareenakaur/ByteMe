@@ -110,3 +110,8 @@ class ReportManager(object):
     def deleteReportVotes(reportID):
         votesColl = reportsColl.document(reportID).collection('votes')
         delete_collection(votesColl,10)
+
+    def getReportCount(stallID):
+        avgRating,totalRating = 0,0
+        reportLength = reportsColl.where("stallID", "==", stallID).count().get()
+        return reportLength[0][0].value
