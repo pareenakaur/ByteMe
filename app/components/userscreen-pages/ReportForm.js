@@ -5,36 +5,58 @@ import DropdownCat from "../user-functions/DropdwnCat";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { descValidator } from "../../utils/helpers/descValidator";
 import { Camera } from "expo-camera";
-import * as FileSystem from 'expo-file-system';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { initializeApp } from "firebase/app";
 
 export default function ReportForm({navigation}){
+    const firebaseConfig = {
+        // ...
+        apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
+        authDomain: "sgbytes.firebaseapp.com",
+        projectId: "sgbytes",
+        storageBucket: "sgbytes.appspot.com",
+        messagingSenderId: "766295476965",
+        appId: "1:766295476965:web:131a044224867bf452e20c",
+        measurementId: "G-RWGZJLPD4G"
+      };
+      
+      // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage();
+
+    const stall_id = "ChIJ7V2oIU892jERriBUTEBU-JE";
     const [myText, setText] = useState({value:'', error: ''});
+    const [imgUploaded, setImg] = useState(false)
+    const cameraRef = useRef();
+    const [photo, setPhoto] = useState(null);
+    const [hasPermission, setHasPermission] = useState(null);
+    const [showCamera, setShowCam] = useState(false);
+    const [cat, setCat] = useState('');
+    const [reportID, setReportID] = useState('');
 
     const onSubmitPressed = async() => {
-        if(photo){
-            const imageData = await FileSystem.readAsStringAsync(photo, {encoding: FileSystem.EncodingType.Base64})
-        }
         const textError = descValidator(myText.value)        
         if (textError) {
         setText({ ...myText, error: textError })
         return
         }
-        // console.log(cat)
+        // console.log(cat);
         try {
             const requestOptions = { 
                 method: 'POST', 
                 headers: { 'Content-Type': 'application/json' }, 
                 body: JSON.stringify({
                     "username": global.usrName,
-                    "stallID": "9oQZA2Gxr9NCFMi4lBtW", //change here
-                    "category": "Opening Hours", //change here
+                    "stallID": stall_id,
+                    "category": cat,
                     "description": myText.value,
-                    // "imageData": imageData //not a parameter of the post request currently 
+                    "imageCount": imgUploaded
                 })
             };
             const response = await fetch('http://127.0.0.1:5000/reports/createReport', requestOptions);
             const data = await response.json();
             console.log(data.result);
+            setReportID(data.result);
             if(data.result == "user has already reported the stall"){
                 Alert.alert(
                     'Sorry!',
@@ -60,18 +82,26 @@ export default function ReportForm({navigation}){
                       },
                     ]
                   );
+
+                if(photo){
+                    const storageRef = ref(storage, 'reports/'+stall_id+'_'+data.result+'jpg');
+                    const response = await fetch(photo);
+                    const blob = await response.blob();
+                    const metadata = {
+                        contentType: "image.jpeg",
+                    };
+                      
+                      // Upload the file and metadata
+                    const uploadTask = uploadBytes(storageRef, blob, metadata);
+                    console.log("picture uploaded")
+                    
+                }
             }
         }catch (error){
             console.log(error)
         }
         
     }
-
-    const cameraRef = useRef();
-    const [photo, setPhoto] = useState(null);
-    const [hasPermission, setHasPermission] = useState(null);
-    const [showCamera, setShowCam] = useState(false);
-    const [cat, setCat] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -88,13 +118,15 @@ export default function ReportForm({navigation}){
         if (cameraRef.current) {
         const { uri } = await cameraRef.current.takePictureAsync();
         setPhoto(uri);
+        setImg(true);
         setShowCam(false);
         }
     };
 
     const retakePicture = () => {
         setPhoto(null);
-        setShowCam(true)
+        setImg(false);
+        setShowCam(true);
     };
 
     if (hasPermission === null) {
@@ -125,8 +157,8 @@ export default function ReportForm({navigation}){
                 </View>
                 
                 <View style={styles.main}>  
-                    <DropdownCat handleFunc={(category)=>{setCat(category)}}/> 
-                    
+                    <DropdownCat setCatInReport={(cat)=>{setCat(cat)}}/> 
+                    {/* <DropdownCat /> */}
                     {!photo? 
                         <View style={styles.cameraContainer}>
                             <IconButton icon="camera" size={30} onPress={() => setShowCam(true)}></IconButton>

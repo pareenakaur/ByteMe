@@ -5,19 +5,37 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { descValidator } from "../../utils/helpers/descValidator";
 import { Camera } from "expo-camera";
 import { Rating } from "react-native-ratings";
-import * as FileSystem from 'expo-file-system';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { initializeApp } from "firebase/app";
 
 export default function ReviewForm({navigation}){
+    const firebaseConfig = {
+        // ...
+        apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
+        authDomain: "sgbytes.firebaseapp.com",
+        projectId: "sgbytes",
+        storageBucket: "sgbytes.appspot.com",
+        messagingSenderId: "766295476965",
+        appId: "1:766295476965:web:131a044224867bf452e20c",
+        measurementId: "G-RWGZJLPD4G"
+      };
+      
+      // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage();
+
+    const stall_id = "ChIJ7V2oIU892jERriBUTEBU-JE";
     const [myText, setText] = useState({value:'', error: ''});
-    
-    //TO DO -- How do i get the stall_id?
+    const cameraRef = useRef();
+    const [photo, setPhoto] = useState(null);
+    const [imgUploaded, setImage] = useState(false);
+    const [hasPermission, setHasPermission] = useState(null);
+    const [showCamera, setShowCam] = useState(false);
+    const [ratings, setRatings] = useState(0);
+    const [reviewID, setReviewID] = useState('');
 
     const onSubmitPressed = async() => {
         const textError = descValidator(myText.value)
-        if(photo){
-            const imageData = await FileSystem.readAsStringAsync(photo, {encoding: FileSystem.EncodingType.Base64})
-        }        
-        // console.log(imageData)
         if (textError) {
         setText({ ...myText, error: textError })
         return
@@ -29,7 +47,7 @@ export default function ReviewForm({navigation}){
                 headers: { 'Content-Type': 'application/json' }, 
                 body: JSON.stringify({
                     "username": global.usrName,
-                    "stallID": "9oQZA2Gxr9NCFMi4lBtW", //change here
+                    "stallID": stall_id , //change here
                     "rating": ratings,
                     "description": myText.value,
                     // "imageData": imageData //not a parameter of the post request currently 
@@ -38,6 +56,7 @@ export default function ReviewForm({navigation}){
             const response = await fetch('http://127.0.0.1:5000/reviews/createReview', requestOptions);
             const data = await response.json();
             console.log(data.result);
+            setReviewID(data.result);
             if(data.result == "user has already reviewed the stall"){
                 Alert.alert(
                     'Sorry!',
@@ -63,17 +82,23 @@ export default function ReviewForm({navigation}){
                       },
                     ]
                   );
+                if(photo){
+                    const storageRef = ref(storage, 'reviews/'+stall_id+'_'+data.result+'jpg');
+                    const response = await fetch(photo);
+                    const blob = await response.blob();
+                    const metadata = {
+                        contentType: "image.jpeg",
+                    };
+                        
+                        // Upload the file and metadata
+                    const uploadTask = uploadBytes(storageRef, blob, metadata);
+                    console.log("picture uploaded")
+                }      
             }
         }catch (error){
             console.log(error)
         }
     }
-
-    const cameraRef = useRef();
-    const [photo, setPhoto] = useState(null);
-    const [hasPermission, setHasPermission] = useState(null);
-    const [showCamera, setShowCam] = useState(false);
-    const [ratings, setRatings] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -90,12 +115,14 @@ export default function ReviewForm({navigation}){
         if (cameraRef.current) {
         const { uri } = await cameraRef.current.takePictureAsync();
         setPhoto(uri);
+        setImage(true);
         setShowCam(false);
         }
     };
 
     const retakePicture = () => {
         setPhoto(null);
+        setImage(false);
         setShowCam(true)
     };
 

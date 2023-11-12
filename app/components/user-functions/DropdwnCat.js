@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Text, View, StyleSheet} from 'react-native';
 
-export default function DropdownCat({handleFunc}){
+export default function DropdownCat({setCatInReport}){
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
@@ -12,11 +12,7 @@ export default function DropdownCat({handleFunc}){
         { label: 'Customer Service', value: 'Customer Service' },
         { label: 'Others', value: 'Others' }
     ]);
-    // const selectCat = (cat) => {
-    //     setValue(cat);
-    //     handleFunc(cat);
-    // }
-    //TODO -- return category value to the parent component
+    
     return (
         <View style={styles.container}>
             <Text style={{paddingBottom: 5}}>Select Report Catergory: </Text>
@@ -50,6 +46,7 @@ export default function DropdownCat({handleFunc}){
                 fontSize:16,
                 paddingLeft: 5
             }}
+            onChangeValue={setCatInReport}
             />
 
         </View>
@@ -59,7 +56,7 @@ export default function DropdownCat({handleFunc}){
 const styles = StyleSheet.create({
     container: {
         width: 325,
-        paddingBottom: 20
-        // height: 100
+        paddingBottom: 20,
+        height: 100
     }
 })
