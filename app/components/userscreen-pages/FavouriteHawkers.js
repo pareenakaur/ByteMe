@@ -28,12 +28,12 @@ export default function FavouriteHawkers({navigation}){
             if (data.length){
                 const arr = [];
                 for(let i=0; i< data.length; i++){
-                    console.log(data[i].place_id)
                     arr.push(
                         <FavHawkerBtn 
                             key={i} 
                             name = {data[i].name} 
                             address={data[i].formatted_address} 
+                            photo={data[i].photos[0].photo_reference}
                             handleRemove={()=>{handleRemove(data[i].place_id)}}
                             handleNav={()=>{navigation.navigate("Profile", {placeId1 : data[i].place_id, stallId1 : data[i].place_id, navigation: navigation})}}/>
                     )

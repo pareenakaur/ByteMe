@@ -2,8 +2,9 @@ import React from 'react'
 import { Share, Alert, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Avatar, IconButton, Modal, Portal } from 'react-native-paper';
 
-export default function FavHawkerBtn({name, address, handleRemove, handleNav}){
+export default function FavHawkerBtn({name, address, photo, handleRemove, handleNav}){
 // export default function FavHawkerBtn({hawkerDetails}){ 
+    const api_key = 'AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0';
     const onShare = async () => {
         try {
           const result = await Share.share({
@@ -28,13 +29,12 @@ export default function FavHawkerBtn({name, address, handleRemove, handleNav}){
     return(
         <View style={styles.container}>
             <View style ={styles.stall_image}>
-                <Avatar.Image size={90} source={require('../../assets/stall.png')}></Avatar.Image>
+                <Avatar.Image size={90} source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo}&key=${api_key}`}}></Avatar.Image>
             </View>
             <View style={styles.desc}>
               <TouchableOpacity onPress={handleNav}>
                 <Text style={{fontWeight: "bold", fontSize: 17, paddingBottom: 5}}>{name}</Text>
                 <Text style={{fontSize: 14, color: "#FA4A0C"}}>{address}</Text>
-                {/* <Text style={{fontSize: 14, color: "#FA4A0C"}}>{hawkerDetails.unit}</Text> */}
               </TouchableOpacity>
             </View>
             <View style={styles.icon}>

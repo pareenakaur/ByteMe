@@ -64,7 +64,7 @@ export default function ReviewForm({navigation}){
                     [
                       {
                         text: 'OK',
-                        onPress: () => navigation.navigate("ExplorePage"), //back to explore or back to the stall page ?
+                        onPress: () => navigation.navigate("Profile"), //back to explore or back to the stall page ?
                         style: 'cancel',
                       },
                     ]
@@ -77,7 +77,7 @@ export default function ReviewForm({navigation}){
                     [
                       {
                         text: 'OK',
-                        onPress: () => navigation.navigate("ExplorePage"), //back to explore or back to the stall page ?
+                        onPress: () => navigation.navigate("Profile"), //back to explore or back to the stall page ?
                         style: 'cancel',
                       },
                     ]

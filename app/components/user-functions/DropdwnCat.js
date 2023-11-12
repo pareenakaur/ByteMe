@@ -23,7 +23,7 @@ export default function DropdownCat({setCatInReport}){
                 fontSize: 16,
                 paddingLeft:5
               }}
-            maxHeight={100}
+            maxHeight={600}
             open={open}
             value={value}
             items={items}
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
     container: {
         width: 325,
         paddingBottom: 20,
-        height: 100
+        // height: 100
     }
 })

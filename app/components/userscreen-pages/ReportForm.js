@@ -64,7 +64,7 @@ export default function ReportForm({navigation}){
                     [
                       {
                         text: 'OK',
-                        onPress: () => navigation.navigate("ExplorePage"), //back to explore or back to the stall page ?
+                        onPress: () => navigation.navigate("Profile"), //back to explore or back to the stall page ?
                         style: 'cancel',
                       },
                     ]
@@ -77,7 +77,7 @@ export default function ReportForm({navigation}){
                     [
                       {
                         text: 'OK',
-                        onPress: () => navigation.navigate("ExplorePage"), //back to explore or back to the stall page ?
+                        onPress: () => navigation.navigate("Profile"), //back to explore or back to the stall page ?
                         style: 'cancel',
                       },
                     ]
@@ -148,8 +148,8 @@ export default function ReportForm({navigation}){
                 </View>
             </Camera> : 
 
-            // <ScrollView>
-            <View flex={1}>
+            <ScrollView >
+            {/* <View flex={1}> */}
                 <View style={styles.topbar}>
                     <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                         <Text style={{paddingBottom: 8, color: "#FA4A0C", fontStyle: "italic", fontSize: 18}}>return to main</Text>
@@ -195,8 +195,8 @@ export default function ReportForm({navigation}){
                     {myText.error ? <HelperText type="error" padding='none'>{myText.error}</HelperText> : null}
                     <Button style={styles.button} labelStyle={styles.text} onPress={onSubmitPressed}>Submit</Button>
                 </View>
-            </View> }
-            {/* </ScrollView>  */}
+            {/* </View> } */}
+            </ScrollView> }
             
         </SafeAreaView>
       );
