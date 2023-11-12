@@ -1,15 +1,15 @@
 import numpy as np
 from utils.functions import haversine
 from utils.functions import format_hawker_response
+from firebase_admin import firestore
 
 #import firebase_admin
 #from firebase_admin import credentials
 #cred = credentials.Certificate("api/key.json")
 #firebase_admin.initialize_app(cred)
 
-#db = firestore.client()
-#hawkerCentresColl = db.collection('centres')
-#hawkerStallsColl = db.collection('stalls')
+db = firestore.client()
+hawkerCentresColl = db.collection('hawkercentres')
 
 class HawkerManager:
 
@@ -119,3 +119,19 @@ class HawkerManager:
 
         place_id = hawker_centre_locations_documents_list[np.argmin(distance_list)].id
         return place_id
+
+    def addHawkerReview(centreID,reviewID):
+        hawkerCentreLocationsColl = hawkerCentresColl.document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
+        return
+
+    def deleteHawkerReview(centreID,reviewID):
+        hawkerCentreLocationsColl = hawkerCentresColl.document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
+        return
+
+    def addHawkerReport(centreID,reportID):
+        hawkerCentreLocationsColl = hawkerCentresColl.document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
+        return
+
+    def deleteHawkerReport(centreID,reportID):
+        hawkerCentreLocationsColl = hawkerCentresColl.document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
+        return
