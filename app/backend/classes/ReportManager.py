@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
 from classes.AccountManager import AccountManager
+from classes.HawkerManager import HawkerManager
 from utils.functions import delete_collection,boolDiff
 from firebase_admin.firestore import SERVER_TIMESTAMP
 
@@ -10,25 +11,28 @@ db = firestore.client()
 reportsColl = db.collection('reports')
 class ReportManager(object):
 
-    def createReport(username,stallID,description):
+    def createReport(username,stallID,category,description):
         if(ReportManager.validateCreateReport(username,stallID)):
-            _, review = reportsColl.add({"username": username, "stallID": stallID, "description": description
-                                         ,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
-            return review.id
-        else:
+            _, report = reportsColl.add({"username": username, "stallID": stallID, "description": description
+                                         ,"category": category,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
+            HawkerManager.addHawkerReport(stallID,report.id)
+            return report.id
+        else:   
             return "user has already reported the stall"
 
-    def updateReport(username,stallID,reportID,description):
+    def updateReport(reportID,category,description):
         if(ReportManager.validateReport(reportID)):
-            report = reportsColl.document(reportID).update({"description": description})
+            report = reportsColl.document(reportID).update({"category": category,"description": description})
             return "Success"
         else:
             return "Report does not exist"    
 
     def deleteReport(reportID):
         if(ReportManager.validateReport(reportID)):
-            ReportManager.deleteReportVotes(reportID)
-            reportsColl.document(reportID).delete()
+            report = reportsColl.document(reportID).get()
+            reportDict = report.to_dict()
+            res = reportsColl.document(reportID).delete()
+            HawkerManager.deleteHawkerReport(reportDict["stallID"],report.id)
             return "Success"
         else:
             return "Report does not exist"   

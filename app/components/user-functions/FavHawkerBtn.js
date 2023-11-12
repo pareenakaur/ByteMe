@@ -2,8 +2,9 @@ import React from 'react'
 import { Share, Alert, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Avatar, IconButton, Modal, Portal } from 'react-native-paper';
 
-export default function FavHawkerBtn({name, address, stall_id}){
+export default function FavHawkerBtn({name, address, photo, handleRemove, handleNav}){
 // export default function FavHawkerBtn({hawkerDetails}){ 
+    const api_key = 'AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0';
     const onShare = async () => {
         try {
           const result = await Share.share({
@@ -24,34 +25,21 @@ export default function FavHawkerBtn({name, address, stall_id}){
           Alert.alert(error.message);
         }
       };
-    
-    const removeFav = async() => {
-      //api call to remove the element in the array
-      try {
-        const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' +stall_id);
-        const data = await response.json();
-        console.log(data.result);
-        
-      }catch(error){
-        console.log(error)
-      }
-    }
 
     return(
         <View style={styles.container}>
             <View style ={styles.stall_image}>
-                <Avatar.Image size={90} source={require('../../assets/stall.png')}></Avatar.Image>
+                <Avatar.Image size={90} source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo}&key=${api_key}`}}></Avatar.Image>
             </View>
             <View style={styles.desc}>
-              <TouchableOpacity >
+              <TouchableOpacity onPress={handleNav}>
                 <Text style={{fontWeight: "bold", fontSize: 17, paddingBottom: 5}}>{name}</Text>
                 <Text style={{fontSize: 14, color: "#FA4A0C"}}>{address}</Text>
-                {/* <Text style={{fontSize: 14, color: "#FA4A0C"}}>{hawkerDetails.unit}</Text> */}
               </TouchableOpacity>
             </View>
             <View style={styles.icon}>
                 <IconButton icon={"dots-vertical"} size={30} onPress={onShare}></IconButton>
-                <IconButton icon={"heart-minus"} size={30} iconColor={"#FA4A0C"} style={{left: -10}} onPress={removeFav}></IconButton>
+                <IconButton icon={"heart-minus"} size={30} iconColor={"#FA4A0C"} style={{left: -10}} onPress={handleRemove}></IconButton>
             </View>
         </View>
     )

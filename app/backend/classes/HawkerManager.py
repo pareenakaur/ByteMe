@@ -6,15 +6,15 @@ from classes.ReportManager import ReportManager
 from utils.functions import haversine
 from utils.functions import format_hawker_response
 from utils.functions import get_carpark_availability
+from firebase_admin import firestore
 
 #import firebase_admin
 #from firebase_admin import credentials
 #cred = credentials.Certificate("api/key.json")
 #firebase_admin.initialize_app(cred)
 
-#db = firestore.client()
-#hawkerCentresColl = db.collection('centres')
-#hawkerStallsColl = db.collection('stalls')
+db = firestore.client()
+hawkerCentresColl = db.collection('hawkercentres')
 
 class HawkerManager:
 

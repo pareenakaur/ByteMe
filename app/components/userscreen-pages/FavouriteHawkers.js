@@ -6,25 +6,43 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function FavouriteHawkers({navigation}){
     //call api to get a list of array of hawker
     const [HawkerArr, setHawkerArr] = useState([]);
+    const [refresh, setRefresh] = useState(0);
+
+    const handleRemove = async(stall_id) => {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' +stall_id);
+            const data = await response.json();
+            console.log(data.result);
+            setRefresh((prev)=>prev+1);
+            
+          }catch(error){
+            console.log(error)
+          }
+    };
+
     const getFavStalls = async() => {
         try {
             const response = await fetch('http://127.0.0.1:5000/hawkers/getFavouriteStalls?id='+ global.usrName);
             const data = await response.json();
+            console.log(data.length)
             if (data.length){
+                const arr = [];
                 for(let i=0; i< data.length; i++){
-                    const arr = [];
                     arr.push(
                         <FavHawkerBtn 
-                            // key={i} 
-                            name = {data[i].result.name} 
-                            address={data[i].result.formatted_address} 
-                            stall_id={data[i].result.place_id} />
+                            key={i} 
+                            name = {data[i].name} 
+                            address={data[i].formatted_address} 
+                            photo={data[i].photos[0].photo_reference}
+                            handleRemove={()=>{handleRemove(data[i].place_id)}}
+                            handleNav={()=>{navigation.navigate("Profile", {placeId1 : data[i].place_id, stallId1 : data[i].place_id, navigation: navigation})}}/>
                     )
-                    console.log("done")
-                    setHawkerArr(arr);
                 }
-                // console.log(HawkerArr)
+                console.log("done")
+                setHawkerArr(arr);
                 
+            }else{
+                setHawkerArr([]);
             }
         } catch (error) {
             console.error(error);
@@ -34,7 +52,7 @@ export default function FavouriteHawkers({navigation}){
     
     useEffect(()=>{
         getFavStalls();
-        console.log(HawkerArr)}, [])
+        console.log(HawkerArr)}, [refresh])
     
     return (
         <SafeAreaView style={styles.container}>
