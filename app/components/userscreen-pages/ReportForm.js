@@ -148,7 +148,8 @@ export default function ReportForm({navigation}){
                 </View>
             </Camera> : 
 
-            <ScrollView>
+            // <ScrollView>
+            <View flex={1}>
                 <View style={styles.topbar}>
                     <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                         <Text style={{paddingBottom: 8, color: "#FA4A0C", fontStyle: "italic", fontSize: 18}}>return to main</Text>
@@ -156,9 +157,8 @@ export default function ReportForm({navigation}){
                     <Text style={{color: "#3C4142",fontSize: 30, fontWeight: 'bold'}}>Create A New Report</Text>
                 </View>
                 
-                <View style={styles.main}>  
-                    <DropdownCat setCatInReport={(cat)=>{setCat(cat)}}/> 
-                    {/* <DropdownCat /> */}
+                <View style={styles.main}>                      
+                <DropdownCat setCatInReport={(cat)=>{setCat(cat)}}/>
                     {!photo? 
                         <View style={styles.cameraContainer}>
                             <IconButton icon="camera" size={30} onPress={() => setShowCam(true)}></IconButton>
@@ -195,7 +195,9 @@ export default function ReportForm({navigation}){
                     {myText.error ? <HelperText type="error" padding='none'>{myText.error}</HelperText> : null}
                     <Button style={styles.button} labelStyle={styles.text} onPress={onSubmitPressed}>Submit</Button>
                 </View>
-            </ScrollView> }
+            </View> }
+            {/* </ScrollView>  */}
+            
         </SafeAreaView>
       );
 }

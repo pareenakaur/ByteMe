@@ -5,7 +5,7 @@ import RegisterTextBox from "./RegisterTextBox";
 import { passwordValidator } from '../../utils/helpers/passwordValidator';
 import { passwordMatcher } from '../../utils/helpers/passwordMatcher';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { emailValidator } from "../../utils/helpers/emailValidator";
+import { nameValidator } from "../../utils/helpers/nameValidator";
 
 
 export default function ResetPassword({navigation}){
@@ -14,7 +14,7 @@ export default function ResetPassword({navigation}){
     const [password_, setPassword_] = useState({ value: '', error: '' })
 
     const onSubmitPressed = async() => {
-        const nameError = emailValidator(name.value)
+        const nameError = nameValidator(name.value)
         const passwordError = passwordValidator(password.value)
         const mismatchPassword = passwordMatcher(password.value, password_.value)
     
