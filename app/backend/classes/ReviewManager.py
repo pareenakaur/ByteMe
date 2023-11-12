@@ -21,9 +21,9 @@ class ReviewManager(object):
         else:
             return "user has already reviewed the stall"
 
-    def updateReview(username,reviewID,description):
+    def updateReview(reviewID,rating,description):
         if(ReviewManager.validateReview(reviewID)):
-            reviewsColl.document(reviewID).update({"description":description}) 
+            reviewsColl.document(reviewID).update({"rating":rating,"description":description}) 
             return "Success"
         else:
             return "Review does not exist"    
