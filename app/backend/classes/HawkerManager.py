@@ -1,5 +1,6 @@
 import numpy as np
 import math
+from firebase_admin import firestore
 from classes.ReviewManager import ReviewManager
 from classes.ReportManager import ReportManager
 from utils.functions import haversine
@@ -203,3 +204,19 @@ class HawkerManager:
             return 'not available'
         else:
             return available_lots / total_lots
+        
+    def addHawkerReview(self, centreID,reviewID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
+        return
+
+    def deleteHawkerReview(self,centreID,reviewID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
+        return
+
+    def addHawkerReport(self, centreID,reportID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
+        return
+
+    def deleteHawkerReport(self, centreID,reportID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
+        return
