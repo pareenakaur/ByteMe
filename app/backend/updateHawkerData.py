@@ -1,15 +1,16 @@
+from firebase_admin import firestore
+from firebase_admin import credentials
+import firebase_admin
+import os
+
+cwd = os.getcwd()
+cred = credentials.Certificate(fr'{cwd}\app\backend\config\key.json')
+firebase_admin.initialize_app(cred)
+
 import googlemaps
 import json
 import time
-import os
 from classes.HawkerManager import HawkerManager
-from firebase_admin import firestore
-from firebase_admin import credentials
-
-cwd = os.getcwd()
-
-cred = credentials.Certificate(fr'{cwd}\app\backend\config\key.json')
-firebase_admin.initialize_app(cred)
 
 def update_hawker_centre_locations(hawkerCentresColl, hawkerCentreLocations, gmaps):
     locations = hawkerCentreLocations['hawkerCentreLocations']
@@ -25,6 +26,10 @@ def update_hawker_centre_locations(hawkerCentresColl, hawkerCentreLocations, gma
                 location['name'] = hawker_centre['name']
                 hawker_centre_response = gmaps.place(place_id=hawker_centre['place_id'])['result']
                 location['formatted_address'] = hawker_centre_response['formatted_address']
+                if 'serves_vegetarian_food' in hawker_centre_response:
+                    location['vegetarian'] = hawker_centre_response['serves_vegetarian_food']
+                else:
+                    location['vegetarian'] = 'not available'
 
                 doc = hawkerCentresColl.document(hawker_centre['place_id']).get()
                 if doc.exists:
@@ -61,7 +66,7 @@ gmaps = googlemaps.Client(key='AIzaSyB4OexlmStr943doK3Cjo15V8FnSI0dNQk')
 hawkerManager = HawkerManager(db, gmaps)
 
 start_time = time.time()
-update_hawker_centre_locations(hawkerCentres, hawkerCentreLocations, gmaps)
-update_hawker_centre_stalls(hawkerCentres, hawkerManager)
+#update_hawker_centre_locations(hawkerCentres, hawkerCentreLocations, gmaps)
+#update_hawker_centre_stalls(hawkerCentres, hawkerManager)
 end_time = time.time()
 print(f"Took {round(end_time-start_time)} seconds")
