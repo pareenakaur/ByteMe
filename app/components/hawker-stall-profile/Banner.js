@@ -6,7 +6,7 @@ const Banner = ({image}) => {
         <View style={styles.default}>
             <View style={styles.container}>
                 <Image
-                    source={image}//{require('../assets/HawkerStallImage.jpg') /*image*/ }
+                    source={{ uri: `${image}`}}//{require('../assets/HawkerStallImage.jpg') /*image*/ }
                     style={styles.image}
                 />
             </View>

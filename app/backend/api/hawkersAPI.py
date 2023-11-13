@@ -14,14 +14,14 @@ hawkersAPI = Blueprint('hawkersAPI',__name__)
 
 @hawkersAPI.route('/getAllHawkerCentreInformation', methods=['GET'])
 def getAllHawkerCentreInformation():
-    hawker_centre_response = []
-    hawkerCentresColl = db.collection('hawkercentres')
-    hawker_centres_documents = hawkerCentresColl.stream()
-    for hawker_centre_document in hawker_centres_documents:
-        hawker_centre = hawker_centre_document.to_dict()
-        hawker_centre['place_id'] = hawker_centre_document.id
-        hawker_centre['crowdedness'] = hawkerManager.getHawkerCentreCrowdedness(hawker_centre_document.id)
-        hawker_centre_response.append(hawker_centre)
+    filter = bool(request.args.get('filter'))
+    vegetarian = request.args.get('vegetarian')
+    minrating = request.args.get('minrating')
+
+    if filter:
+        hawker_centre_response = hawkerManager.getFilteredHawkerCentres(bool(vegetarian), float(minrating))
+    else:
+        hawker_centre_response = hawkerManager.getAllHawkerCentres()
 
     return jsonify(hawker_centre_response)
 

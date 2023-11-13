@@ -3,12 +3,15 @@ import { Image, StyleSheet, View, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 import SimilarHawker from './SimilarHawker';
 
-const SimilarHawkersList = ({similarHawkers, navigation}) => {
+const SimilarHawkersList = ({similarHawkers, latitude, longitude, navigation}) => {
+    
+    similarHawkers.map(data => console.log(data));
     
     const similarHawkersList = similarHawkers.map((hawker, index) => (
-        <SimilarHawker key={index} similarHawkers={hawker} navigation={navigation}/>
+        
+        <SimilarHawker key={index} similarHawker={hawker} latitude={latitude} longitude={longitude} navigation={navigation}/>
             
-      ));
+    ));
 
     
 
@@ -17,6 +20,7 @@ const SimilarHawkersList = ({similarHawkers, navigation}) => {
 
 
     return (
+        
         <View style={styles.default}>
             <View style={styles.container}>
                 {similarHawkersList}

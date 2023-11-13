@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Review from './Review';
 
-const ReviewsList = ({ hawkerStall, reviews, type }) => {
+const ReviewsList = ({ image, reviews, type, stallID }) => {
 
     const reviewsList = reviews.map((review, index) => (
         <Review
                      key={index}
-                     image={hawkerStall.image}
+                     image={image}
                      username={review.username}
                      profilePic={require('../../assets/avatar.png')}
                      upvote={review.votes}
@@ -15,6 +15,7 @@ const ReviewsList = ({ hawkerStall, reviews, type }) => {
                      description={review.description}
                      date={review.timestamp}
                      rating={review.rating}
+                     stallID={stallID}
                      type={type}
                    />
       ));

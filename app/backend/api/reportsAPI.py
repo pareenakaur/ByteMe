@@ -28,7 +28,7 @@ def updateReport():
         return f"An Error has Occured: {e}"
 
 @reportsAPI.route('/voteReport', methods=['POST']) 
-def voteReview():
+def voteReport():
     try:
         resp = request.json
         res = ReportManager.voteReport(resp["username"], resp['reportID'],resp["upvote"])

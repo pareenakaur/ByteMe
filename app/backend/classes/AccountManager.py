@@ -4,6 +4,8 @@ from firebase_admin import firestore
 from utils.functions import boolDiff
 import googlemaps
 # from google.cloud.firestore_v1.base_query import FieldFilter
+import googlemaps
+# from google.cloud.firestore_v1.base_query import FieldFilter
 
 db = firestore.client()
 usersColl = db.collection('users')

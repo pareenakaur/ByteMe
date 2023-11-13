@@ -1,19 +1,43 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 
-const Report = ({image, username, profilePic, upvote, downvote, description, date, type}) => {
+const Report = ({image, username, profilePic, upvote, downvote, description, date, stallID, type}) => {
  
     //set style types for viewing all vs view snapshot on profile
     const styleType = type===1 ? viewStyles : styles;
+    const [reportID, setReportID] = useState(null);
+    useEffect(() => {
+        async function fetchData() {
+          try {
+            const response = await fetch('http://127.0.0.1:5000/reports/getUserReports?username=' + username , {
+              method: 'GET'
+            });
+    
+            if (response.status === 200) {
+              const jsonString = await response.text();
+              const parsedData = JSON.parse(jsonString);
+              
+              setReportID(parsedData.list.find(stall => stall.stallID === stallID).reportID);
+            } else {
+              throw new Error('Error retrieving user information: ' + response.status);
+            }
+          } catch (error) {
+            console.error('Error getting user information:', error);
+          }
+        }
+    
+        // Call the async function
+        fetchData();
+      },[stallID]); 
 
     const [upvoted, setUpvoted] = useState(false);
     const [downvoted, setDownvoted] = useState(false);
     const [upvoteCount, setUpvoteCount] = useState(upvote);
     const [downvoteCount, setDownvoteCount] = useState(downvote);
 
-    const handleUpvote = () => {
+    const handleUpvote = async () => {
         if (!upvoted) {
         setUpvoteCount(upvoteCount + 1);
         if (downvoted) {
@@ -24,9 +48,27 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
         setUpvoteCount(upvoteCount - 1);
         }
         setUpvoted(!upvoted);
+        try {
+            const requestOptions = { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({
+                    "username": global.usrName,
+                    "reportID": reportID,
+                    "upvote": true,
+                    
+                })
+            };
+            const response = await fetch('http://127.0.0.1:5000/reports/voteReport', requestOptions);
+            const data = await response.json();
+            console.log(data.result);
+            
+        }catch (error){
+            console.log(error)
+        }
     };
 
-  const handleDownvote = () => {
+  const handleDownvote = async () => {
     if (!downvoted) {
       setDownvoteCount(downvoteCount + 1);
       if (upvoted) {
@@ -37,6 +79,24 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
       setDownvoteCount(downvoteCount - 1);
     }
     setDownvoted(!downvoted);
+    try {
+        const requestOptions = { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({
+                "username": global.usrName,
+                "reportID": reportID,
+                "upvote": true,
+                
+            })
+        };
+        const response = await fetch('http://127.0.0.1:5000/reports/voteReport', requestOptions);
+        const data = await response.json();
+        console.log(data.result);
+        
+    }catch (error){
+        console.log(error)
+    }
   };
 
 
@@ -44,7 +104,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     return (
         <View style={styleType.default}>
             <View style={styleType.innerContainer}>
-                <Image style={styleType.image} source={image} />
+                <Image style={styleType.image} source={{uri: `${image}`}} />
                 <View style={styleType.overlayContainer}>
                     <View style={styleType.mainUserContainer} >
                         <View style={styleType.userContainer}>

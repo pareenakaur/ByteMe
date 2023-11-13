@@ -9,30 +9,37 @@ import { getNearbyHawkerCenters, getHawkerStallDetails } from '../../utils/Retri
 
 //need to retrieve place id from explore function --> figure out which component in which js file to import to call function and/or get place id
 
-const MainPage = ({nearbyHawkers, navigation}) => {
+const MainPage = ({route, navigation}) => {
 
+    //const { HawkerCentre, longitude, latitude, placeId } = route.params;
+    
     const [nearbyHawkerCentres, setNearbyHawkerCentres] = useState(null);
     const longitude = 103.81412810881211;
     const latitude = 1.3244235882227136;
+    const distance = 5000;
     useEffect(() => {
         async function fetchData() {
             try {
-              const url = `http://127.0.0.1:5000/hawkers/getNearbyHawkerCentres?longitude=${longitude}&latitude=${latitude}&distance=${1000}`;
-          
-              const response = await fetch(url, {
-                method: 'GET'
-              });
-          
-              if (response.status === 200) {
-                const jsonString = await response.text();
-                const parsedData = JSON.parse(jsonString);
-                setNearbyHawkerCentres(parsedData);
-              } else {
-                throw new Error('Error retrieving stall information: ' + response.status);
+                const url = `http://127.0.0.1:5000/hawkers/getNearbyHawkerCentres?longitude=${longitude}&latitude=${latitude}&distance=${distance}&format=1`;
+            
+                const response = await fetch(url, {
+                  method: 'GET'
+                });
+            
+                if (response.status === 200) {
+                  const jsonString = await response.text();
+                  const parsedData = JSON.parse(jsonString);
+                  setNearbyHawkerCentres(parsedData.slice(1));
+                  
+                  
+                  
+                  
+                } else {
+                  throw new Error('Error retrieving stall information: ' + response.status);
+                }
+              } catch (error) {
+                console.error('Error getting stall information:', error);
               }
-            } catch (error) {
-              console.error('Error getting stall information:', error);
-            }
           }
     
         // Call the async function
@@ -41,7 +48,7 @@ const MainPage = ({nearbyHawkers, navigation}) => {
 
 
     const review = { //replace with review details array from backend
-        image: require("../../assets/Uncles_Best_Fried_Rice.png"),
+        image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
         username: "User1",
         date: "7 Sept 2023, 11:00 am",
         profilePic: require("../../assets/img5.jpg"),
@@ -52,7 +59,7 @@ const MainPage = ({nearbyHawkers, navigation}) => {
     }
 
     const HawkerCentre = { //replace with hawker centre details array values
-        image: require("../../assets/adam-food-centre.jpg"),
+        image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
         name: "Adam Road Food Centre",
         crowdLevel: "Moderate",
         cuisineList: ["Halal", "Vegetarian", "Chinese Cuisine", "Indian Cuisine"],
@@ -62,43 +69,33 @@ const MainPage = ({nearbyHawkers, navigation}) => {
         reviews: [review, review, review, review],
     }
 
-    const similarHawkerDetails = { //replace with nearby hawkers array values
-        image: require("../../assets/adam-food-centre.jpg"),
-        name: "Adam Road Food Centre",
-        crowdLevel: "Moderate",
-        distance: 3
-    }
 
-    const similarHawkers = [similarHawkerDetails, similarHawkerDetails, similarHawkerDetails];
-
-
+    
     return(
         <View style={styles.default} >
-            <Banner image={HawkerCentre.image} />
-            <AntDesign style={styles.navigationButton} name="leftcircle" size={26} color="#EB6C05" onPress={() => navigation.navigate('ExplorePage')}/>
-            <View style={styles.overlayContainer}>
-                <View style={styles.containers}>
-                    <View style={styles.details}>
-                       {nearbyHawkerCentres && <Summary
-                            name={HawkerCentre.name}
-                            crowdLevel={HawkerCentre.crowdLevel}
-                            cuisineList={HawkerCentre.cuisineList}
-                            address={HawkerCentre.address}
-                            openingHours={HawkerCentre.openingHours}
-                            rating={HawkerCentre.rating}
-                            reviews={HawkerCentre.reviews}
-                            />}
-                    </View>
-                    <View style={styles.similarHawkers}>
-                        <View style={styles.header}>
-                            <Text style={styles.headerText}>Similar Hawkers Nearby</Text>
+
+            <Banner image={HawkerCentre.image} /><AntDesign style={styles.navigationButton} name="leftcircle" size={26} color="#EB6C05" onPress={() => navigation.navigate('ExplorePage')} /><View style={styles.overlayContainer}>
+                    <View style={styles.containers}>
+                        <View style={styles.details}>
+                            {nearbyHawkerCentres && <Summary
+                                name={HawkerCentre.name}
+                                crowdLevel={HawkerCentre.crowdLevel}
+                                cuisineList={HawkerCentre.cuisineList}
+                                address={HawkerCentre.address}
+                                openingHours={HawkerCentre.openingHours}
+                                rating={HawkerCentre.rating}
+                                reviews={HawkerCentre.reviews} />}
                         </View>
-                        <SimilarHawkersList similarHawkers={similarHawkers} navigation={navigation}/> 
+                        <View style={styles.similarHawkers}>
+                            <View style={styles.header}>
+                                <Text style={styles.headerText}>Similar Hawkers Nearby</Text>
+                            </View>
+                            {nearbyHawkerCentres && <SimilarHawkersList similarHawkers={nearbyHawkerCentres} latitude={latitude} longitude={longitude} navigation={navigation} />}
+                        </View>
+
+
                     </View>
-                    
-                    
                 </View>
-            </View>
 
         </View>
     );

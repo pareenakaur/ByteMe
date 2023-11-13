@@ -1,38 +1,106 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 
-const SimilarHawker = ({similarHawkers, navigation}) => {
+const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
+    const API_KEY = 'AIzaSyD3YKpWEopq3wrYDEj8c2AAajWoXPTl2zo';
+
+    const [placeId, setPlaceId] = useState(null);
+   
+    // const [image, setImage] = useState(null);
+    // const [distanceAway, setDistanceAway] = useState(null);
+    // const [crowdLevel, setCrowdLevel] = useState(null);
+    
+    // if(similarHawkers !== null){
+    //     setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${similarHawkers.photos[0].photo_reference}&key=${API_KEY}`);
+
+    //     setDistanceAway(calculateDistance(similarHawkers.latitude, similarHawkers.longitude, latitude, longitude));
+
+    //     setCrowdLevel(decideColor(similarHawkers.crowdedness));
+    // }
+    
+    
+
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Radius of the Earth in kilometers
+        const dLat = degToRad(lat2 - lat1);
+        const dLon = degToRad(lon2 - lon1);
+      
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      
+        const distance = R * c; // Distance in kilometers
+      
+        return distance.toFixed(2);
+      }
+
+      
+      
+      
+      function degToRad(degrees) {
+        return degrees * (Math.PI / 180);
+      }
+      
+      
+
+    function decideColor(capacity){
+        if(capacity > 0.3){
+            return "rgba(255,0,0,0.75)";
+        } else if (capacity > 0.3 && capacity <= 0.6){
+            return "rgba(255, 95, 21, 0.75)";
+
+        } else {
+            return "rgba(0, 255, 0, 0.75)"
+        }
+    }
+
+    function decideCrowdLevel(color){
+        if (color === 'rgba(255,0,0,0.75)' ){
+            return "Severe";
+        } else if (color === "rgba(255, 95, 21, 0.75)"){
+            return "Moderate";
+        } else if (color === "rgba(0, 255, 0, 0.75)"){
+            return "Low";
+        } else {
+            return "Untracked"
+        }
+    }
+
+
     
     return(
+       
         <View style={styles.detailsMainContainer}>
-            <View style={styles.detailsContainer}>
+            {similarHawker && <View style={styles.detailsContainer}>
                 <View style={styles.mainContainer}>
                     <View style={styles.similarImageContainer}>
                         <View style={styles.imageLogoContainer}>
-                            <Image  style={styles.image} 
-                                    source={similarHawkers.image} />
+                            {similarHawker && <Image  style={styles.image} 
+                                    source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${similarHawker.photo_data[0].photo_reference}&key=${API_KEY}`}} /> }
                         </View>
                     </View>
                     <View style={styles.similarDetailsContainer}>
                         <View style={styles.similarDetailsInnerContainer}>
-                            <Text style={styles.name}>{similarHawkers.name}</Text>
-                            <Text style={styles.crowd}>Crowd: {similarHawkers.crowdLevel}</Text>
-                            <Text style={styles.distance}>{similarHawkers.distance}km away</Text>
+                            <Text style={styles.name}>{similarHawker.name}</Text>
+                            <Text style={{ paddingTop: 5, fontSize: 12, color: decideColor(similarHawker.crowdedness)}}>Crowd: {decideCrowdLevel(decideColor(similarHawker.crowdedness))}</Text>
+                            <Text style={styles.distance}>{calculateDistance(similarHawker.latitude, similarHawker.longitude, latitude, longitude)}km away</Text>
                         </View>
                     </View>
 
                     <View style={styles.rightNavIcon}>
                         <View style={styles.rightNavIconContainer}>
-                            <AntDesign name="right" size={24} color="black" onPress={() => navigation.navigate('Profile')}/> 
+                            <AntDesign name="right" size={24} color="black" onPress={() => navigation.navigate('Profile', { placeId: similarHawker.place_id })}/> 
                         </View> 
                     </View>
                 </View>
                
             </View>
-                   
+                   }
         </View>         
-      );
+       );
 
     
 
@@ -103,8 +171,8 @@ const styles = StyleSheet.create({
     },
     name: {
         //fontFamily: 'Open-Sans-Bold',
-        fontSize: 16,
-        paddingTop: 5
+        fontSize: 13,
+    
     },
     crowd: {
        // fontFamily: 'Open-Sans-Regular',
