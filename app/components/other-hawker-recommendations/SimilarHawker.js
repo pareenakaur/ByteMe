@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, View, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 
-const SimilarHawker = ({similarHawkers}) => {
+const SimilarHawker = ({similarHawkers, navigation}) => {
     
     return(
         <View style={styles.detailsMainContainer}>
@@ -24,7 +24,7 @@ const SimilarHawker = ({similarHawkers}) => {
 
                     <View style={styles.rightNavIcon}>
                         <View style={styles.rightNavIconContainer}>
-                            <AntDesign name="right" size={24} color="black" /> 
+                            <AntDesign name="right" size={24} color="black" onPress={() => navigation.navigate('Profile')}/> 
                         </View> 
                     </View>
                 </View>

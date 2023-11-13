@@ -28,7 +28,7 @@ const ViewAllReviews = ({navigation, route}) => {
                 <Text style={styles.text}>All Reviews</Text>
             </View>
             <View style={styles.reviewContainer}>
-                {reviews1 && <ReviewsList reviews={reviews1} type={1} />}
+                {reviews1 && <ReviewsList reviews={reviews1} hawkerStall={HawkerStall} type={1} />}
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.viewAllReviewsText} onPress={() => navigation.navigate('Profile')}>Hide All</Text>

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import JSONPath from 'jsonpath'
 import { StyleSheet, Text, View } from 'react-native';
 import { Octicons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
@@ -16,10 +15,11 @@ const Profile = ({placeId1, stallId1, navigation}) => {
 
     const placeId = 'ChIJv4Mk4QYa2jERx51-KDobWrA';
     const stallId = '9oQZA2Gxr9NCFMi4lBtW';
-    const API_KEY = 'AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0';
+    //const API_KEY = 'AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0';
     
     
     const [stallData, setStallData] = useState(null);
+    const [stallImage, setStallImage] = useState(null);
     
 
   useEffect(() => {
@@ -33,11 +33,12 @@ const Profile = ({placeId1, stallId1, navigation}) => {
           const jsonString = await response.text();
           const parsedData = JSON.parse(jsonString);
           console.log(parsedData);
-          if (parsedData.photoReference) {
-            const imageUrl = await retrieveImageUrl(parsedData.photos[0].photo_reference);
-            setImage(imageUrl);
-          }
+        //   if (parsedData.photoReference) {
+        //     const imageUrl = await retrieveImageUrl(parsedData.photos[0].photo_reference);
+        //     setImage(imageUrl);
+        //   }
           setStallData(parsedData);
+          
         } else {
           throw new Error('Error retrieving stall information: ' + response.status);
         }
@@ -46,21 +47,23 @@ const Profile = ({placeId1, stallId1, navigation}) => {
       }
     }
 
+    
+
     // Async function to retrieve image URL
-    async function retrieveImageUrl(photoReference) {
-        const url = `https://maps.googleapis.com/maps/api/image?photoreference=${photoReference}&size=2048x1536&key=${API_KEY}`;
-        const response = await fetch(url);
+    // async function retrieveImageUrl(photoReference) {
+    //     const url = `https://maps.googleapis.com/maps/api/image?photoreference=${photoReference}&size=2048x1536&key=${API_KEY}`;
+    //     const response = await fetch(url);
   
-        if (response.ok) {
-          const json = await response.json();
-          const imageUrl = json.url;
-          console.log(imageUrl);
-          return imageUrl;
-        } else {
-          console.error(`Error: ${response.status}`);
-          return null;
-        }
-      }
+    //     if (response.ok) {
+    //       const json = await response.json();
+    //       const imageUrl = json.url;
+    //       console.log(imageUrl);
+    //       return imageUrl;
+    //     } else {
+    //       console.error(`Error: ${response.status}`);
+    //       return null;
+    //     }
+    //   }
   
 
     // Call the async function
@@ -157,12 +160,8 @@ const Profile = ({placeId1, stallId1, navigation}) => {
     //     description: "Very nice! Honestly the best fried rice I have eaten ever :>"
     // }
 
-    // Query and save in temp var
-    // const name = JSONPath.query(StallInfo, '$.name');
-    // const address = JSONPath.query(StallInfo, '$.formatted_address');
-    // const contact = JSONPath.query(StallInfo, '$.formatted_phone_number');
-    // const rating =  JSONPath.query(StallInfo, '$.rating');
 
+    
     //accesss first value of array
     const HawkerStall = { 
         image: require("../../assets/HawkerStallImage.jpg"),
