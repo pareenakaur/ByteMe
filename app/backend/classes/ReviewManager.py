@@ -11,18 +11,18 @@ reviewsColl = db.collection('reviews')
 
 class ReviewManager(object):
 
-    def createReview(username,stallID,rating,description):
+    def createReview(username,stallID,rating,description,image):
         if(ReviewManager.validateCreateReview(username,stallID)):
-            _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,
+            _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,"image": image,
                                          "votes": 0, "timestamp": SERVER_TIMESTAMP})
             ReviewManager.addHawkerReview(stallID,review.id)
             return review.id
         else:
             return "user has already reviewed the stall"
 
-    def updateReview(reviewID,rating,description):
+    def updateReview(reviewID,rating,description,image):
         if(ReviewManager.validateReview(reviewID)):
-            reviewsColl.document(reviewID).update({"rating":rating,"description":description}) 
+            reviewsColl.document(reviewID).update({"rating":rating,"description":description,"image": image}) 
             return "Success"
         else:
             return "Review does not exist"    

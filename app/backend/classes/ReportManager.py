@@ -10,18 +10,18 @@ db = firestore.client()
 reportsColl = db.collection('reports')
 class ReportManager(object):
 
-    def createReport(username,stallID,category,description):
+    def createReport(username,stallID,category,description,image):
         if(ReportManager.validateCreateReport(username,stallID)):
             _, report = reportsColl.add({"username": username, "stallID": stallID, "description": description
-                                         ,"category": category,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
+                                         ,"category": category,"image": image,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
             ReportManager.addHawkerReport(stallID,report.id)
             return report.id
         else:   
             return "user has already reported the stall"
 
-    def updateReport(reportID,category,description):
+    def updateReport(reportID,category,description,image):
         if(ReportManager.validateReport(reportID)):
-            report = reportsColl.document(reportID).update({"category": category,"description": description})
+            report = reportsColl.document(reportID).update({"category": category,"description": description,"image": image})
             return "Success"
         else:
             return "Report does not exist"    
