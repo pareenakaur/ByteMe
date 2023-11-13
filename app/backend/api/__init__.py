@@ -1,6 +1,8 @@
 from flask import Flask
-from firebase_admin import credentials,initialize_app
+from firebase_admin import firestore,credentials,initialize_app
+from classes.HawkerManager import HawkerManager
 import os
+import googlemaps
 
 current_dir = os.path.dirname(__file__)
 key_path = os.path.join(current_dir, '..', 'config', 'key.json')
@@ -8,9 +10,16 @@ key_path = os.path.join(current_dir, '..', 'config', 'key.json')
 cred = credentials.Certificate(key_path)
 default_app = initialize_app(cred)
 
+db = firestore.client()
+gmaps = googlemaps.Client(key='AIzaSyB4OexlmStr943doK3Cjo15V8FnSI0dNQk')
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'qweasdqweasd'
+
+    hawkerManager = HawkerManager(db, gmaps)
+    print("Initializing database...")
+    hawkerManager.initializeHawkerCentreCollection()
     
     from .userAPI import userAPI
     from .reviewsAPI import reviewsAPI

@@ -1,8 +1,9 @@
 import numpy as np
 import math
 from firebase_admin import firestore
-from classes.ReviewManager import ReviewManager
-from classes.ReportManager import ReportManager
+from utils.functions import getReviewCount
+from utils.functions import getReportCount
+from utils.functions import getAvgReviewRating
 from utils.functions import haversine
 from utils.functions import format_hawker_response
 from utils.functions import get_carpark_availability
@@ -13,15 +14,45 @@ from firebase_admin import firestore
 #cred = credentials.Certificate("api/key.json")
 #firebase_admin.initialize_app(cred)
 
-db = firestore.client()
-hawkerCentresColl = db.collection('hawkercentres')
-
 class HawkerManager:
 
-    def __init__(self, db, gmaps):
+    def __init__(self, db=None, gmaps=None):
         self.db = db
         self.gmaps = gmaps
     
+    def getAllHawkerCentres(self):
+        hawker_centre_response = []
+        hawkerCentresColl = self.db.collection('hawkercentres')
+        hawker_centre_documents = hawkerCentresColl.stream()
+        
+        for hawker_centre_document in hawker_centre_documents:
+            hawker_centre = hawker_centre_document.to_dict()
+            hawker_centre['place_id'] = hawker_centre_document.id
+            hawker_centre_response.append(hawker_centre)
+        
+        return hawker_centre_response
+    
+    def getFilteredHawkerCentres(self, vegetarian, minrating):
+        hawker_centre_response = []
+        hawkerCentresColl = self.db.collection('hawkercentres')
+        if vegetarian == True:
+            hawker_centre_documents = hawkerCentresColl.where('vegetarian', '==', True).stream()
+        else:
+            hawker_centre_documents = hawkerCentresColl.stream()
+
+        for hawker_centre_document in hawker_centre_documents:
+            hawker_centre = hawker_centre_document.to_dict()
+            hawker_centre['place_id'] = hawker_centre_document.id
+
+            user_rating = self.getHawkerCentreRating(hawker_centre['place_id'])
+            if user_rating != None:
+                if user_rating >= minrating:
+                    hawker_centre['user_rating'] = user_rating
+                    hawker_centre_response.append(hawker_centre)
+
+        return hawker_centre_response
+
+
     def getNearbyHawkerCentres(self, user_location, distance, format):
         nearby_hawker_centre_details = []
         distance_list = []
@@ -95,15 +126,14 @@ class HawkerManager:
 
         return hawker_stalls_list
 
-    def getStallInfo(self, stallID, format):
-        
+    def getStallInfo(self, stallID, format):      
         response = self.gmaps.place(place_id = stallID)['result']
         if format:
             response = format_hawker_response(response)
 
-        response['user_rating'] = ReviewManager.getAvgReviewRating(stallID)
-        response['user_review_count'] = ReviewManager.getReviewCount(stallID)
-        response['user_report_count'] = ReportManager.getReportCount(stallID)
+        response['user_rating'] = getAvgReviewRating(stallID, self.db.collection('reviews'))
+        response['user_review_count'] = getReviewCount(stallID, self.db.collection('reviews'))
+        response['user_report_count'] = getReportCount(stallID, self.db.collection('reports'))
         return response
 
     def getHawkerCentreLocation(self, placeID):
@@ -179,7 +209,7 @@ class HawkerManager:
             carpark_long = float(carpark_coords[1])
             distance = haversine(carpark_lat, carpark_long, hawker_centre['latitude'], hawker_centre['longitude'])
             #print(f"carpark: {carpark_lat}, {carpark_long} | hawker: {hawker_centre['latitude']}, {hawker_centre['longitude']} | distance: {distance}")
-            if distance < 100:
+            if distance < 300:
                 live_nearby_carparks.append(live_carpark)
 
         # Calculate the crowdedness
@@ -193,3 +223,32 @@ class HawkerManager:
         else:
             return available_lots / total_lots
         
+    def initializeHawkerCentreCollection(self):
+        hawkerCentresColl = self.db.collection('hawkercentres')
+        hawker_centre_documents = hawkerCentresColl.stream()
+
+        batch = self.db.batch()
+
+        for hawker_centre_document in hawker_centre_documents:
+            place_id = hawker_centre_document.id
+            hawker_centre = hawker_centre_document.to_dict()
+            crowdedness = self.getHawkerCentreCrowdedness(place_id)
+            hawker_centre['crowdedness'] = crowdedness
+            doc_ref = hawkerCentresColl.document(place_id)
+            batch.update(doc_ref, hawker_centre)
+        
+    def addHawkerReview(self, centreID,reviewID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
+        return
+
+    def deleteHawkerReview(self,centreID,reviewID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
+        return
+
+    def addHawkerReport(self, centreID,reportID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
+        return
+
+    def deleteHawkerReport(self, centreID,reportID):
+        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
+        return

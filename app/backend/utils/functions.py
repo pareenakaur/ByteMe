@@ -108,9 +108,7 @@ def get_carpark_availability():
 #### TEMPORARY FUNCTIONS ###
 
 def getReviewCount(stallID, reviewsColl):
-        avgRating,totalRating = 0,0
         reviewLength = reviewsColl.where("stallID", "==", stallID).get()
-        # return reviewLength[0][0].value
         return len(reviewLength)
 
 def getAvgReviewRating(stallID, reviewsColl):
@@ -126,7 +124,5 @@ def getAvgReviewRating(stallID, reviewsColl):
             return ("User has no reviews")
         
 def getReportCount(stallID,reportsColl):
-        avgRating,totalRating = 0,0
         reportLength = reportsColl.where("stallID", "==", stallID).get()
-        # return reportLength[0][0].value
         return len(reportLength)
