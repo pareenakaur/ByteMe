@@ -45,6 +45,18 @@ def removeFavouriteStall():
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error Occured: {e}"
+
+@userAPI.route('/getFavouriteStalls', methods=['GET'])
+def getFavouriteStalls():
+    userID = request.args.get('id')
+    format = request.args.get('format')
+
+    if userID is None:
+        return "Please provide a 'id' query parameter", 400
+    
+    else:
+        favourite_stalls = AccountManager.getFavouriteStalls(userID, format)
+        return jsonify(favourite_stalls)
     
 @userAPI.route('/resetPassword', methods=['POST'])
 def resetPassword():

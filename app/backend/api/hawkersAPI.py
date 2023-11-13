@@ -105,18 +105,6 @@ def getHawkerCentreStalls():
         filtered_result = [item for item in result if item['place_id'] != placeID]
         print(f"{len(filtered_result)} hawker stalls found")
         return jsonify(filtered_result)
-
-@hawkersAPI.route('/getFavouriteStalls', methods=['GET'])
-def getFavouriteStalls():
-    userID = request.args.get('id')
-    format = request.args.get('format')
-
-    if userID is None:
-        return "Please provide a 'id' query parameter", 400
-    
-    else:
-        favourite_stalls = hawkerManager.getFavouriteStalls(userID, format)
-        return jsonify(favourite_stalls)
     
 @hawkersAPI.route('/getPlaceIDFromLatLong', methods=['GET'])
 def getPlaceIDFromLatLong():
