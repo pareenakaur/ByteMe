@@ -11,8 +11,21 @@ hawkerManager = HawkerManager(db, gmaps)
 
 hawkersAPI = Blueprint('hawkersAPI',__name__)
 
-@hawkersAPI.route('/getHawkerCentreLocations', methods=['GET'])
-def getHawkerCentreLocations():
+@hawkersAPI.route('/getAllHawkerCentreInformation', methods=['GET'])
+def getAllHawkerCentreInformation():
+    hawker_centre_response = []
+    hawkerCentresColl = db.collection('hawkercentres')
+    hawker_centres_documents = hawkerCentresColl.stream()
+    for hawker_centre_document in hawker_centres_documents:
+        hawker_centre = hawker_centre_document.to_dict()
+        hawker_centre['place_id'] = hawker_centre_document.id
+        hawker_centre_response.append(hawker_centre)
+
+    return jsonify(hawker_centre_response)
+
+
+@hawkersAPI.route('/getHawkerCentreLocation', methods=['GET'])
+def getHawkerCentreLocation():
     placeID = request.args.get('id')
 
     if placeID is not None:
@@ -31,15 +44,12 @@ def getHawkerCentreLocations():
 @hawkersAPI.route('/getHawkerCentreInfo', methods=['GET'])
 def getHawkerCentreInfo():
     placeID = request.args.get('id')
+    format = request.args.get('format')
 
     if placeID is not None:
-        try:
-            place_details = hawkerManager.getHawkerCentreInfo(placeID)
-            response = jsonify(place_details['result'])
-            return response
-
-        except:
-            return "No information found with such hawker ID", 404
+        place_details = hawkerManager.getHawkerCentreInfo(placeID, format)
+        response = jsonify(place_details)
+        return response
     
     else:
         return "Please provide a 'id' query parameter", 400
@@ -47,15 +57,12 @@ def getHawkerCentreInfo():
 @hawkersAPI.route('/getStallInfo', methods=['GET'])
 def getStallInfo():
     placeID = request.args.get('id')
+    format = request.args.get('format')
 
     if placeID is not None:
-        try:
-            place_details = hawkerManager.getHawkerCentreInfor(placeID)
-            response = jsonify(place_details['result'])
-            return response
-        
-        except:
-            return "No information found with such hawker ID", 404
+        place_details = hawkerManager.getStallInfo(placeID, format)
+        response = jsonify(place_details)
+        return response
         
     else:
         return "Please provide a 'id' query parameter", 400
@@ -65,6 +72,7 @@ def getNearbyHawkerCentres():
     distance = request.args.get('distance')
     longitude = request.args.get('longitude')
     latitude = request.args.get('latitude')
+    format = request.args.get('format')
     user_location = {'longitude':longitude, 'latitude':latitude}
 
     if distance is None:
@@ -77,7 +85,7 @@ def getNearbyHawkerCentres():
         return "Please provide a 'latitude', query parameter", 400
     
     else:
-        nearby_hawker_centre_details = hawkerManager.getNearbyHawkerCentres(user_location, distance)
+        nearby_hawker_centre_details = hawkerManager.getNearbyHawkerCentres(user_location, distance, format)
         response = jsonify(nearby_hawker_centre_details)
         print(f"{len(nearby_hawker_centre_details)} nearby hawker centres found")
         return response
@@ -85,32 +93,45 @@ def getNearbyHawkerCentres():
 @hawkersAPI.route('/getHawkerCentreStalls', methods=['GET'])
 def getHawkerCentreStalls():
     placeID = request.args.get('id')
+    format = request.args.get('format')
 
     if placeID is None:
         return "Please provide a 'id' query parameter", 400
     
     else:
-        hawker_centre_stall = hawkerManager.getHawkerCentreStalls(placeID)
-        result = hawker_centre_stall['results']
-        
+        hawker_centre_stall = hawkerManager.getHawkerCentreStalls(placeID, format)
+        result = hawker_centre_stall
         #Remove the hawker centre from the list of hawkers
-        filtered_result = [item for item in result if item.get('place_id') != placeID]
-        #print(f"{len(filtered_result)} hawker stalls found")
-        #for result in filtered_result:
-        #    print(result['name'])
+        filtered_result = [item for item in result if item['place_id'] != placeID]
+        print(f"{len(filtered_result)} hawker stalls found")
         return jsonify(filtered_result)
 
 @hawkersAPI.route('/getFavouriteStalls', methods=['GET'])
 def getFavouriteStalls():
     userID = request.args.get('id')
+    format = request.args.get('format')
 
     if userID is None:
         return "Please provide a 'id' query parameter", 400
     
     else:
-        favourite_stalls = hawkerManager.getFavouriteStalls(userID)
+        favourite_stalls = hawkerManager.getFavouriteStalls(userID, format)
         return jsonify(favourite_stalls)
     
+@hawkersAPI.route('/getPlaceIDFromLatLong', methods=['GET'])
+def getPlaceIDFromLatLong():
+    lat = request.args.get('lat')
+    long = request.args.get('long')
+
+    if lat is None:
+        return "Please provide a 'lat' query parameter", 400
+    
+    elif long is None:
+        return "Please provide a 'long' query parameter", 400
+    
+    else:
+        place_id = hawkerManager.getPlaceIDFromLatLong(lat, long)
+        return jsonify(place_id)
 # @hawkersAPI.route('/get', methods=['GET'])
 # def get():
 #     try:

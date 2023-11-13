@@ -71,14 +71,14 @@ const Review = ({image, username, date, profilePic, upvote, downvote, rating, de
                             </View>
                             <TouchableOpacity onPress={handleUpvote} disabled={downvoted}>
                                 <View style={styleType.upvote}>
-                                    <FontAwesome name="thumbs-o-up" size={20} color={upvoted ? 'orange' : 'black'} />
+                                    <FontAwesome name="thumbs-o-up" size={15} color={upvoted ? 'orange' : 'black'} />
                                     <Text style={styleType.voteNum}>{upvoteCount}</Text>
                                 </View>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={handleDownvote} disabled={upvoted}>
                                 <View style={styleType.downvote}>
-                                    <FontAwesome name="thumbs-o-down" size={20} color={downvoted ? 'orange' : 'black'} />
+                                    <FontAwesome name="thumbs-o-down" size={15} color={downvoted ? 'orange' : 'black'} />
                                     <Text style={styleType.voteNum}>{downvoteCount}</Text>
                                 </View>
                             </TouchableOpacity>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         flex: 4,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        padding: 5,
+        
     },
     upvote: {
         flex: 1,

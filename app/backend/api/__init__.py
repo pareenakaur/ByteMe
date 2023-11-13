@@ -1,7 +1,11 @@
 from flask import Flask
 from firebase_admin import credentials,initialize_app
+import os
 
-cred = credentials.Certificate("config/key.json")
+current_dir = os.path.dirname(__file__)
+key_path = os.path.join(current_dir, '..', 'config', 'key.json')
+
+cred = credentials.Certificate(key_path)
 default_app = initialize_app(cred)
 
 def create_app():

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Text, View, StyleSheet} from 'react-native';
 
-export default function DropdownCat(){
+export default function DropdownCat({setCatInReport}){
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
@@ -23,7 +23,7 @@ export default function DropdownCat(){
                 fontSize: 16,
                 paddingLeft:5
               }}
-            maxHeight={100}
+            maxHeight={600}
             open={open}
             value={value}
             items={items}
@@ -46,6 +46,7 @@ export default function DropdownCat(){
                 fontSize:16,
                 paddingLeft: 5
             }}
+            onChangeValue={setCatInReport}
             />
 
         </View>
@@ -55,7 +56,7 @@ export default function DropdownCat(){
 const styles = StyleSheet.create({
     container: {
         width: 325,
-        paddingBottom: 20
+        paddingBottom: 20,
         // height: 100
     }
 })

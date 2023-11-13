@@ -1,48 +1,64 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, StyleSheet, ScrollView } from "react-native";
 import FavHawkerBtn from "../user-functions/FavHawkerBtn"
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function FavouriteHawkers({navigation}){
     //call api to get a list of array of hawker
-    const getFavStalls = async() => {
+    const [HawkerArr, setHawkerArr] = useState([]);
+    const [refresh, setRefresh] = useState(0);
+
+    const handleRemove = async(stall_id) => {
         try {
-            const requestOptions = { 
-                method: 'GET', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({
-                    "id": global.usrName
-                })
-            };
-            const response = await fetch('http://127.0.0.1:5000/hawkers/getFavouriteStalls', requestOptions);
+            const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' +stall_id);
             const data = await response.json();
             console.log(data.result);
-            if (data.favourite_stalls.length()){
-                return data.favourite_stalls.length()}
-        } catch (error) {
-            console.error(error);
-            return 
-        }
+            setRefresh((prev)=>prev+1);
+            
+          }catch(error){
+            console.log(error)
+          }
     };
 
-    const HawkerComps = [];
-    // let favStalls = getFavStalls();
-    let favStalls = 1;
-    if (favStalls){
-        for (let i = 0; i < 6; i++) {
-            HawkerComps.push(
-                <FavHawkerBtn key={i}/>);
+    const getFavStalls = async() => {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/hawkers/getFavouriteStalls?id='+ global.usrName);
+            const data = await response.json();
+            console.log(data.length)
+            if (data.length){
+                const arr = [];
+                for(let i=0; i< data.length; i++){
+                    arr.push(
+                        <FavHawkerBtn 
+                            key={i} 
+                            name = {data[i].name} 
+                            address={data[i].formatted_address} 
+                            photo={data[i].photos[0].photo_reference}
+                            handleRemove={()=>{handleRemove(data[i].place_id)}}
+                            handleNav={()=>{navigation.navigate("Profile", {placeId1 : data[i].place_id, stallId1 : data[i].place_id, navigation: navigation})}}/>
+                    )
+                }
+                console.log("done")
+                setHawkerArr(arr);
+                
+            }else{
+                setHawkerArr([]);
+            }
+        } catch (error) {
+            console.error(error);
         }
-    }
+    };
     
     
+    useEffect(()=>{
+        getFavStalls();
+        console.log(HawkerArr)}, [refresh])
     
     return (
         <SafeAreaView style={styles.container}>
             <Text style={{color: "#3C4142", fontSize: 30, fontWeight: 'bold', alignSelf:"center", paddingBottom: 20, paddingTop: 30}}>Favourite Hawkers</Text>
             <ScrollView>
-                {/* <Text style={{paddingBottom: 8, color: "#FA4A0C", fontStyle: "italic", fontSize: 18}} onPress={() => navigation.navigate('Profile')}>return to profile</Text> */}
-                {HawkerComps}
+                {HawkerArr}
             </ScrollView>
         </SafeAreaView>
     )

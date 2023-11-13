@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View, ScrollView } from "react-native";
+import { Dimensions, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import React from 'react';
 
 import {
@@ -11,6 +11,7 @@ import {
 } from "react-native-paper";
 import { useState } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo, setHawkerStallInfo, navigation, crowdedColor}) {
 
@@ -91,7 +92,7 @@ export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo
             buttonColor = {crowdedColor}
             textColor="#000000"
             compact={true}
-            labelStyle={{ fontSize: 12 }}
+            labelStyle={{ fontSize: 12 , fontWeight: "bold"}}
           >
             {decideCrowdedText(crowdedColor)}
           </Button>
@@ -103,7 +104,7 @@ export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo
           <View style={styles.foodOptionsContainer}>
             <Text
               variant="titleMedium"
-              style={{fontSize:12, color: "#787878", marginLeft: 5, marginBottom: 5 }}
+              style={{fontSize:18, color: "black", marginBottom: 5 }}
             >
               Food Options Available
             </Text>
@@ -136,16 +137,16 @@ export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo
           alignItems: "center",
         }}
       >
-        <Text
-          style={{
-            color: "#787878",
-            textDecorationLine: "underline",
-            marginHorizontal: 10,
-          }}
-          onPress={() => navigation.navigate('MainPage')}
-        >
-          Too crowded? Find alternative hawker centres!
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('MainPage')}>
+          <Text
+            style={{
+              color: "#787878",
+              textDecorationLine: "underline",
+              marginHorizontal: 10 }}
+          >
+            Too crowded? Find alternative hawker centres!
+          </Text>
+        </TouchableOpacity>
       </Card.Content>
     </Card>
   );

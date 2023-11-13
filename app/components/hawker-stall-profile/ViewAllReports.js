@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ReportsList from './ReportsList';
 
-const ViewAllReports = ({navigation, route}) => {
-    const {reportsList} = route.params;
+const ViewAllReports = ({navigation, route }) => {
+    const { reports1 } = route.params;
+     // State variable to store stallId
+  const [storedReports, setStoredReports] = useState(null);
+
+  // Use useEffect to set the storedStallId when stallId changes
+  useEffect(() => {
+    setStoredReports(reports1);
+  }, [reports1]);
+
+    
+
+    const HawkerStall = { 
+        image: require("../../assets/HawkerStallImage.jpg"),
+        //name: stallData.name,
+        //address: stallData.formatted_address,
+        //contact: stallData.formatted_phone_number,
+        //openingHours: "6am - 3pm",
+        //rating: stallData.rating,
+        //reviews: reviews1,
+        //reports: reports1,
+    }
+    
     return(
         <View style={styles.default}>
             <View style={styles.header}>
                 <Text style={styles.text}>All Reports</Text>
             </View>
             <View style={styles.reportContainer}>
-                <ReportsList reports={reportsList} type={1} />
+                {reports1 && <ReportsList reports={reports1} hawkerStall ={HawkerStall} type={1} />}
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.viewAllReportText} onPress={() => navigation.navigate('Profile')}>Hide All</Text>
@@ -44,6 +65,7 @@ const styles = StyleSheet.create({
     },
     text: {
        // fontFamily: 'Open-Sans-Bold',
+       fontWeight: 'bold',
         fontSize: 20,
         color: '#EB6C05',
         textAlign: 'center'

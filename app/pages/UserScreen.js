@@ -6,7 +6,6 @@ import ExplorePage  from '../components/explore-page/ExplorePage';
 import MainPage from '../components/other-hawker-recommendations/MainPage';
 import ReviewForm from '../components/userscreen-pages/ReviewForm';
 import ReportForm from '../components/userscreen-pages/ReportForm';
-import TakePic from '../components/user-functions/TakePic';
 
 const UserStack = createStackNavigator();
 
@@ -20,7 +19,6 @@ export default function UserScreen() {
           <UserStack.Screen name="ReviewForm" component={ReviewForm} />
           <UserStack.Screen name="ViewAllReports" component={ViewAllReports} />
           <UserStack.Screen name="ViewAllReviews" component={ViewAllReviews} />
-          <UserStack.Screen name="TakePic" component={TakePic} />
         </UserStack.Navigator>
     );
 }
