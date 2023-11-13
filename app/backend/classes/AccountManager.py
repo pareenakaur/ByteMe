@@ -2,10 +2,12 @@ import datetime
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 from utils.functions import boolDiff
-from google.cloud.firestore_v1.base_query import FieldFilter
+import googlemaps
+# from google.cloud.firestore_v1.base_query import FieldFilter
 
 db = firestore.client()
 usersColl = db.collection('users')
+gmaps = googlemaps.Client(key='AIzaSyB4OexlmStr943doK3Cjo15V8FnSI0dNQk')
 class AccountManager(object):
     
     def validateUsername(username):
@@ -59,14 +61,13 @@ class AccountManager(object):
             return "Username does not exist"
         
     def getFavouriteStalls( userID, format):
-        from classes.HawkerManager import HawkerManager
-
+        from api.hawkersAPI import hawkerManager
         user_dict = usersColl.document(userID).get().to_dict()
         favourite_ids = user_dict['favourites']
 
         favourite_stalls = []
         for id in favourite_ids:
-            favourite_stalls.append(HawkerManager.getStallInfo(id, format))
+            favourite_stalls.append(hawkerManager.getStallInfo(id, format))
         return favourite_stalls
     
     def resetPassword(username, password):
