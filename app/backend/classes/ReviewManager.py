@@ -82,6 +82,13 @@ class ReviewManager(object):
         else:
             return ("User has no reviews", [])
 
+    def getReview(reviewID):
+        review = reviewsColl.document(reviewID).get()
+        if review.exists:
+            return (review.to_dict())
+        else:
+            return ("No such review")
+        
     def getAvgReviewRating(stallID):
         avgRating,totalRating = 0,0
         reviews_list = reviewsColl.where("stallID", "==", stallID).get()

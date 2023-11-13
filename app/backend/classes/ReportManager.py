@@ -80,6 +80,13 @@ class ReportManager(object):
             return ("Success", res_list)
         else:
             return ("User has no reports", [])
+        
+    def getReport(reportID):
+        report = reportsColl.document(reportID).get()
+        if report.exists:
+            return (report.to_dict())
+        else:
+            return ("No such report")
 
 
     def voteReport(username,reportID,upvote):
