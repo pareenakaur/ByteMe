@@ -13,7 +13,7 @@ reportsAPI = Blueprint('reportsAPI',__name__)
 def createReport():
     try:
         resp = request.json
-        res = ReportManager.createReport(resp["username"], resp["stallID"],resp["category"], resp["description"])
+        res = ReportManager.createReport(resp["username"], resp["stallID"],resp["category"], resp["description"],res["image"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
@@ -22,7 +22,7 @@ def createReport():
 def updateReport():
     try:
         resp = request.json
-        res = ReportManager.updateReport(resp["reportID"], resp["category"],resp["description"])
+        res = ReportManager.updateReport(resp["reportID"], resp["category"],resp["description"],res["image"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"

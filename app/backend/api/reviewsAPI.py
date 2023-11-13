@@ -13,7 +13,7 @@ reviewsAPI = Blueprint('reviewsAPI',__name__)
 def createReview():
     try:
         resp = request.json
-        res = ReviewManager.createReview(resp["username"], resp["stallID"],resp['rating'], resp["description"])
+        res = ReviewManager.createReview(resp["username"], resp["stallID"],resp['rating'], resp["description"],resp["image"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
@@ -22,7 +22,7 @@ def createReview():
 def updateReview():
     try:
         resp = request.json
-        res = ReviewManager.updateReview(resp["reviewID"], resp["rating"],resp["description"])
+        res = ReviewManager.updateReview(resp["reviewID"], resp["rating"],resp["description"],resp["image"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
