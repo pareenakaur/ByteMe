@@ -61,16 +61,13 @@ class AccountManager(object):
             return "Username does not exist"
         
     def getFavouriteStalls( userID, format):
-        from classes.HawkerManager import HawkerManager
-
-        hawker_manager = HawkerManager(db,gmaps)
-
+        from api.hawkersAPI import hawkerManager
         user_dict = usersColl.document(userID).get().to_dict()
         favourite_ids = user_dict['favourites']
 
         favourite_stalls = []
         for id in favourite_ids:
-            favourite_stalls.append(hawker_manager.getStallInfo(id, format))
+            favourite_stalls.append(hawkerManager.getStallInfo(id, format))
         return favourite_stalls
     
     def resetPassword(username, password):
