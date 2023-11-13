@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View, ScrollView } from "react-native";
+import { Dimensions, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
 import React from 'react';
 
 import {
@@ -11,8 +11,34 @@ import {
 } from "react-native-paper";
 import { useState } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
+export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo, setHawkerStallInfo, navigation, crowdedColor}) {
+
+  function decideCrowdedText(crowdedColor){
+    if (crowdedColor == "rgba(255,0,0,0.15)"){
+      return "Severe Crowd";
+    } else if (crowdedColor == "rgba(255,95,21,0.15)"){
+      return "Moderate Crowd";
+    } else if (crowdedColor == "rgba(0,255,0,0.15)"){
+      return "Low Crowd";
+    } else {
+      return "Untracked";
+    }
+  }
+
+  function getDay(){
+    const d = new Date();
+    let day = d.getDay();
+    return (day+6)%7;
+  }
+
+  function handleClose(){
+    setHawkerCentreInfo(null);
+    setHawkerStallInfo(null);
+  }
+
+
   return (
     <Card style={styles.container}>
       <Card.Cover
@@ -22,7 +48,7 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
           borderBottomRightRadius: 0,
         }}
         source={{
-          uri: "https://static.wixstatic.com/media/4b5db5_f643d7fcce58409b92b4ff7497c2ff48~mv2.jpg/v1/fill/w_750,h_750,al_c,q_85/4b5db5_f643d7fcce58409b92b4ff7497c2ff48~mv2.jpg",
+          uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${hawkerCentreInfo.photo_reference}&key=AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E`
         }}
       />
       <View
@@ -36,35 +62,39 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
       >
         <IconButton
           style={{}}
-          icon="arrow-right-thick"
+          icon="window-close"
           mode="contained-tonal"
           iconColor="#FA4A0C"
           size={25}
-          onPress={() => navigation.navigate('Profile')} //for now
+          onPress={handleClose} //for now
         ></IconButton>
       </View>
       <View style={{ flexDirection: "row", marginVertical: 5 }}>
-        <Card.Content style={{ flex: 1.5 }}>
-          <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
-            Adam Road Food Centre
-            {/* {hawkerCentreInfo["name"]} */}
+        <Card.Content style={{ flex: 1.6 }}>
+          <Text variant="titleSmall" style={{fontWeight: "bold" }}>
+            {/* Adam Road Food Centre */}
+            {/* {console.log("hehe: "+ hawkerCentreInfo["name"])} */}
+            {hawkerCentreInfo["name"]}
           </Text>
           <Text variant="bodySmall" style={{ color: "#FA4A0C" }}>
-            2 Adam Rd, Singapore 289876
-            {/* {hawkerCentreInfo["formatted_address"]} */}
+            {/* 2 Adam Rd, Singapore 289876 */}
+            {hawkerCentreInfo["address"]}
           </Text>
-          <Text variant="bodySmall">Opening Hours: 6am - 3am</Text>
+          <Text variant="bodySmall" style={{}}>
+             {/* Opening Hours: 6am - 3am Todo */}
+            {hawkerCentreInfo["opening_hours"][getDay()]}
+          </Text>
         </Card.Content>
         {/* Crowd Indicator */}
         <Card.Actions style={{ flex: 1.2, flexDirection: "column" }}>
           <Button
             mode="contained"
-            buttonColor="#FCC827"
+            buttonColor = {crowdedColor}
             textColor="#000000"
             compact={true}
-            labelStyle={{ fontSize: 12 }}
+            labelStyle={{ fontSize: 12 , fontWeight: "bold"}}
           >
-            Moderate Crowd
+            {decideCrowdedText(crowdedColor)}
           </Button>
         </Card.Actions>
       </View>
@@ -74,7 +104,7 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
           <View style={styles.foodOptionsContainer}>
             <Text
               variant="titleMedium"
-              style={{fontSize:12, color: "#787878", marginLeft: 5, marginBottom: 5 }}
+              style={{fontSize:18, color: "black", marginBottom: 5 }}
             >
               Food Options Available
             </Text>
@@ -84,21 +114,19 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
                   Halal
                 </Chip>
               </Tooltip>
-              <Tooltip title="Chinese">
-                <Chip size="small" style={styles.icon} icon="food-takeout-box">
-                  Chinese
-                </Chip>
-              </Tooltip>
-              <Tooltip title="Vegetarian">
-                <Chip style={styles.icon} icon="leaf">
-                  Vegetarian
-                </Chip>
-              </Tooltip>
+              {hawkerCentreInfo["tags"]["vegetarian"]!=="not available"?
+                <Tooltip title="Vegetarian">
+                  <Chip style={styles.icon} icon="leaf">
+                    Vegetarian
+                  </Chip>
+                </Tooltip>:null
+              }
+              
             </View>
           </View>
           <View style={styles.ratingContainer}>
-            <StarRating rating={4.5} size={18} />
-            <Text style={styles.reviewsText}>{200} Reviews</Text>
+            <StarRating rating={hawkerCentreInfo["rating"]} size={18} />
+            <Text style={styles.reviewsText}>{hawkerCentreInfo["review"]} Reviews</Text>
           </View>
         </Card.Content>
       </Card>
@@ -109,16 +137,16 @@ export default function HawkerCentreCard({hawkerCentreInfo, navigation}) {
           alignItems: "center",
         }}
       >
-        <Text
-          style={{
-            color: "#787878",
-            textDecorationLine: "underline",
-            marginHorizontal: 10,
-          }}
-          onPress={() => navigation.navigate('MainPage')}
-        >
-          Too crowded? Find alternative hawker centres!
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('MainPage')}>
+          <Text
+            style={{
+              color: "#787878",
+              textDecorationLine: "underline",
+              marginHorizontal: 10 }}
+          >
+            Too crowded? Find alternative hawker centres!
+          </Text>
+        </TouchableOpacity>
       </Card.Content>
     </Card>
   );

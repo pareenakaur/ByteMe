@@ -57,6 +57,17 @@ class AccountManager(object):
                 return "stallID not in favourites list"
         else:
             return "Username does not exist"
+        
+    def getFavouriteStalls( userID, format):
+        from classes.HawkerManager import HawkerManager
+
+        user_dict = usersColl.document(userID).get().to_dict()
+        favourite_ids = user_dict['favourites']
+
+        favourite_stalls = []
+        for id in favourite_ids:
+            favourite_stalls.append(HawkerManager.getStallInfo(id, format))
+        return favourite_stalls
     
     def resetPassword(username, password):
         if(not AccountManager.validateUsername(username)):

@@ -79,7 +79,7 @@ const MainPage = ({nearbyHawkers, navigation}) => {
             <View style={styles.overlayContainer}>
                 <View style={styles.containers}>
                     <View style={styles.details}>
-                        <Summary
+                       {nearbyHawkerCentres && <Summary
                             name={HawkerCentre.name}
                             crowdLevel={HawkerCentre.crowdLevel}
                             cuisineList={HawkerCentre.cuisineList}
@@ -87,13 +87,13 @@ const MainPage = ({nearbyHawkers, navigation}) => {
                             openingHours={HawkerCentre.openingHours}
                             rating={HawkerCentre.rating}
                             reviews={HawkerCentre.reviews}
-                            />
+                            />}
                     </View>
                     <View style={styles.similarHawkers}>
                         <View style={styles.header}>
                             <Text style={styles.headerText}>Similar Hawkers Nearby</Text>
                         </View>
-                        <SimilarHawkersList similarHawkers={similarHawkers}/> 
+                        <SimilarHawkersList similarHawkers={similarHawkers} navigation={navigation}/> 
                     </View>
                     
                     

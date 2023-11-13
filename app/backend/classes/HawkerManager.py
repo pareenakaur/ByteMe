@@ -141,17 +141,6 @@ class HawkerManager:
         location = hawkerCentresColl.document(placeID).get()
         return location
     
-    def getFavouriteStalls(self, userID, format):
-        usersColl = self.db.collection('users')
-        user_information = usersColl.document(userID).get().to_dict()
-        favourite_ids = user_information['favourites']
-
-        favourite_stalls = []
-        for id in favourite_ids:
-            favourite_stalls.append(self.getStallInfo(id, format))
-        
-        return favourite_stalls
-    
     def getPlaceIDFromLatLong(self, lat, long):
         distance_list = []
 

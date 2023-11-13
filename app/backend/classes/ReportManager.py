@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
 from classes.AccountManager import AccountManager
-from classes.HawkerManager import HawkerManager
 from utils.functions import delete_collection,boolDiff
 from firebase_admin.firestore import SERVER_TIMESTAMP
 
@@ -11,18 +10,18 @@ db = firestore.client()
 reportsColl = db.collection('reports')
 class ReportManager(object):
 
-    def createReport(username,stallID,category,description):
+    def createReport(username,stallID,category,description,image):
         if(ReportManager.validateCreateReport(username,stallID)):
             _, report = reportsColl.add({"username": username, "stallID": stallID, "description": description
-                                         ,"category": category,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
-            HawkerManager.addHawkerReport(stallID,report.id)
+                                         ,"category": category,"image": image,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
+            ReportManager.addHawkerReport(stallID,report.id)
             return report.id
         else:   
             return "user has already reported the stall"
 
-    def updateReport(reportID,category,description):
+    def updateReport(reportID,category,description,image):
         if(ReportManager.validateReport(reportID)):
-            report = reportsColl.document(reportID).update({"category": category,"description": description})
+            report = reportsColl.document(reportID).update({"category": category,"description": description,"image": image})
             return "Success"
         else:
             return "Report does not exist"    
@@ -32,7 +31,7 @@ class ReportManager(object):
             report = reportsColl.document(reportID).get()
             reportDict = report.to_dict()
             res = reportsColl.document(reportID).delete()
-            HawkerManager.deleteHawkerReport(reportDict["stallID"],report.id)
+            ReportManager.deleteHawkerReport(reportDict["stallID"],report.id)
             return "Success"
         else:
             return "Report does not exist"   
@@ -81,6 +80,13 @@ class ReportManager(object):
             return ("Success", res_list)
         else:
             return ("User has no reports", [])
+        
+    def getReport(reportID):
+        report = reportsColl.document(reportID).get()
+        if report.exists:
+            return (report.to_dict())
+        else:
+            return ("No such report")
 
 
     def voteReport(username,reportID,upvote):
@@ -119,3 +125,11 @@ class ReportManager(object):
         avgRating,totalRating = 0,0
         reportLength = reportsColl.where("stallID", "==", stallID).count().get()
         return reportLength[0][0].value
+
+    def addHawkerReport(centreID,reportID):
+        hawkerCentreLocationsColl = db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
+        return
+
+    def deleteHawkerReport(centreID,reportID):
+        hawkerCentreLocationsColl = db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
+        return

@@ -10,17 +10,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ExplorePage = ({ navigation }) => {
   const [tap, setTap] = useState(false);
-  const [hawkerCentreInfo, setHawkerCentreInfo] = useState('{}');
-  const [hawkerStallInfo, setHawkerStallInfo] = useState('{}');
+  const [stallTap, setStallTap] = useState(false);
+  const [hawkerCentreInfo, setHawkerCentreInfo] = useState(null);
+  const [hawkerStallInfo, setHawkerStallInfo] = useState(null);
+  const [crowdedColor, setCrowdedColor]= useState("rgba(0,0,0,0.25)");
 
   return (
     
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1.3 }}>
-          <MapContainer setHawkerCentreInfo={setHawkerCentreInfo} zoom ={tap? 15:0} userTap={setTap}/>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1.5 }}>
+          <MapContainer setCrowdedColor={setCrowdedColor} setHawkerCentreInfo={setHawkerCentreInfo} setHawkerStallInfo={setHawkerStallInfo} zoom ={tap? 20:0} userTap={setTap} setStallTap={setStallTap}/>
         </View>
-        {tap ? <HawkerStallCard navigation={navigation}/>:<HawkerCentreCard navigation={navigation}/>}
-      </View>
+        {(!!hawkerCentreInfo || !!hawkerStallInfo)?
+            stallTap ? <HawkerStallCard hawkerStallInfo={hawkerStallInfo} navigation={navigation} />:<HawkerCentreCard hawkerCentreInfo={hawkerCentreInfo} setHawkerCentreInfo={setHawkerCentreInfo} setHawkerStallInfo={setHawkerStallInfo} navigation={navigation} crowdedColor={crowdedColor} />
+            : null
+         }
+       
+      </SafeAreaView>
    
   );
 }
