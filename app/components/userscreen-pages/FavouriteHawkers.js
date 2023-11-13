@@ -6,19 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function FavouriteHawkers({navigation}){
     //call api to get a list of array of hawker
     const [HawkerArr, setHawkerArr] = useState([]);
-    const [refresh, setRefresh] = useState(0);
-
-    const handleRemove = async(stall_id) => {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' +stall_id);
-            const data = await response.json();
-            console.log(data.result);
-            setRefresh((prev)=>prev+1);
-            
-          }catch(error){ 
-            console.log(error)
-          }
-    };
+    // const [refresh, setRefresh] = useState(0);
 
     const getFavStalls = async() => {
         try {
@@ -49,17 +37,30 @@ export default function FavouriteHawkers({navigation}){
             console.error(error);
         }
     };
-    
+
+    const handleRemove = async(stall_id) => {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' +stall_id);
+            const data = await response.json();
+            console.log(data.result);
+            getFavStalls();
+            // setRefresh((prev)=>prev+1);
+            
+          }catch(error){ 
+            console.log(error)
+          }
+    };
     
     useEffect(()=>{
         getFavStalls();
-        console.log(HawkerArr)}, [refresh])
+        console.log(HawkerArr)}, [])
     
     return (
         <SafeAreaView style={styles.container}>
             <Text style={{color: "#3C4142", fontSize: 30, fontWeight: 'bold', alignSelf:"center", paddingBottom: 20, paddingTop: 30}}>Favourite Hawkers</Text>
             <ScrollView>
-                {HawkerArr.length ? {HawkerArr} : <Text style={{color: "#FA4A0C"}}>You have not added any favourite stalls</Text>}
+            {HawkerArr}
+                {/* {HawkerArr.length ?  {HawkerArr}: <Text style={{color: "#FA4A0C"}}>You have not added any favourite stalls</Text>} */}
 
             </ScrollView>
         </SafeAreaView>

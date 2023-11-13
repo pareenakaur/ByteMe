@@ -62,7 +62,7 @@ hawkerCentres = db.collection('hawkercentres')
 with open(fr'{cwd}\app\backend\config\hawkerCentreLocations.json', 'r') as json_file:
     hawkerCentreLocations = json.load(json_file)
 
-gmaps = googlemaps.Client(key='AIzaSyB4OexlmStr943doK3Cjo15V8FnSI0dNQk')
+gmaps = googlemaps.Client(key='AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E')
 hawkerManager = HawkerManager(db, gmaps)
 
 start_time = time.time()

@@ -7,75 +7,65 @@ import {
   IconButton,
   Tooltip,
 } from "react-native-paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
 
+//Todo: hawkerStallInfo 
 export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
   const [liked, setLiked] = useState(false);
-  const [likeNumber, setLikeNumber] = useState(false);
+  // const [likeNumber, setLikeNumber] = useState(false);
+  const [foundHawker, setFoundHawker] = useState(null);
 
   useEffect(() => {
-    const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setCurrentLocation(location.coords);
-
-      setInitialRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    };
-
-    const getHawkerCentreLocations = async() => {
-      const response = await fetch("http://127.0.0.1:5000/hawkers/getAllHawkerCentreInformation");
-      const res = await response.json();
-      setHawkerCentreLocations(res);
+    const getUserLike = async() => {
+    const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=${global.usrName}&format=1`);
+    // const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=seung&format=1`);
+    const res = await response.json();
+    // console.log(res);
+    return res;
     }
-    //Fetch data from API
-    // async function getCrowdednessAll(url) {
-    //   const response = await fetch(url);
-    //   if (response.status != 200){
-    //     throw new Error(`Error found: ${response.status}`);
-    //   }
-    //   const data = await response.json()
-    //   console.log("availability: " + data);
-    //   return data;
-    // };
 
-  //   getCrowdednessAll(myURL).then((data) => {
-  //     console.log(data);
-  //     setAvailability(data);
-  // }).catch(err => console.log(err));
+    const result = getUserLike();
 
-    getLocation();
-    getHawkerCentreLocations();
+    for (let i =0; i<result.length; i++){
+      if (hawkerStallInfo["name"] === result[i]["name"]){
+        console.log(`This stall is liked! ${hawkerStallInfo["name"]} matches with ${result[i]["name"]}`)
+        setFoundHawker(result[i]);
+        setLiked(true);
+        break;
+      }
+    }
+
   }, []);
 
-  async function getUserLike(){
-    // console.log(item);
-    const response = await fetch("http://127.0.0.1:5000/user/getFavouriteStalls"); // Todo: edit path
-    const res = await response.json();
-    console.log(res);
-    
-  }
+ 
+
   function getDay() {
     const d = new Date();
     let day = d.getDay();
     return (day + 6) % 7;
   }
 
-  const handleLikePress = () => {
+  async function handleLikePress(){
     // console.log(liked, likeNumber);
     setLiked(!liked);
+    if (liked !== true){
+      const response = await fetch('http://127.0.0.1:5000/user/addFavouriteStall?username='+ global.usrName+'&stallID=' + hawkerStallInfo["place_id"]);
+      // const response = await fetch('http://127.0.0.1:5000/user/addFavouriteStall?username=seung'+'&stallID=' + hawkerStallInfo["place_id"]);
+      const data = await response.json();
+      console.log(data.result);
+      setFoundHawker(hawkerStallInfo);
+    }
+    else if (liked !== false){
+      // const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' + hawkerStallInfo["place_id"]);
+      const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username=seung'+'&stallID=' + hawkerStallInfo["place_id"]);
+      const data = await response.json();
+      console.log(data.result);
+      setFoundHawker(null);
+    }
+
     // console.log(liked, likeNumber);
-    setLikeNumber(liked ? likeNumber - 1 : likeNumber + 1);
+    // setLikeNumber(liked ? likeNumber - 1 : likeNumber + 1);
   };
 
   return (

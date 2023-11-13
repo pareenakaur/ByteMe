@@ -103,8 +103,8 @@ class ReviewManager(object):
     
     def getReviewCount(stallID):
         avgRating,totalRating = 0,0
-        reviewLength = reviewsColl.where("stallID", "==", stallID).count().get()
-        return reviewLength[0][0].value
+        reviewLength = reviewsColl.where("stallID", "==", stallID).get()
+        return len(reviewLength) 
 
     def voteReview(username,reviewID,upvote):
         if(ReviewManager.validateReview(reviewID)):
