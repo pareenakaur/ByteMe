@@ -68,8 +68,17 @@ def getUserReviews():
             return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
+    
+@reviewsAPI.route('/getReview', methods=['GET']) 
+def getReview():
+    try:
+        resp = request.args
+        res = ReviewManager.getReview(resp["reviewID"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
 
-@reviewsAPI.route('/getStallRating', methods=['GET']) 
+@reviewsAPI.route('/getStallRating', methods=['GET'])
 def getStallRating():
     try:
         resp = request.args
