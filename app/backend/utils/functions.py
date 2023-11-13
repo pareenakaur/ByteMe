@@ -104,3 +104,29 @@ def get_carpark_availability():
     #     outfile.write(pretty_response)
 
     return response
+
+#### TEMPORARY FUNCTIONS ###
+
+def getReviewCount(stallID, reviewsColl):
+        avgRating,totalRating = 0,0
+        reviewLength = reviewsColl.where("stallID", "==", stallID).get()
+        # return reviewLength[0][0].value
+        return len(reviewLength)
+
+def getAvgReviewRating(stallID, reviewsColl):
+        avgRating,totalRating = 0,0
+        reviews_list = reviewsColl.where("stallID", "==", stallID).get()
+        if(len(reviews_list) != 0):
+            for doc in reviews_list:
+                review = doc.to_dict()
+                totalRating += review.get('rating')
+            avgRating = totalRating / len(reviews_list)
+            return avgRating
+        else:
+            return ("User has no reviews")
+        
+def getReportCount(stallID,reportsColl):
+        avgRating,totalRating = 0,0
+        reportLength = reportsColl.where("stallID", "==", stallID).get()
+        # return reportLength[0][0].value
+        return len(reportLength)

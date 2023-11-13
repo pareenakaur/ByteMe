@@ -14,6 +14,57 @@ export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
   const [liked, setLiked] = useState(false);
   const [likeNumber, setLikeNumber] = useState(false);
 
+  useEffect(() => {
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setCurrentLocation(location.coords);
+
+      setInitialRegion({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      });
+    };
+
+    const getHawkerCentreLocations = async() => {
+      const response = await fetch("http://127.0.0.1:5000/hawkers/getAllHawkerCentreInformation");
+      const res = await response.json();
+      setHawkerCentreLocations(res);
+    }
+    //Fetch data from API
+    // async function getCrowdednessAll(url) {
+    //   const response = await fetch(url);
+    //   if (response.status != 200){
+    //     throw new Error(`Error found: ${response.status}`);
+    //   }
+    //   const data = await response.json()
+    //   console.log("availability: " + data);
+    //   return data;
+    // };
+
+  //   getCrowdednessAll(myURL).then((data) => {
+  //     console.log(data);
+  //     setAvailability(data);
+  // }).catch(err => console.log(err));
+
+    getLocation();
+    getHawkerCentreLocations();
+  }, []);
+
+  async function getUserLike(){
+    // console.log(item);
+    const response = await fetch("http://127.0.0.1:5000/user/getFavouriteStalls"); // Todo: edit path
+    const res = await response.json();
+    console.log(res);
+    
+  }
   function getDay() {
     const d = new Date();
     let day = d.getDay();
@@ -25,7 +76,6 @@ export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
     setLiked(!liked);
     // console.log(liked, likeNumber);
     setLikeNumber(liked ? likeNumber - 1 : likeNumber + 1);
-    console.log(hawkerStallInfo);
   };
 
   return (

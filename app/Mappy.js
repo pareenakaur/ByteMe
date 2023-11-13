@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import * as Location from "expo-location";
 // import { hawkerCentreLocations } from "./hawkerCentreLocations";
 // import { hawkerIcon } from "./assets/hawker_icon.png";
-import data from "./hawkerCentreAvailability.json"
+// import data from "./hawkerCentreAvailability.json"
 const hawkerUrl = "http://127.0.0.1:5000/hawkers"
 
 export default function Mappy(props) {
@@ -13,7 +13,7 @@ export default function Mappy(props) {
   const [errorMsg, setErrorMsg] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
-  const [availability, setAvailability] = useState(data);
+  // const [availability, setAvailability] = useState(data);
   const [hawkerCentreLocations, setHawkerCentreLocations] = useState([]);
   
   // const [hawkerStalls, setHawkerStalls] = useState([]);
@@ -63,7 +63,9 @@ export default function Mappy(props) {
   }, []);
 
   function decideColor(capacity) {
-    if (capacity < 0.3) {
+    if (capacity === "not available"){
+      return "rgba(0,0,0,0.15)"
+    } else if (capacity < 0.3) {
       return "rgba(255,0,0,0.15)";
     } else if (capacity >= 0.3 && capacity <= 0.6) {
       return"rgba(255,95,21,0.15)";
@@ -72,29 +74,29 @@ export default function Mappy(props) {
     }
   }
 
-  function getCrowdedness(hawkerCentreName) {
-    // console.log(hawkerCentreName)
-    if (!availability.hasOwnProperty(hawkerCentreName)){
-      hawkerCentreName = hawkerCentreName.substring(0,hawkerCentreName.length - 1);
-    }
+  // function getCrowdedness(hawkerCentreName) {
+  //   // console.log(hawkerCentreName)
+  //   if (!availability.hasOwnProperty(hawkerCentreName)){
+  //     hawkerCentreName = hawkerCentreName.substring(0,hawkerCentreName.length - 1);
+  //   }
 
-    let hawkerCentreData = availability[hawkerCentreName];
-    if (typeof(hawkerCentreData) === "undefined") {
-      return "rgba(0,0,0,0.15)"
-      // return "rgba(0,0,0,0)"
-    }
+  //   let hawkerCentreData = availability[hawkerCentreName];
+  //   if (typeof(hawkerCentreData) === "undefined") {
+  //     return "rgba(0,0,0,0.15)"
+  //     // return "rgba(0,0,0,0)"
+  //   }
 
-    let totalAvailableLots = 0;
-    let totalLots = 0;
-    // console.log(availability);
-    // console.log(hawkerCentreData);
-    hawkerCentreData.forEach((carpark) => {
-      totalAvailableLots = totalAvailableLots + carpark["AvailableLots"];
-      totalLots = totalLots + carpark["TotalLots"];
-    });
-    let capacity = totalAvailableLots / totalLots;
-    return decideColor(capacity); 
-  }
+  //   let totalAvailableLots = 0;
+  //   let totalLots = 0;
+  //   // console.log(availability);
+  //   // console.log(hawkerCentreData);
+  //   hawkerCentreData.forEach((carpark) => {
+  //     totalAvailableLots = totalAvailableLots + carpark["AvailableLots"];
+  //     totalLots = totalLots + carpark["TotalLots"];
+  //   });
+  //   let capacity = totalAvailableLots / totalLots;
+  //   return decideColor(capacity); 
+  // }
 
   async function handleMarkerPress(item){
     // console.log("Marker pressed: " + props.region.latitude + " , " + props.region.longitude);
@@ -115,7 +117,7 @@ export default function Mappy(props) {
     // console.log(formattedResponse);
     props.userTap(true);
     props.changeHawkerCentreInfo(formattedResponse);
-    props.changeCrowdedColor(getCrowdedness(item.name));
+    props.changeCrowdedColor(decideColor(item.crowdedness));
 
     //Get stalls at hawker centre
     // console.log("mappy: "+resPlace);
@@ -187,7 +189,7 @@ export default function Mappy(props) {
           key={item.name}
           center={{ latitude: item.latitude, longitude: item.longitude }}
           radius={300}
-          fillColor={getCrowdedness(item.name)}
+          fillColor={decideColor(item.crowdedness)}
           strokeColor="white"
           zIndex={99999}
         />

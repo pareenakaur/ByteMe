@@ -150,7 +150,7 @@ export default function MapContainer(props) {
             Please select desired checkboxes to enable filtering.
           </Text>
           <View style={styles.checkboxContainer}>
-            <Text>Vegeterian</Text>
+            <Text>Vegetarian</Text>
             <Checkbox
               status={vegetarianCheck}
               color="#FA4A0C"

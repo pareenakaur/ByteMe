@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import JSONPath from 'jsonpath'
+// import JSONPath from 'jsonpath'
 import { StyleSheet, Text, View } from 'react-native';
 import { Octicons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
@@ -8,7 +8,7 @@ import Banner  from './Banner';
 import Details from './HawkerStallDetails';
 import ReportsList from './ReportsList';
 import ReviewsList from './ReviewsList';
-import { getReports, getReviews, getImage } from '../testing-for-stall/main';
+// import { getReports, getReviews, getImage } from '../testing-for-stall/main';
 
 //need to retrieve place id from explore function --> figure out which component in which js file to import to call function and/or get place id
 

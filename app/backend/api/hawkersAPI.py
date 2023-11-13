@@ -19,6 +19,7 @@ def getAllHawkerCentreInformation():
     for hawker_centre_document in hawker_centres_documents:
         hawker_centre = hawker_centre_document.to_dict()
         hawker_centre['place_id'] = hawker_centre_document.id
+        hawker_centre['crowdedness'] = hawkerManager.getHawkerCentreCrowdedness(hawker_centre_document.id)
         hawker_centre_response.append(hawker_centre)
 
     return jsonify(hawker_centre_response)
