@@ -96,7 +96,6 @@ class HawkerManager:
         return hawker_stalls_list
 
     def getStallInfo(self, stallID, format):
-        reviewManager = ReviewManager()
         
         response = self.gmaps.place(place_id = stallID)['result']
         if format:
@@ -111,17 +110,6 @@ class HawkerManager:
         hawkerCentresColl = self.db.collection('hawkercentres')
         location = hawkerCentresColl.document(placeID).get()
         return location
-    
-    def getFavouriteStalls(self, userID, format):
-        usersColl = self.db.collection('users')
-        user_information = usersColl.document(userID).get().to_dict()
-        favourite_ids = user_information['favourites']
-
-        favourite_stalls = []
-        for id in favourite_ids:
-            favourite_stalls.append(self.getStallInfo(id, format))
-        
-        return favourite_stalls
     
     def getPlaceIDFromLatLong(self, lat, long):
         distance_list = []
@@ -205,18 +193,3 @@ class HawkerManager:
         else:
             return available_lots / total_lots
         
-    def addHawkerReview(self, centreID,reviewID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
-        return
-
-    def deleteHawkerReview(self,centreID,reviewID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
-        return
-
-    def addHawkerReport(self, centreID,reportID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
-        return
-
-    def deleteHawkerReport(self, centreID,reportID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
-        return

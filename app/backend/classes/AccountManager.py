@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 from utils.functions import boolDiff
 from google.cloud.firestore_v1.base_query import FieldFilter
+from HawkerManager import HawkerManager
 
 db = firestore.client()
 usersColl = db.collection('users')
@@ -57,6 +58,16 @@ class AccountManager(object):
                 return "stallID not in favourites list"
         else:
             return "Username does not exist"
+        
+    def getFavouriteStalls( userID, format):
+        user_dict = usersColl.document(userID).get().to_dict()
+        favourite_ids = user_dict['favourites']
+
+        favourite_stalls = []
+        for id in favourite_ids:
+            favourite_stalls.append(HawkerManager.getStallInfo(id, format))
+        
+        return favourite_stalls
     
     def resetPassword(username, password):
         if(not AccountManager.validateUsername(username)):

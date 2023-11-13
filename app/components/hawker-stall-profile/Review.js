@@ -160,27 +160,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'center',
-        paddingTop: 5
+        paddingTop: 5,
+        
         
     },
     name: {
         fontSize: 12,
         //fontFamily: 'Open-Sans-Regular',
         color: 'black',
-        fontWeight: 'bold',
+        
     },
     date: {
         fontSize: 7,
        // fontFamily: 'Open-Sans-Regular',
         color: 'black',
-        fontWeight: 'bold',
+        
     },
     
     descriptionContainer: {
         flex: 2,
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingTop: 20,
+        
         flexDirection: 'row',
         justifyContent: 'center',
     },
@@ -300,13 +300,13 @@ const viewStyles = StyleSheet.create({
         fontSize: 12,
       //  fontFamily: 'Open-Sans-Regular',
         color: 'black',
-        fontWeight: 'bold',
+        
     },
     date: {
         fontSize: 7,
       // fontFamily: 'Open-Sans-Regular',
         color: 'black',
-        fontWeight: 'bold',
+        
     },
     
     descriptionContainer: {
