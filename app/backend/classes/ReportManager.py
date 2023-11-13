@@ -123,8 +123,8 @@ class ReportManager(object):
 
     def getReportCount(stallID):
         avgRating,totalRating = 0,0
-        reportLength = reportsColl.where("stallID", "==", stallID).count().get()
-        return reportLength[0][0].value
+        reportLength = reportsColl.where("stallID", "==", stallID).get()
+        return len(reportLength) 
 
     def addHawkerReport(centreID,reportID):
         hawkerCentreLocationsColl = db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})

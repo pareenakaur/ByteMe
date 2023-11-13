@@ -42,21 +42,7 @@ export default function Mappy(props) {
       const res = await response.json();
       setHawkerCentreLocations(res);
     }
-    //Fetch data from API
-    // async function getCrowdednessAll(url) {
-    //   const response = await fetch(url);
-    //   if (response.status != 200){
-    //     throw new Error(`Error found: ${response.status}`);
-    //   }
-    //   const data = await response.json()
-    //   console.log("availability: " + data);
-    //   return data;
-    // };
-
-  //   getCrowdednessAll(myURL).then((data) => {
-  //     console.log(data);
-  //     setAvailability(data);
-  // }).catch(err => console.log(err));
+    
 
     getLocation();
     getHawkerCentreLocations();
@@ -138,7 +124,7 @@ export default function Mappy(props) {
     // console.log(item);
     const response = await fetch("http://127.0.0.1:5000/hawkers/getStallInfo?id=" + item.place_id + "&format=1");
     const res = await response.json();
-    console.log(res);
+    // console.log(res);
     const formattedResponse = {'place_id': res["place_id"], 'name': res["name"], 'address':res["formatted_address"], 'opening_hours': res["opening_hours"], 'open_now': res["open_now"], 'rating': res["google_rating"], 'review': res["google_review_count"], photo_reference: res["photo_data"][0]["photo_reference"], 'tags': res["filter_tags"]}
     // console.log("formatted_response: ")
     // console.log(formattedResponse);

@@ -18,7 +18,7 @@ hawkerCentresColl = db.collection('hawkercentres')
 
 class HawkerManager:
 
-    def __init__(self, db, gmaps):
+    def __init__(self, db=None, gmaps=None):
         self.db = db
         self.gmaps = gmaps
     
