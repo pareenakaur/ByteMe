@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import ReviewsList from './ReviewsList';
 
 const ViewAllReviews = ({navigation, route}) => {
-    const { reviews1 } = route.params;
+    const { reviews1, image, stallID } = route.params;
      // State variable to store stallId
   const [storedReviews, setStoredReviews] = useState(null);
 
@@ -28,7 +28,7 @@ const ViewAllReviews = ({navigation, route}) => {
                 <Text style={styles.text}>All Reviews</Text>
             </View>
             <View style={styles.reviewContainer}>
-                {reviews1 && <ReviewsList reviews={reviews1} hawkerStall={HawkerStall} type={1} />}
+                {reviews1 && <ReviewsList reviews={reviews1} image={image} stallID={stallID} type={1} />}
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.viewAllReviewsText} onPress={() => navigation.navigate('Profile')}>Hide All</Text>

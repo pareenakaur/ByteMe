@@ -16,11 +16,12 @@ const Profile = ({placeId1, stallId1, navigation}) => {
 
     const placeId = 'ChIJv4Mk4QYa2jERx51-KDobWrA';
     const stallId = '9oQZA2Gxr9NCFMi4lBtW';
-    //const API_KEY = 'AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0';
+    const API_KEY = 'AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0';
     
     
     const [stallData, setStallData] = useState(null);
     const [stallImage, setStallImage] = useState(null);
+   
     
 
   useEffect(() => {
@@ -34,11 +35,12 @@ const Profile = ({placeId1, stallId1, navigation}) => {
           const jsonString = await response.text();
           const parsedData = JSON.parse(jsonString);
           console.log(parsedData);
-        //   if (parsedData.photoReference) {
-        //     const imageUrl = await retrieveImageUrl(parsedData.photos[0].photo_reference);
-        //     setImage(imageUrl);
-        //   }
+          
           setStallData(parsedData);
+          console.log(parsedData.photos[0].photo_reference);
+          setStallImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${parsedData.photos[0].photo_reference}&key=${API_KEY}`);
+          
+          
           
         } else {
           throw new Error('Error retrieving stall information: ' + response.status);
@@ -91,7 +93,7 @@ const Profile = ({placeId1, stallId1, navigation}) => {
     useEffect(() => {
         async function fetchData() {
           try {
-            const response = await fetch('http://127.0.0.1:5000/reports/getStallReports?stallID=' + stallId, {
+            const response = await fetch('http://127.0.0.1:5000/reports/getStallReports?stallID=' + stallId , {
               method: 'GET'
             });
     
@@ -180,18 +182,22 @@ const Profile = ({placeId1, stallId1, navigation}) => {
 
     return(
         <View style={styles.default} >
-            <Banner image={HawkerStall.image} />
+            <Banner image={stallImage} />
             <AntDesign style={styles.navigationButton} name="leftcircle" size={26} color="#EB6C05" onPress={() => navigation.navigate('ExplorePage')}/>
             <View style={styles.overlayContainer}>
                 <View style={styles.containers}>
                     <View style={styles.details}>
-                        {stallData && reviews1 && <Details image={HawkerStall.image}
+                        { stallData && stallImage && reviews1 && <Details 
                             name={stallData.name}
                             address={stallData.formatted_address}
-                            openingHours={'6am - 3pm'}
+                            openingHours={() => {if(stallData && stallData.hasOwnProperty('weekday_text')){
+                                return stallData.weekday_text
+                            } else {
+                                return 'Not available'
+                            }}}
                             rating={stallData.rating}
                             reviews={reviews1}
-                            contact={stallData.formatted_phone_number}/>}
+                            contact={stallData.formatted_phone_number}/>} 
                     </View>
 
 
@@ -207,15 +213,15 @@ const Profile = ({placeId1, stallId1, navigation}) => {
                                 <View style={styles.reportsNavContainer}>
                                     <View style={styles.reportViews}>
                                         <View style={styles.reportViewsContainer}>
-                                            {stallData && reports1  && <ReportsList reports={reports1} hawkerStall ={HawkerStall} type={0}/>}
+                                            {stallData && stallImage && reports1  && <ReportsList reports={reports1} image ={stallImage} stallID={placeId} type={0}/>}
                                         </View>
                                     </View>
                                 </View>
                             </View>
                             <View style={styles.viewAllReports}>
-                              {reports1 && <Text style={styles.viewAllReportText} onPress={() => {
+                              {reports1 && stallImage && <Text style={styles.viewAllReportText} onPress={() => {
                                     if (reports1 != null) {
-                                    navigation.navigate('ViewAllReports', { reports1 });
+                                    navigation.navigate('ViewAllReports', { reports1, stallImage, placeId });
                                     } else {
                                     // Handle the case where reports1 is null or
                                     console.warn('reports1 is null or undefined');
@@ -238,7 +244,7 @@ const Profile = ({placeId1, stallId1, navigation}) => {
                             </View>
                             <View style={styles.reviewMainContainer}>
                                     <View style={styles.reviewsList}>
-                                        {reviews1 && stallData && <ReviewsList reviews={reviews1} hawkerStall={HawkerStall}/>}
+                                        {reviews1 && stallData && stallImage && <ReviewsList reviews={reviews1} image={stallImage} stallID={placeId}/>}
                                     </View>
 
                             </View>
@@ -247,7 +253,7 @@ const Profile = ({placeId1, stallId1, navigation}) => {
                                 style={styles.viewAllReviewText}
                                 onPress={() => {
                                     if (reviews1 != null) {
-                                    navigation.navigate('ViewAllReviews', { reviews1 });
+                                    navigation.navigate('ViewAllReviews', { reviews1, stallImage, placeId });
                                     } else {
                                     // Handle the case where reviews1 is 
                                     console.warn('reviews1 is null or undefined');
