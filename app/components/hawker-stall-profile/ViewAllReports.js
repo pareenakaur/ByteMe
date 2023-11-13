@@ -4,6 +4,7 @@ import ReportsList from './ReportsList';
 
 const ViewAllReports = ({navigation, route }) => {
     const { reports1, image, stallID } = route.params;
+    
      // State variable to store stallId
   const [storedReports, setStoredReports] = useState(null);
 
@@ -31,7 +32,7 @@ const ViewAllReports = ({navigation, route }) => {
                 <Text style={styles.text}>All Reports</Text>
             </View>
             <View style={styles.reportContainer}>
-                {reports1 && <ReportsList reports={reports1} image ={image} stallID={stallID} type={1} />}
+                {reports1 && <ReportsList reports={reports1} image={image} stallID={stallID} type={1} />}
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.viewAllReportText} onPress={() => navigation.navigate('Profile')}>Hide All</Text>

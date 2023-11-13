@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import StarRating from '../hawker-stall-profile/StarRating';
 
 
-const Summary = ({ name, cuisineList, crowdLevel, address, openingHours, rating, reviews }) => {
+const Summary = ({ image, name, cuisineList, crowdLevel, address, openingHours, rating, reviews }) => {
 
     const numOfReviews = reviews.length;
 
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         padding: 4,
-        fontSize: 12,
+        fontSize: 10,
         textAlign: 'center'
     },
     detailsMainContainer: {

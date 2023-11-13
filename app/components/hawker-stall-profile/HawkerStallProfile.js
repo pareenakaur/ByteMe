@@ -12,7 +12,8 @@ import ReviewsList from './ReviewsList';
 
 //need to retrieve place id from explore function --> figure out which component in which js file to import to call function and/or get place id
 
-const Profile = ({placeId1, stallId1, navigation}) => {
+const Profile = ({route, navigation}) => {
+    //const { placeId } = route.params;
 
     const placeId = 'ChIJv4Mk4QYa2jERx51-KDobWrA';
     const stallId = '9oQZA2Gxr9NCFMi4lBtW';
@@ -50,43 +51,9 @@ const Profile = ({placeId1, stallId1, navigation}) => {
       }
     }
 
-    
-
-    // Async function to retrieve image URL
-    // async function retrieveImageUrl(photoReference) {
-    //     const url = `https://maps.googleapis.com/maps/api/image?photoreference=${photoReference}&size=2048x1536&key=${API_KEY}`;
-    //     const response = await fetch(url);
-  
-    //     if (response.ok) {
-    //       const json = await response.json();
-    //       const imageUrl = json.url;
-    //       console.log(imageUrl);
-    //       return imageUrl;
-    //     } else {
-    //       console.error(`Error: ${response.status}`);
-    //       return null;
-    //     }
-    //   }
-  
-
     // Call the async function
     fetchData();
   },[placeId]); 
-
-  const [image, setImage] = useState(null);
-  
-// async function retrieveImageUrl(photoReference) {
-//   const url = `https://maps.googleapis.com/maps/api/image?photoreference=${photoReference}&size=2048x1536&key=${API_KEY}`;
-//   const response = await fetch(url);
-//   if (response.ok) {
-//       const json = await response.json();
-//       const imageUrl = json.url;
-//       console.log(imageUrl);
-//   } else {
-//       console.error(`Error: ${response.status}`);
-//   }
-// }
-// //retrieveImageUrl(photoReference[0]);
 
 
     const [reports1, setStallReports] = useState(null);
@@ -165,20 +132,6 @@ const Profile = ({placeId1, stallId1, navigation}) => {
 
 
     
-    //accesss first value of array
-    const HawkerStall = { 
-        image: require("../../assets/HawkerStallImage.jpg"),
-        //name: stallData.name,
-        //address: stallData.formatted_address,
-        //contact: stallData.formatted_phone_number,
-        //openingHours: "6am - 3pm",
-        //rating: stallData.rating,
-        //reviews: reviews1,
-        //reports: reports1,
-    }
-
-    //const reportsList = HawkerStall.reports;
-    //const reviewsList = HawkerStall.reviews;
 
     return(
         <View style={styles.default} >
@@ -219,9 +172,9 @@ const Profile = ({placeId1, stallId1, navigation}) => {
                                 </View>
                             </View>
                             <View style={styles.viewAllReports}>
-                              {reports1 && stallImage && <Text style={styles.viewAllReportText} onPress={() => {
+                              {reports1 && stallImage && stallData && <Text style={styles.viewAllReportText} onPress={() => {
                                     if (reports1 != null) {
-                                    navigation.navigate('ViewAllReports', { reports1, stallImage, placeId });
+                                    navigation.navigate('ViewAllReports', { reports1: reports1, image: stallImage, stallID: placeId });
                                     } else {
                                     // Handle the case where reports1 is null or
                                     console.warn('reports1 is null or undefined');
@@ -244,7 +197,7 @@ const Profile = ({placeId1, stallId1, navigation}) => {
                             </View>
                             <View style={styles.reviewMainContainer}>
                                     <View style={styles.reviewsList}>
-                                        {reviews1 && stallData && stallImage && <ReviewsList reviews={reviews1} image={stallImage} stallID={placeId}/>}
+                                        {reviews1 && stallData && stallImage && <ReviewsList reviews={reviews1} image={stallImage} stallID={stallId}/>}
                                     </View>
 
                             </View>
@@ -253,7 +206,7 @@ const Profile = ({placeId1, stallId1, navigation}) => {
                                 style={styles.viewAllReviewText}
                                 onPress={() => {
                                     if (reviews1 != null) {
-                                    navigation.navigate('ViewAllReviews', { reviews1, stallImage, placeId });
+                                    navigation.navigate('ViewAllReviews', { reviews1: reviews1, image: stallImage, stallID: stallId });
                                     } else {
                                     // Handle the case where reviews1 is 
                                     console.warn('reviews1 is null or undefined');

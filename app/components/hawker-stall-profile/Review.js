@@ -12,6 +12,7 @@ const Review = ({image, username, date, profilePic, upvote, downvote, rating, de
     const [downvoted, setDownvoted] = useState(false);
     const [upvoteCount, setUpvoteCount] = useState(upvote);
     const [downvoteCount, setDownvoteCount] = useState(downvote);
+   
 
     const [reviewID, setReviewID] = useState(null);
     useEffect(() => {
@@ -24,7 +25,7 @@ const Review = ({image, username, date, profilePic, upvote, downvote, rating, de
             if (response.status === 200) {
               const jsonString = await response.text();
               const parsedData = JSON.parse(jsonString);
-              
+              console.log(parsedData);
               setReviewID(parsedData.list.find(stall => stall.stallID === stallID).reviewID);
             } else {
               throw new Error('Error retrieving user information: ' + response.status);
