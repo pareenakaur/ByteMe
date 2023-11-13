@@ -205,18 +205,3 @@ class HawkerManager:
         else:
             return available_lots / total_lots
         
-    def addHawkerReview(self, centreID,reviewID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
-        return
-
-    def deleteHawkerReview(self,centreID,reviewID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
-        return
-
-    def addHawkerReport(self, centreID,reportID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
-        return
-
-    def deleteHawkerReport(self, centreID,reportID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
-        return

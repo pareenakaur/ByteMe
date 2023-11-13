@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 import datetime
-from classes.HawkerManager import HawkerManager
 from classes.AccountManager import AccountManager
 from utils.functions import delete_collection,boolDiff
 from firebase_admin.firestore import SERVER_TIMESTAMP
@@ -16,7 +15,7 @@ class ReviewManager(object):
         if(ReviewManager.validateCreateReview(username,stallID)):
             _, review = reviewsColl.add({"username": username, "stallID": stallID, "rating": rating,"description": description,
                                          "votes": 0, "timestamp": SERVER_TIMESTAMP})
-            HawkerManager.addHawkerReview(stallID,review.id)
+            ReviewManager.addHawkerReview(stallID,review.id)
             return review.id
         else:
             return "user has already reviewed the stall"
@@ -34,7 +33,7 @@ class ReviewManager(object):
             review = reviewsColl.document(reviewID).get()
             reviewDict = review.to_dict()
             res = reviewsColl.document(reviewID).delete()
-            HawkerManager.deleteHawkerReview(reviewDict["stallID"],review.id)
+            ReviewManager.deleteHawkerReview(reviewDict["stallID"],review.id)
             return "Success"
         else:
             return "Review does not exist"
@@ -131,3 +130,11 @@ class ReviewManager(object):
     def deleteReviewVotes(reviewID):
         votesColl = reviewsColl.document(reviewID).collection('votes')
         delete_collection(votesColl,10)
+    
+    def addHawkerReview(self, centreID,reviewID):
+        hawkerCentreLocationsColl = db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
+        return
+
+    def deleteHawkerReview(self,centreID,reviewID):
+        hawkerCentreLocationsColl = db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
+        return
