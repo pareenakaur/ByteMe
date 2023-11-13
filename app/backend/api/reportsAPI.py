@@ -69,4 +69,13 @@ def getUserReports():
             return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
-        
+
+
+@reportsAPI.route('/getReport', methods=['GET']) 
+def getReport():
+    try:
+        resp = request.args
+        res = ReportManager.getReport(resp["reportID"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
