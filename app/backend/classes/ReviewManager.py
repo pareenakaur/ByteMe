@@ -138,10 +138,10 @@ class ReviewManager(object):
         votesColl = reviewsColl.document(reviewID).collection('votes')
         delete_collection(votesColl,10)
     
-    def addHawkerReview(self, centreID,reviewID):
+    def addHawkerReview(centreID,reviewID):
         hawkerCentreLocationsColl = db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
         return
 
-    def deleteHawkerReview(self,centreID,reviewID):
+    def deleteHawkerReview(centreID,reviewID):
         hawkerCentreLocationsColl = db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
         return
