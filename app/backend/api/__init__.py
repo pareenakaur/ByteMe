@@ -11,7 +11,7 @@ cred = credentials.Certificate(key_path)
 default_app = initialize_app(cred)
 
 db = firestore.client()
-gmaps = googlemaps.Client(key='AIzaSyB4OexlmStr943doK3Cjo15V8FnSI0dNQk')
+gmaps = googlemaps.Client(key='AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E')
 
 def create_app():
     app = Flask(__name__)

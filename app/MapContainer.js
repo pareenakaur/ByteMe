@@ -26,6 +26,7 @@ export default function MapContainer(props) {
   const [minimumRatingInput, setMinimumRatingInput] = useState("");
   const [validMinimumRating, setValidMinimumRating] = useState(true);
   const [hawkerStalls, setHawkerStalls] = useState([]);
+  const [hawkerCentreLocations, setHawkerCentreLocations] = useState([]);
 
   function getCoordsFromName(loc) {
     setRegion({
@@ -34,17 +35,7 @@ export default function MapContainer(props) {
       latitudeDelta: 0.003,
       longitudeDelta: 0.003,
     });
-    // props.getRegion({
-    //   latitude: loc.lat,
-    //   longitude: loc.lng,
-    //   latitudeDelta: 0.003,
-    //   longitudeDelta: 0.003,
-    // });
   }
-
-  // function onMapRegionChange(region) {
-  //   setRegion({ region });
-  // }
 
   const showModal = () => setFilterOn(true);
   const hideModal = () => setFilterOn(false);
@@ -64,12 +55,35 @@ export default function MapContainer(props) {
     });
   }
 
+  async function getFilteredLocations (){
+
+    minRating = parseInt(minimumRatingInput);
+    const filtering = ((vegetarianCheck === "unchecked" && isNaN(minRating)) ? false : true);
+    // console.log(`filtering: ${filtering}`)
+    const veg_filter = (vegetarianCheck==="checked"? true : false);
+    const rating_filter = (isNaN(minRating) ? 0 : minRating);
+
+    if (filtering) {
+      console.log(`http://127.0.0.1:5000/hawkers/getAllHawkerCentreInformation?filter=${filtering}&vegetarian=${veg_filter}&minrating=${rating_filter}`)
+      const response = await fetch(`http://127.0.0.1:5000/hawkers/getAllHawkerCentreInformation?filter=${filtering}&vegetarian=${veg_filter}&minrating=${rating_filter}`);
+      const res = await response.json();
+      console.log(res);
+      setHawkerCentreLocations(res);
+    } 
+    else{
+      const response = await fetch(`http://127.0.0.1:5000/hawkers/getAllHawkerCentreInformation`);
+      const res = await response.json();
+      setHawkerCentreLocations(res);
+    }
+  }
+
   function handleSubmit() {
     console.log("submit clicked")
     hasErrors().then((message)=> {
       setValidMinimumRating(true);
       setFilterOn(false);
-      console.log("valid rating:" +validMinimumRating);
+      console.log("valid rating: " + validMinimumRating);
+      getFilteredLocations();
     }).catch((error) => {
       setValidMinimumRating(false);
     })
@@ -115,6 +129,8 @@ export default function MapContainer(props) {
             changeCrowdedColor = {props.setCrowdedColor}
             hawkerStalls = {hawkerStalls}
             setHawkerStalls = {setHawkerStalls}
+            hawkerCentreLocations = {hawkerCentreLocations}
+            setHawkerCentreLocations = {setHawkerCentreLocations}
           />
         </View>
       ) : (
@@ -136,6 +152,8 @@ export default function MapContainer(props) {
             changeCrowdedColor = {props.setCrowdedColor}
             hawkerStalls = {hawkerStalls}
             setHawkerStalls = {setHawkerStalls}
+            hawkerCentreLocations = {hawkerCentreLocations}
+            setHawkerCentreLocations = {setHawkerCentreLocations}
           />
         </View>
       )}

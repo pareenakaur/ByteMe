@@ -36,9 +36,9 @@ export default function App() {
     <PaperProvider>
       <NavigationContainer> 
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="FirstPage" component={FirstPage} />
+          <Stack.Screen name="FirstPage" component={FirstPage} />
           <Stack.Screen name="RegisterTab" component={RegisterTab} />
-          <Stack.Screen name="LoginTab" component={LoginTab} />  */}
+          <Stack.Screen name="LoginTab" component={LoginTab} /> 
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} />
 
