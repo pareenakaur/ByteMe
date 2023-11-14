@@ -15,6 +15,7 @@ class ReportManager(object):
             _, report = reportsColl.add({"username": username, "stallID": stallID, "description": description
                                          ,"category": category,"image": image,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
             ReportManager.addHawkerReport(stallID,report.id)
+            print("report.id = " ,report.id)
             return report.id
         else:   
             return "user has already reported the stall"
