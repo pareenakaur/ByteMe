@@ -5,7 +5,11 @@ import os
 import googlemaps
 
 current_dir = os.path.dirname(__file__)
-key_path = os.path.join(current_dir, '..', 'config', 'key.json')
+# first server
+# key_path = os.path.join(current_dir, '..', 'config', 'key.json')
+
+# second server
+key_path = os.path.join(current_dir, '..', 'config', 'key2.json')
 
 cred = credentials.Certificate(key_path)
 default_app = initialize_app(cred)
