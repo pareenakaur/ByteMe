@@ -22,7 +22,7 @@ const ExplorePage = ({ navigation }) => {
           <MapContainer setCrowdedColor={setCrowdedColor} setHawkerCentreInfo={setHawkerCentreInfo} setHawkerStallInfo={setHawkerStallInfo} zoom ={tap? 20:0} userTap={setTap} setStallTap={setStallTap}/>
         </View>
         {(!!hawkerCentreInfo || !!hawkerStallInfo)?
-            stallTap ? <HawkerStallCard hawkerStallInfo={hawkerStallInfo} navigation={navigation} />:<HawkerCentreCard hawkerCentreInfo={hawkerCentreInfo} setHawkerCentreInfo={setHawkerCentreInfo} setHawkerStallInfo={setHawkerStallInfo} navigation={navigation} crowdedColor={crowdedColor} />
+            stallTap ? <HawkerStallCard hawkerCentreInfo={hawkerCentreInfo} hawkerStallInfo={hawkerStallInfo} navigation={navigation} />:<HawkerCentreCard hawkerCentreInfo={hawkerCentreInfo} setHawkerCentreInfo={setHawkerCentreInfo} setHawkerStallInfo={setHawkerStallInfo} navigation={navigation} crowdedColor={crowdedColor} />
             : null
          }
        

@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
 
 //Todo: hawkerStallInfo 
-export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
+export default function HawkerStallCard({hawkerCentreInfo, hawkerStallInfo, navigation }) {
   const [liked, setLiked] = useState(false);
   // const [likeNumber, setLikeNumber] = useState(false);
   const [foundHawker, setFoundHawker] = useState(null);
@@ -99,7 +99,7 @@ export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
           iconColor="#FA4A0C"
           size={25}
           // onPress={(hawkerStallInfo) => navigation.navigate('TabNavigation', {screen: "Explore", params: {screen: "Profile", params: {placeId: hawkerStallInfo["place_id"]}} })}
-          onPress={() => navigation.navigate("Profile", {place: hawkerStallInfo})}
+          onPress={() => navigation.navigate("Profile", {centre: hawkerCentreInfo, place: hawkerStallInfo})}
         ></IconButton>
       </View>
       <View style={{ flexDirection: "row", marginVertical: 5 }}>

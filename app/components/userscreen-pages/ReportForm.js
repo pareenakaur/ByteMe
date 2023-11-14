@@ -19,20 +19,24 @@ import { initializeApp } from "firebase/app";
 export default function ReportForm({ navigation , route}) {
   const firebaseConfig = {
     // ...
-    apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
-    authDomain: "sgbytes.firebaseapp.com",
-    projectId: "sgbytes",
-    storageBucket: "sgbytes.appspot.com",
-    messagingSenderId: "766295476965",
-    appId: "1:766295476965:web:131a044224867bf452e20c",
-    measurementId: "G-RWGZJLPD4G",
+    apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
+    authDomain: "byte-403ce.firebaseapp.com",
+    databaseURL: "https://byte-403ce-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "byte-403ce",
+    storageBucket: "byte-403ce.appspot.com",
+    messagingSenderId: "777425915236",
+    appId: "1:777425915236:web:7cc5b449392ee76696fe71",
+    measurementId: "G-CBGM27NVK3"
   };
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const storage = getStorage();
 
-  const {place} = route.params;
+  const {centre, place} = route.params;
+  console.log(centre["place_id"]);
+  console.log(place["place_id"]);
+  
   // const stall_id = "ChIJ7V2oIU892jERriBUTEBU-JE";
   const [myText, setText] = useState({ value: "", error: "" });
   const [imgUploaded, setImg] = useState(false);
@@ -51,18 +55,20 @@ export default function ReportForm({ navigation , route}) {
     }
     console.log(JSON.stringify({
         "username": global.usrName,
+        "centreID": centre["place_id"],
         "stallID": place["place_id"],
         "category": cat,
         "description": myText.value,
         "image": imgUploaded,
-      }))
+      }));
     try {
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           "username": global.usrName,
-          "stallID": stallID,
+          "centreID": centre["place_id"],
+          "stallID": place["place_id"],
           "category": cat,
           "description": myText.value,
           "image": imgUploaded,
@@ -73,7 +79,7 @@ export default function ReportForm({ navigation , route}) {
         requestOptions
       );
       const data = await response.json();
-      console.log(data.result);
+      // console.log(data.result);
       setReportID(data.result);
       if (data.result == "user has already reported the stall") {
         Alert.alert(
@@ -82,7 +88,7 @@ export default function ReportForm({ navigation , route}) {
           [
             {
               text: "OK",
-              onPress: () => navigation.navigate("Profile", {place: place}), //back to explore or back to the stall page ?
+              onPress: () => navigation.navigate("Profile", {centre: centre, place: place}), //back to explore or back to the stall page ?
               style: "cancel",
             },
           ]
@@ -91,7 +97,7 @@ export default function ReportForm({ navigation , route}) {
         Alert.alert("Success!", "You submitted one report :)", [
           {
             text: "OK",
-            onPress: () => navigation.navigate("Profile", {place: place}), //back to explore or back to the stall page ?
+            onPress: () => navigation.navigate("Profile", {centre: centre, place: place}), //back to explore or back to the stall page ?
             style: "cancel",
           },
         ]);
@@ -173,7 +179,7 @@ export default function ReportForm({ navigation , route}) {
         <ScrollView>
           {/* <View flex={1}> */}
           <View style={styles.topbar}>
-            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Profile", {centre: centre, place: place})}>
               <Text
                 style={{
                   paddingBottom: 8,

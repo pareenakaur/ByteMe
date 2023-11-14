@@ -23,7 +23,7 @@ def create_app():
 
     hawkerManager = HawkerManager(db, gmaps)
     print("Initializing database...")
-    hawkerManager.initializeHawkerCentreCollection()
+    # hawkerManager.initializeHawkerCentreCollection()
     
     from .userAPI import userAPI
     from .reviewsAPI import reviewsAPI

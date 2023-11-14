@@ -120,9 +120,12 @@ class HawkerManager:
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre = hawkerCentresColl.document(centreID).get().to_dict()
 
-        for hawker_stall_id in hawker_centre['hawker_stalls']:
-            hawker_stall_response = self.getStallInfo(hawker_stall_id, format)
-            hawker_stalls_list.append(hawker_stall_response)
+        if ("hawker_stalls" in hawker_centre):
+            for hawker_stall_id in hawker_centre['hawker_stalls']:
+                hawker_stall_response = self.getStallInfo(hawker_stall_id, format)
+                hawker_stalls_list.append(hawker_stall_response)
+        else:
+            print("Not available")
 
         return hawker_stalls_list
 
@@ -227,14 +230,12 @@ class HawkerManager:
             return available_lots / total_lots
         
     def initializeHawkerCentreCollection(self):
-        print("im here")
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre_documents = hawkerCentresColl.stream()
 
         batch = self.db.batch()
 
         for hawker_centre_document in hawker_centre_documents:
-            print(place_id)
             place_id = hawker_centre_document.id
             hawker_centre = hawker_centre_document.to_dict()
             crowdedness = self.getHawkerCentreCrowdedness(place_id)

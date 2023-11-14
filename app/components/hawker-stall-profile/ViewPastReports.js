@@ -44,7 +44,7 @@ const ViewPastReports = ({navigation}) => {
                 {reports1 && <ReportsList reports={reports1} image={image} stallID={stallID} type={1} />}
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.viewAllReportText} onPress={() => navigation.navigate('Profile')}>Hide All</Text>
+                <IconButton icon={"chevron-left-box"} size={30} iconColor ={"orange"} onPress={() => navigation.navigate('ProfilePage')}>Back</Text>
             </View>
         </View>
     );
@@ -64,14 +64,12 @@ const styles = StyleSheet.create({
         flex: 0.1,
     },
     reportContainer: {
-        flex: 1.9,
-        
-        
+        flex: 1.9,        
     },
     textContainer: {
         flex: 0.1,
-        
-        
+        justifyContent: "flex-start",
+        alignItems: "flex-end"
     },
     text: {
        // fontFamily: 'Open-Sans-Bold',

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import StarRating from './StarRating';
 
 
-const Details = ({name, address, contact, openingHours, rating, reviews}) => {
+const Details = ({name, address, contact, openingHours, rating, numOfReviews}) => {
 
     //SEE IF STALL IS OPEN OR NOT
     const currentTime = new Date();
@@ -76,7 +76,7 @@ function parseTimeWithAmPm(timeString) {
 
     const statusText = isOpenNow === 'Not Available' ? 'Not Available' : isOpenNow ? 'Open' : 'Closed';
 
-    const numOfReviews = reviews.length;
+    
 
 
 

@@ -13,7 +13,7 @@ import ReviewsList from "./ReviewsList";
 //need to retrieve place id from explore function --> figure out which component in which js file to import to call function and/or get place id
 
 const Profile = ({navigation, route}) => {
-  const { place } = route.params;
+  const { centre, place } = route.params;
     // const placeId = navigation.getParam('placeId', 'NO-ID');
   // const placeId = 'ChIJv4Mk4QYa2jERx51-KDobWrA';
   // const stallId = '9oQZA2Gxr9NCFMi4lBtW';
@@ -71,7 +71,7 @@ const Profile = ({navigation, route}) => {
     async function fetchData() {
       try {
         const response = await fetch(
-          "http://127.0.0.1:5000/reports/getStallReports?stallID=" + placeId,
+          "http://127.0.0.1:5000/reports/getStallReports?stallID=" + place["place_id"],
           {
             method: "GET",
           }
@@ -97,14 +97,15 @@ const Profile = ({navigation, route}) => {
 
     // Call the async function
     fetchData();
-  }, [placeId]);
+  }, [place]);
 
   const [reviews1, setStallReviews] = useState(null);
+  const [numberOfReviews, setNumberOfReviews] = useState(0);
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await fetch(
-          "http://127.0.0.1:5000/reviews/getStallReviews?stallID=" + placeId,
+          "http://127.0.0.1:5000/reviews/getStallReviews?stallID=" + place["place_id"],
           {
             method: "GET",
           }
@@ -115,6 +116,7 @@ const Profile = ({navigation, route}) => {
           const parsedData = JSON.parse(jsonString);
           console.log(parsedData.list);
           setStallReviews(parsedData.list);
+          if(reviews1 !== null) setNumberOfReviews(reviews1.length);
         } else {
           throw new Error(
             "Error retrieving stall information: " + response.status
@@ -127,7 +129,7 @@ const Profile = ({navigation, route}) => {
 
     // Call the async function
     fetchData();
-  }, [placeId]);
+  }, [place]);
 
   // const report = {
   //     image: require("../../assets/HawkerStallImage.jpg"),
@@ -163,10 +165,10 @@ const Profile = ({navigation, route}) => {
       <View style={styles.overlayContainer}>
         <View style={styles.containers}>
           <View style={styles.details}>
-            {stallData && stallImage && reviews1 && (
+            {stallData && stallImage && (
               <Details
-                name={stallData.name}
-                address={stallData.formatted_address}
+                name={stallData["name"]}
+                address={stallData["address"]}
                 openingHours={() => {
                   if (stallData && stallData.hasOwnProperty("weekday_text")) {
                     return stallData.weekday_text;
@@ -175,8 +177,8 @@ const Profile = ({navigation, route}) => {
                   }
                 }}
                 rating={stallData.rating}
-                reviews={reviews1}
-                contact={stallData.formatted_phone_number}
+                numOfReviews={numberOfReviews}
+                
               />
             )}
           </View>
@@ -190,7 +192,7 @@ const Profile = ({navigation, route}) => {
                     name="report"
                     size={20}
                     color="black"
-                    onPress={() => navigation.navigate("ReportForm", {place: place})}
+                    onPress={() => navigation.navigate("ReportForm", {centre: centre, place: place})}
                   />
                 </View>
               </View>
@@ -202,7 +204,7 @@ const Profile = ({navigation, route}) => {
                         <ReportsList
                           reports={reports1}
                           image={stallImage}
-                          stallID={placeId}
+                          stallID={place["place_id"]}
                           type={0}
                         />
                       )}
@@ -219,7 +221,7 @@ const Profile = ({navigation, route}) => {
                         navigation.navigate("ViewAllReports", {
                           reports1: reports1,
                           image: stallImage,
-                          stallID: placeId,
+                          stallID: place["place_id"],
                         });
                       } else {
                         // Handle the case where reports1 is null or
@@ -246,7 +248,7 @@ const Profile = ({navigation, route}) => {
                       size={24}
                       color="#EB6C05"
                       onPress={() =>
-                        navigation.navigate("ReviewForm", { navigation })
+                        navigation.navigate("ReviewForm", {centre: centre, place:place})
                       }
                     />
                   </View>
@@ -258,7 +260,7 @@ const Profile = ({navigation, route}) => {
                     <ReviewsList
                       reviews={reviews1}
                       image={stallImage}
-                      stallID={placeId}
+                      stallID={place["place_id"]}
                     />
                   )}
                 </View>
@@ -271,7 +273,7 @@ const Profile = ({navigation, route}) => {
                       navigation.navigate("ViewAllReviews", {
                         reviews1: reviews1,
                         image: stallImage,
-                        stallID: placeId,
+                        stallID: place["place_id"],
                       });
                     } else {
                       // Handle the case where reviews1 is

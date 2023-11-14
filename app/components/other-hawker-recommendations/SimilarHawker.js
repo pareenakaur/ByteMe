@@ -92,7 +92,7 @@ const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
 
                     <View style={styles.rightNavIcon}>
                         <View style={styles.rightNavIconContainer}>
-                            <AntDesign name="right" size={24} color="black" onPress={() => navigation.navigate('Profile', { placeId: similarHawker.place_id })}/> 
+                            <AntDesign name="right" size={24} color="black" onPress={() => navigation.navigate('ExplorePage', { placeId: similarHawker.place_id })}/> 
                         </View> 
                     </View>
                 </View>

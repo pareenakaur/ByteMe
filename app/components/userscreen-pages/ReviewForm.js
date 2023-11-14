@@ -16,23 +16,29 @@ import { Rating } from "react-native-ratings";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 
-export default function ReviewForm({ navigation }) {
+export default function ReviewForm({ navigation, route}) {
   const firebaseConfig = {
     // ...
-    apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
-    authDomain: "sgbytes.firebaseapp.com",
-    projectId: "sgbytes",
-    storageBucket: "sgbytes.appspot.com",
-    messagingSenderId: "766295476965",
-    appId: "1:766295476965:web:131a044224867bf452e20c",
-    measurementId: "G-RWGZJLPD4G",
+    apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
+    authDomain: "byte-403ce.firebaseapp.com",
+    databaseURL: "https://byte-403ce-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "byte-403ce",
+    storageBucket: "byte-403ce.appspot.com",
+    messagingSenderId: "777425915236",
+    appId: "1:777425915236:web:7cc5b449392ee76696fe71",
+    measurementId: "G-CBGM27NVK3"
   };
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const storage = getStorage();
 
-  const stall_id = "ChIJ7V2oIU892jERriBUTEBU-JE";
+  const {centre, place} = route.params;
+  console.log(place["place_id"])
+  console.log(centre["place_id"])
+  
+  // const stall_id = "ChIJ7V2oIU892jERriBUTEBU-JE";
+
   const [myText, setText] = useState({ value: "", error: "" });
   const cameraRef = useRef();
   const [photo, setPhoto] = useState(null);
@@ -50,7 +56,8 @@ export default function ReviewForm({ navigation }) {
     }
     console.log(JSON.stringify({
         "username": global.usrName,
-        "stallID": stall_id, //change here
+        "centreID": centre["place_id"],
+        "stallID": place["place_id"], 
         "rating": ratings,
         "description": myText.value,
         "image": imgUploaded
@@ -61,7 +68,8 @@ export default function ReviewForm({ navigation }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           "username": global.usrName,
-          "stallID": stall_id, //change here
+          "centreID": centre["place_id"],
+          "stallID": place["place_id"],
           "rating": ratings,
           "description": myText.value,
           "image": imgUploaded
@@ -72,7 +80,7 @@ export default function ReviewForm({ navigation }) {
         requestOptions
       );
       const data = await response.json();
-      console.log(data.result);
+      console.log(data);
       setReviewID(data.result);
       if (data.result == "user has already reviewed the stall") {
         Alert.alert(
@@ -81,7 +89,7 @@ export default function ReviewForm({ navigation }) {
           [
             {
               text: "OK",
-              onPress: () => navigation.navigate("Profile"), //back to explore or back to the stall page ?
+              onPress: () => navigation.navigate("Profile", {centre: centre, place: place}), //back to explore or back to the stall page ?
               style: "cancel",
             },
           ]
@@ -90,14 +98,14 @@ export default function ReviewForm({ navigation }) {
         Alert.alert("Success!", "You submitted one review :)", [
           {
             text: "OK",
-            onPress: () => navigation.navigate("Profile"), //back to explore or back to the stall page ?
+            onPress: () => navigation.navigate("Profile", {centre: centre,place : place}), //back to explore or back to the stall page ?
             style: "cancel",
           },
         ]);
         if (photo) {
           const storageRef = ref(
             storage,
-            "reviews/" + stall_id + "_" + data.result + "jpg"
+            "reviews/" + place["place_id"] + "_" + data.result + "jpg"
           );
           const response = await fetch(photo);
           const blob = await response.blob();
@@ -170,7 +178,7 @@ export default function ReviewForm({ navigation }) {
       ) : (
         <ScrollView>
           <View style={styles.topbar}>
-            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Profile", {centre: centre, place: place})}>
               <Text
                 style={{
                   paddingBottom: 8,

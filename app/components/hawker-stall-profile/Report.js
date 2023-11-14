@@ -2,7 +2,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
+import { getDownloadURL, getStorage, ref } from "firebase/storage"
+import { initializeApp } from "firebase/app";
 
 const Report = ({image, username, profilePic, upvote, downvote, description, date, stallID, type}) => {
  
@@ -10,6 +11,23 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     const styleType = type===1 ? viewStyles : styles;
     const [reportID, setReportID] = useState(null);
     const [imageURL, setImageURL] = useState(null);
+
+    const firebaseConfig = {
+        // ...
+        apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
+        authDomain: "byte-403ce.firebaseapp.com",
+        databaseURL: "https://byte-403ce-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "byte-403ce",
+        storageBucket: "byte-403ce.appspot.com",
+        messagingSenderId: "777425915236",
+        appId: "1:777425915236:web:7cc5b449392ee76696fe71",
+        measurementId: "G-CBGM27NVK3"
+      };
+    
+      // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+
     useEffect(() => {
         async function fetchData() {
           try {
@@ -33,7 +51,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
         // Call the async function
         fetchData();
         const storage = getStorage();
-        const pathReference = ref(storage, 'reports/'+stallID+'_'+reportID+'.jpg');
+        const pathReference = ref(storage, 'reports/'+stallID+'_'+(parsedData.list.find(stall => stall.stallID === stallID).reportID)+'.jpg');
         
         try{
             const url = getDownloadURL(pathReference); setImageURL(url);
@@ -247,6 +265,7 @@ const styles = StyleSheet.create({
         fontSize: 8,
        // fontFamily: 'Open-Sans-Bold',
         color: 'black',
+        paddingRight: 2,
 
     },
     date: {
