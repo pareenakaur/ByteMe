@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import StarRating from './StarRating';
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 const Review = ({image, username, date, profilePic, upvote, downvote, rating, description, type, stallID}) => {
 
@@ -15,6 +16,7 @@ const Review = ({image, username, date, profilePic, upvote, downvote, rating, de
    
 
     const [reviewID, setReviewID] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
     useEffect(() => {
         async function fetchData() {
           try {
@@ -37,7 +39,13 @@ const Review = ({image, username, date, profilePic, upvote, downvote, rating, de
     
         // Call the async function
         fetchData();
-      },[stallID]); 
+        const storage = getStorage();
+        const pathReference = ref(storage, 'reviews/'+stallID+'_'+reviewID+'.jpg');
+        
+        try{
+            const url = getDownloadURL(pathReference); setImageURL(url);
+            }catch(error) {console.log(error)};
+        },[stallID]); 
 
     const handleUpvote = async () => {
         if (!upvoted) {
@@ -107,7 +115,7 @@ const Review = ({image, username, date, profilePic, upvote, downvote, rating, de
     return (
         <View style={styleType.container}>
             <View style={styleType.innerContainer}>
-                <Image style={styleType.image} source={{uri: `${image}`}} />
+                {imageURL? <Image style={styleType.image} source={{uri: `${imageURL}`}} /> : <Image style={styleType.image} source={{uri: `${image}`}} />}
                 <View style={styleType.overlayContainer}>
                     <View style={styleType.mainUserContainer} >
                         <View style={styleType.userContainer}>

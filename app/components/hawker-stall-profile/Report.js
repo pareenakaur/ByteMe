@@ -2,12 +2,14 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 
 const Report = ({image, username, profilePic, upvote, downvote, description, date, stallID, type}) => {
  
     //set style types for viewing all vs view snapshot on profile
     const styleType = type===1 ? viewStyles : styles;
     const [reportID, setReportID] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
     useEffect(() => {
         async function fetchData() {
           try {
@@ -30,6 +32,12 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     
         // Call the async function
         fetchData();
+        const storage = getStorage();
+        const pathReference = ref(storage, 'reports/'+stallID+'_'+reportID+'.jpg');
+        
+        try{
+            const url = getDownloadURL(pathReference); setImageURL(url);
+            }catch(error) {console.log(error)};
       },[stallID]); 
 
     const [upvoted, setUpvoted] = useState(false);
@@ -104,7 +112,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     return (
         <View style={styleType.default}>
             <View style={styleType.innerContainer}>
-                <Image style={styleType.image} source={{uri: `${image}`}} />
+            {imageURL? <Image style={styleType.image} source={{uri: `${imageURL}`}} /> : <Image style={styleType.image} source={{uri: `${image}`}} />}
                 <View style={styleType.overlayContainer}>
                     <View style={styleType.mainUserContainer} >
                         <View style={styleType.userContainer}>
