@@ -13,7 +13,7 @@ reportsAPI = Blueprint('reportsAPI',__name__)
 def createReport():
     try:
         resp = request.json
-        res = ReportManager.createReport(resp["username"], resp["stallID"],resp["category"], resp["description"],resp["image"])
+        res = ReportManager.createReport(resp["username"], resp["stallID"],resp["centreID"],resp["category"], resp["description"],resp["image"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"
@@ -27,21 +27,20 @@ def updateReport():
     except Exception as e:
         return f"An Error has Occured: {e}"
 
+@reportsAPI.route('/deleteReport', methods=['DELETE']) 
+def deleteReport():
+    try:
+        resp = request.json
+        res = ReportManager.deleteReport(resp["reportID"],resp["centreID"])
+        return jsonify({"result": res})
+    except Exception as e:
+        return f"An Error has Occured: {e}"
+
 @reportsAPI.route('/voteReport', methods=['POST']) 
 def voteReport():
     try:
         resp = request.json
         res = ReportManager.voteReport(resp["username"], resp['reportID'],resp["upvote"])
-        return jsonify({"result": res})
-    except Exception as e:
-        return f"An Error has Occured: {e}"
-
-
-@reportsAPI.route('/deleteReport', methods=['DELETE']) 
-def deleteReport():
-    try:
-        resp = request.json
-        res = ReportManager.deleteReport(resp["reportID"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"

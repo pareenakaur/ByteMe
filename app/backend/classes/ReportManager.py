@@ -10,11 +10,11 @@ db = firestore.client()
 reportsColl = db.collection('reports')
 class ReportManager(object):
 
-    def createReport(username,stallID,category,description,image):
+    def createReport(username,stallID,centreID,category,description,image):
         if(ReportManager.validateCreateReport(username,stallID)):
             _, report = reportsColl.add({"username": username, "stallID": stallID, "description": description
                                          ,"category": category,"image": image,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
-            ReportManager.addHawkerReport(stallID,report.id)
+            ReportManager.addHawkerReport(centreID,report.id)
             return report.id
         else:   
             return "user has already reported the stall"
@@ -26,17 +26,14 @@ class ReportManager(object):
         else:
             return "Report does not exist"    
 
-    def deleteReport(reportID):
+    def deleteReport(reportID,centreID):
         if(ReportManager.validateReport(reportID)):
-            report = reportsColl.document(reportID).get()
-            reportDict = report.to_dict()
-            res = reportsColl.document(reportID).delete()
-            ReportManager.deleteHawkerReport(reportDict["stallID"],report.id)
+            reportsColl.document(reportID).delete()
+            ReportManager.deleteHawkerReport(centreID,reportID)
             return "Success"
         else:
             return "Report does not exist"   
             
-
 
     def validateReport(reportID):
         report = reportsColl.document(reportID).get()
@@ -54,6 +51,7 @@ class ReportManager(object):
             return False
     
     def getStallReports(stallID):
+        
         reports_list = reportsColl.where("stallID","==",stallID).order_by(
             "timestamp", direction=firestore.Query.DESCENDING
         ).get()
