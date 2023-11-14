@@ -14,12 +14,7 @@ class ReportManager(object):
         if(ReportManager.validateCreateReport(username,stallID)):
             _, report = reportsColl.add({"username": username, "stallID": stallID, "description": description
                                          ,"category": category,"image": image,  "votes": 0, "timestamp": SERVER_TIMESTAMP})
-<<<<<<< Updated upstream
-            ReportManager.addHawkerReport(stallID,report.id)
-            print("report.id = " ,report.id)
-=======
             ReportManager.addHawkerReport(centreID,report.id)
->>>>>>> Stashed changes
             return report.id
         else:   
             return "user has already reported the stall"
@@ -39,7 +34,6 @@ class ReportManager(object):
         else:
             return "Report does not exist"   
             
-
 
     def validateReport(reportID):
         report = reportsColl.document(reportID).get()
