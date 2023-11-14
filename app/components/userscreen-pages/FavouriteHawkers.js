@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import FavHawkerBtn from "../user-functions/FavHawkerBtn"
 import { SafeAreaView } from "react-native-safe-area-context";
+import { IconButton } from "react-native-paper";
 
 export default function FavouriteHawkers({navigation}){
     //call api to get a list of array of hawker
@@ -31,7 +32,7 @@ export default function FavouriteHawkers({navigation}){
                 setHawkerArr(arr);
                 
             }else{
-                setHawkerArr([]);
+                setHawkerArr([<Text style={{color: "#FA4A0C"}}>You have not added any favourite stalls</Text>]);
             }
         } catch (error) {
             console.error(error);
@@ -58,9 +59,12 @@ export default function FavouriteHawkers({navigation}){
     return (
         <SafeAreaView style={styles.container}>
             <Text style={{color: "#3C4142", fontSize: 30, fontWeight: 'bold', alignSelf:"center", paddingBottom: 20, paddingTop: 30}}>Favourite Hawkers</Text>
+            <View style={{flexDirection: "row", alignItems: "center"}}>
+                <Text style={{color: "grey"}}>Cannot see your favourite hawker stall ? </Text>
+                <IconButton icon={"refresh"} iconColor={"orange"} onPress={getFavStalls}></IconButton>
+            </View>
             <ScrollView>
             {HawkerArr}
-                {/* {HawkerArr.length ?  {HawkerArr}: <Text style={{color: "#FA4A0C"}}>You have not added any favourite stalls</Text>} */}
 
             </ScrollView>
         </SafeAreaView>

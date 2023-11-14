@@ -13,7 +13,7 @@ reportsAPI = Blueprint('reportsAPI',__name__)
 def createReport():
     try:
         resp = request.json
-        res = ReportManager.createReport(resp["username"], resp["stallID"],resp["category"], resp["description"],res["image"])
+        res = ReportManager.createReport(resp["username"], resp["stallID"],resp["category"], resp["description"],resp["image"])
         return jsonify({"result": res})
     except Exception as e:
         return f"An Error has Occured: {e}"

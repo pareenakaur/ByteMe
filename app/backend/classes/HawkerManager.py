@@ -200,6 +200,7 @@ class HawkerManager:
     def getHawkerCentreCrowdedness(self, placeID):
         hawker_centre = self.db.collection('hawkercentres').document(placeID).get().to_dict()
         live_carpark_data = get_carpark_availability()['value']
+        # print(f"live: {live_carpark_data}")
 
         live_nearby_carparks = []
         # Get live carpark data for nearby carparks
@@ -216,20 +217,24 @@ class HawkerManager:
         total_lots = 0
         available_lots = 0
         for live_nearby_carpark in live_nearby_carparks:
-            total_lots += self.db.collection('carparks').document(live_nearby_carpark['CarParkID']).get().to_dict()['TotalLots']
-            available_lots += live_nearby_carpark['AvailableLots']
+            carpark_total_lots = self.db.collection('carparks').document(live_nearby_carpark['CarParkID']).get().to_dict()
+            if(carpark_total_lots):
+                total_lots += carpark_total_lots['TotalLots']
+                available_lots += live_nearby_carpark['AvailableLots']
         if total_lots == 0:
             return 'not available'
         else:
             return available_lots / total_lots
         
     def initializeHawkerCentreCollection(self):
+        print("im here")
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre_documents = hawkerCentresColl.stream()
 
         batch = self.db.batch()
 
         for hawker_centre_document in hawker_centre_documents:
+            print(place_id)
             place_id = hawker_centre_document.id
             hawker_centre = hawker_centre_document.to_dict()
             crowdedness = self.getHawkerCentreCrowdedness(place_id)

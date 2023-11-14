@@ -18,25 +18,26 @@ export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
 
   useEffect(() => {
     const getUserLike = async() => {
-    const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=${global.usrName}&format=1`);
-    // const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=seung&format=1`);
-    const res = await response.json();
-    // console.log(res);
-    return res;
-    }
-
-    const result = getUserLike();
-
-    for (let i =0; i<result.length; i++){
-      if (hawkerStallInfo["name"] === result[i]["name"]){
-        console.log(`This stall is liked! ${hawkerStallInfo["name"]} matches with ${result[i]["name"]}`)
-        setFoundHawker(result[i]);
-        setLiked(true);
-        break;
+      const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=${global.usrName}&format=1`);
+      // const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=seung&format=1`);
+      const res = await response.json();
+      // console.log(res);
+      for (let i =0; i<res.length; i++){
+        if (hawkerStallInfo["name"] === res[i]["name"]){
+          console.log(`This stall is liked! ${hawkerStallInfo["name"]} matches with ${res[i]["name"]}`)
+          setFoundHawker(res[i]);
+          setLiked(true);
+          return;
+        }
       }
+      setFoundHawker(null);
+      setLiked(false);
     }
+    console.log("place_id: ")
+    console.log(hawkerStallInfo["place_id"]);
 
-  }, []);
+    getUserLike();
+  }, [hawkerStallInfo]);
 
  
 
@@ -57,8 +58,8 @@ export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
       setFoundHawker(hawkerStallInfo);
     }
     else if (liked !== false){
-      // const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' + hawkerStallInfo["place_id"]);
-      const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username=seung'+'&stallID=' + hawkerStallInfo["place_id"]);
+      const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' + hawkerStallInfo["place_id"]);
+      // const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username=seung'+'&stallID=' + hawkerStallInfo["place_id"]);
       const data = await response.json();
       console.log(data.result);
       setFoundHawker(null);
@@ -97,7 +98,8 @@ export default function HawkerStallCard({ hawkerStallInfo, navigation }) {
           mode="contained-tonal"
           iconColor="#FA4A0C"
           size={25}
-          onPress={() => navigation.navigate("Profile")}
+          // onPress={(hawkerStallInfo) => navigation.navigate('TabNavigation', {screen: "Explore", params: {screen: "Profile", params: {placeId: hawkerStallInfo["place_id"]}} })}
+          onPress={() => navigation.navigate("Profile", {place: hawkerStallInfo})}
         ></IconButton>
       </View>
       <View style={{ flexDirection: "row", marginVertical: 5 }}>

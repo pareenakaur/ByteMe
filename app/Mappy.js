@@ -6,7 +6,6 @@ import * as Location from "expo-location";
 // import { hawkerCentreLocations } from "./hawkerCentreLocations";
 // import { hawkerIcon } from "./assets/hawker_icon.png";
 // import data from "./hawkerCentreAvailability.json"
-const hawkerUrl = "http://127.0.0.1:5000/hawkers"
 
 export default function Mappy(props) {
   // const [location, setLocation] = useState(null);
@@ -14,8 +13,6 @@ export default function Mappy(props) {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [initialRegion, setInitialRegion] = useState(null);
   // const [availability, setAvailability] = useState(data);
-  const [hawkerCentreLocations, setHawkerCentreLocations] = useState([]);
-  
   // const [hawkerStalls, setHawkerStalls] = useState([]);
 
   useEffect(() => {
@@ -40,7 +37,7 @@ export default function Mappy(props) {
     const getHawkerCentreLocations = async() => {
       const response = await fetch("http://127.0.0.1:5000/hawkers/getAllHawkerCentreInformation");
       const res = await response.json();
-      setHawkerCentreLocations(res);
+      props.setHawkerCentreLocations(res);
     }
     
 
@@ -158,7 +155,7 @@ export default function Mappy(props) {
       {/* <Marker coordinate={props.region} /> */}
       {/* {console.log("region")}
       {console.log(props.region)} */}
-      {hawkerCentreLocations.map((item, index) => (
+      {props.hawkerCentreLocations.map((item, index) => (
         <Marker
           key={item.name}
           title={item.name}
@@ -170,7 +167,7 @@ export default function Mappy(props) {
           onPress={()=>{handleMarkerPress(item)}}
         ></Marker>
       ))}
-      {hawkerCentreLocations.map((item, index) => (
+      {props.hawkerCentreLocations.map((item, index) => (
         <Circle
           key={item.name}
           center={{ latitude: item.latitude, longitude: item.longitude }}
