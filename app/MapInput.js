@@ -4,6 +4,18 @@ const GOOGLE_APIKEY = "AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E"
 
 function MapInput(props) {
 
+  function decideColor(capacity) {
+      if (capacity === "not available"){
+        return "rgba(0,0,0,0.15)"
+      } else if (capacity < 0.3) {
+        return "rgba(255,0,0,0.15)";
+      } else if (capacity >= 0.3 && capacity <= 0.6) {
+        return"rgba(255,95,21,0.15)";
+      } else {
+        return "rgba(0,255,0,0.15)";
+      }
+    }
+
   async function handleInput(place_id){
     console.log("map input: " + place_id);
     //Get info of hawker centre
@@ -15,11 +27,13 @@ function MapInput(props) {
     // console.log(formattedResponse);
     props.userTap(true);
     props.changeHawkerCentreInfo(formattedResponse);
+    props.changeCrowdedColor(decideColor(res["crowdedness"]));
 
     //Get stalls at hawker centre
     const responseStalls = await fetch(`http://127.0.0.1:5000/hawkers/getHawkerCentreStalls?id=${place_id}&format=1`);
     const resStalls = await responseStalls.json();
     props.setHawkerStalls(resStalls);
+    props.setStallTap(false);
 
     return formattedResponse;
   }

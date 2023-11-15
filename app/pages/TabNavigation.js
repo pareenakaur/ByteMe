@@ -1,6 +1,7 @@
 import HeartScreen from "./HeartScreen";
 import ProfileScreen from "./ProfileScreen";
 import UserScreen from "./UserScreen";
+import FavouriteHawkers from "../components/userscreen-pages/FavouriteHawkers";
 import { Ionicons } from '@expo/vector-icons'; 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -34,8 +35,8 @@ const TabNavigation = () => {
               ),
           }} />
           <Tab.Screen 
-            name="Saved" 
-            component={HeartScreen} 
+            name="FavouriteHawkers" 
+            component={FavouriteHawkers} 
             options={{
               tabBarIcon: ({ color }) => (
                 <Ionicons name="heart-outline" size={24} color={color} />

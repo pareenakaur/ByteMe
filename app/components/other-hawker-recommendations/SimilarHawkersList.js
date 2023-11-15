@@ -1,23 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 import SimilarHawker from './SimilarHawker';
 
-const SimilarHawkersList = ({similarHawkers, latitude, longitude, navigation}) => {
+const SimilarHawkersList = ({similarHawkers, navigation}) => {
+
+    const [currentHawker, setCurrentHawker] = useState(similarHawkers[0]);
+    const [nearbyHawkers, setNearbyHawkerCentres] = useState(similarHawkers.slice(1));
     
     similarHawkers.map(data => console.log(data));
     
-    const similarHawkersList = similarHawkers.map((hawker, index) => (
+    const similarHawkersList = nearbyHawkers.map((hawker, index) => (
         
-        <SimilarHawker key={index} similarHawker={hawker} latitude={latitude} longitude={longitude} navigation={navigation}/>
+        <SimilarHawker key={index} similarHawker={hawker} latitude={currentHawker.latitude} longitude={currentHawker.longitude} navigation={navigation}/>
             
     ));
-
-    
-
-
-
-
 
     return (
         

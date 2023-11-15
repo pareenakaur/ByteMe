@@ -37,7 +37,8 @@ export default function HawkerStallCard({hawkerCentreInfo, hawkerStallInfo, navi
     console.log(hawkerStallInfo["place_id"]);
 
     getUserLike();
-  }, [hawkerStallInfo]);
+    console.log(`liked: ${liked}`);
+  }, [liked, hawkerStallInfo]);
 
  
 
@@ -79,7 +80,7 @@ export default function HawkerStallCard({hawkerCentreInfo, hawkerStallInfo, navi
         }}
         source={{
           // uri: "https://fastly.4sqi.net/img/general/200x200/9301872_YzBYs5OsgbuPNtrgKZOC4YgjE74Tu03KFoskwHkuZDE.jpg",
-          uri: (hawkerStallInfo["photo_reference"] !== undefined?
+          uri: ( hawkerStallInfo["photo_reference"] ?
           `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${hawkerStallInfo.photo_reference}&key=AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E`
           : "https://i.imgur.com/45cWimK.png")
         }}

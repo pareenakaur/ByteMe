@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         flex: 1,
         margin: 2,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         flexWrap: 'wrap',
         overflow: 'hidden'
     },

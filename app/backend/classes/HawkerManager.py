@@ -53,11 +53,12 @@ class HawkerManager:
         return hawker_centre_response
 
 
-    def getNearbyHawkerCentres(self, user_location, distance, format):
+    def getNearbyHawkerCentres(self, place_id, distance, format):
         nearby_hawker_centre_details = []
         distance_list = []
 
         hawkerCentresColl = self.db.collection('hawkercentres')
+        user_location = hawkerCentresColl.document(place_id).get().to_dict()
         hawker_centre_locations_documents = hawkerCentresColl.stream()
         hawker_centre_locations_documents_list = [doc for doc in hawker_centre_locations_documents]
 
@@ -75,11 +76,11 @@ class HawkerManager:
             if dist <= float(distance):
                 found += 1
 
-        if found <= 3:
+        if found <= 4:
             nearby_place_index_list = np.argsort(distance_list)[:found]
 
         else:
-            nearby_place_index_list = np.argsort(distance_list)[:3]
+            nearby_place_index_list = np.argsort(distance_list)[:4]
 
         for index in nearby_place_index_list:
             nearby_place_document = hawker_centre_locations_documents_list[index]
@@ -194,6 +195,7 @@ class HawkerManager:
             total_rating = 0
             for review_id in review_id_list:
                 review = reviewsColl.document(review_id).get().to_dict()
+                print(f"review: {review}")
                 total_rating += review['rating']
             return round(total_rating / len(review_id_list), 2)
         else:

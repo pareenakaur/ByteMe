@@ -11,16 +11,18 @@ import { getNearbyHawkerCenters, getHawkerStallDetails } from '../../utils/Retri
 
 const MainPage = ({route, navigation}) => {
 
-    //const { HawkerCentre, longitude, latitude, placeId } = route.params;
+    // const { hawkerCentre, longitude, latitude, placeId } = route.params;
+    const {hawkerCentre} = route.params;
     
     const [nearbyHawkerCentres, setNearbyHawkerCentres] = useState(null);
-    const longitude = 103.81412810881211;
-    const latitude = 1.3244235882227136;
+    //const longitude = 103.81412810881211;
+    //const latitude = 1.3244235882227136;
     const distance = 5000;
     useEffect(() => {
         async function fetchData() {
+            console.log(hawkerCentre);
             try {
-                const url = `http://127.0.0.1:5000/hawkers/getNearbyHawkerCentres?longitude=${longitude}&latitude=${latitude}&distance=${distance}&format=1`;
+                const url = `http://127.0.0.1:5000/hawkers/getNearbyHawkerCentres?id=${hawkerCentre.place_id}&distance=${distance}&format=1`;
             
                 const response = await fetch(url, {
                   method: 'GET'
@@ -29,7 +31,7 @@ const MainPage = ({route, navigation}) => {
                 if (response.status === 200) {
                   const jsonString = await response.text();
                   const parsedData = JSON.parse(jsonString);
-                  setNearbyHawkerCentres(parsedData.slice(1));
+                  setNearbyHawkerCentres(parsedData);
                   
                   
                   
@@ -44,53 +46,83 @@ const MainPage = ({route, navigation}) => {
     
         // Call the async function
         fetchData();
-      },[longitude, latitude]); 
+      },[hawkerCentre]); 
 
 
-    const review = { //replace with review details array from backend
-        image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
-        username: "User1",
-        date: "7 Sept 2023, 11:00 am",
-        profilePic: require("../../assets/img5.jpg"),
-        rating: 4,
-        upvote: 1,
-        downvote: 1,
-        description: "Very nice"
+    // const review = { //replace with review details array from backend
+    //     image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
+    //     username: "User1",
+    //     date: "7 Sept 2023, 11:00 am",
+    //     profilePic: require("../../assets/img5.jpg"),
+    //     rating: 4,
+    //     upvote: 1,
+    //     downvote: 1,
+    //     description: "Very nice"
+    // }
+
+    // const HawkerCentre = { //replace with hawker centre details array values
+    //     image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
+    //     name: "Adam Road Food Centre",
+    //     crowdLevel: "Moderate",
+    //     cuisineList: ["Halal", "Vegetarian", "Chinese Cuisine", "Indian Cuisine"],
+    //     address: "2 Adam Rd, Singapore 289876",
+    //     openingHours: "6am - 3pm",
+    //     rating: 4.35,
+    //     reviews: [review, review, review, review],
+    // }
+
+    function getDay(){
+        const d = new Date();
+        let day = d.getDay();
+        return (day+6)%7;
     }
 
-    const HawkerCentre = { //replace with hawker centre details array values
-        image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
-        name: "Adam Road Food Centre",
-        crowdLevel: "Moderate",
-        cuisineList: ["Halal", "Vegetarian", "Chinese Cuisine", "Indian Cuisine"],
-        address: "2 Adam Rd, Singapore 289876",
-        openingHours: "6am - 3pm",
-        rating: 4.35,
-        reviews: [review, review, review, review],
+    function decideColor(capacity) {
+        if (capacity === "not available"){
+        return "rgba(0,0,0,0.15)"
+        } else if (capacity < 0.3) {
+        return "rgba(255,0,0,0.15)";
+        } else if (capacity >= 0.3 && capacity <= 0.6) {
+        return"rgba(255,95,21,0.15)";
+        } else {
+        return "rgba(0,255,0,0.15)";
+        }
     }
 
+    function decideCrowdedText(crowdedColor){
+        if (crowdedColor == "rgba(255,0,0,0.15)"){
+          return "Severe Crowd";
+        } else if (crowdedColor == "rgba(255,95,21,0.15)"){
+          return "Moderate Crowd";
+        } else if (crowdedColor == "rgba(0,255,0,0.15)"){
+          return "Low Crowd";
+        } else {
+          return "Untracked";
+        }
+      }
 
     
     return(
         <View style={styles.default} >
 
-            <Banner image={HawkerCentre.image} /><AntDesign style={styles.navigationButton} name="leftcircle" size={26} color="#EB6C05" onPress={() => navigation.navigate('ExplorePage')} /><View style={styles.overlayContainer}>
+            <Banner image={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${hawkerCentre.photo_reference}&key=AIzaSyD3YKpWEopq3wrYDEj8c2AAajWoXPTl2zo`} /><AntDesign style={styles.navigationButton} name="leftcircle" size={26} color="#EB6C05" onPress={() => navigation.navigate('ExplorePage')} /><View style={styles.overlayContainer}>
                     <View style={styles.containers}>
                         <View style={styles.details}>
-                            {nearbyHawkerCentres && <Summary
-                                name={HawkerCentre.name}
-                                crowdLevel={HawkerCentre.crowdLevel}
-                                cuisineList={HawkerCentre.cuisineList}
-                                address={HawkerCentre.address}
-                                openingHours={HawkerCentre.openingHours}
-                                rating={HawkerCentre.rating}
-                                reviews={HawkerCentre.reviews} />}
+                            {nearbyHawkerCentres && hawkerCentre && <Summary
+                                name={hawkerCentre["name"]}
+                                crowdColor = {decideColor(hawkerCentre["crowdedness"])}
+                                crowdLevel={decideCrowdedText(decideColor(hawkerCentre["crowdedness"]))}
+                                cuisineList={hawkerCentre["tags"]}
+                                address={hawkerCentre["address"]}
+                                openingHours={hawkerCentre["opening_hours"][getDay()]}
+                                rating={hawkerCentre["rating"]}
+                                reviews={hawkerCentre["review"]} />}
                         </View>
                         <View style={styles.similarHawkers}>
                             <View style={styles.header}>
                                 <Text style={styles.headerText}>Similar Hawkers Nearby</Text>
                             </View>
-                            {nearbyHawkerCentres && <SimilarHawkersList similarHawkers={nearbyHawkerCentres} latitude={latitude} longitude={longitude} navigation={navigation} />}
+                            {nearbyHawkerCentres && hawkerCentre && <SimilarHawkersList similarHawkers={nearbyHawkerCentres} navigation={navigation} />}
                         </View>
 
 
@@ -139,8 +171,6 @@ const styles = StyleSheet.create({
         flex: 5,
         
     },
-    
-
 
     header: {
         marginTop: 10,

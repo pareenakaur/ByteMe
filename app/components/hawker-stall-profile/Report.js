@@ -11,9 +11,8 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     const styleType = type===1 ? viewStyles : styles;
     const [reportID, setReportID] = useState(null);
     const [imageURL, setImageURL] = useState(null);
-
+    const storage = getStorage();
     const firebaseConfig = {
-        // ...
         apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
         authDomain: "byte-403ce.firebaseapp.com",
         databaseURL: "https://byte-403ce-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -31,18 +30,32 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     useEffect(() => {
         async function fetchData() {
           try {
+            console.log("username", username)
             const response = await fetch('http://127.0.0.1:5000/reports/getUserReports?username=' + username , {
               method: 'GET'
             });
     
-            if (response.status === 200) {
+            // if (response.status === 200) {
               const jsonString = await response.text();
               const parsedData = JSON.parse(jsonString);
-              
-              setReportID(parsedData.list.find(stall => stall.stallID === stallID).reportID);
-            } else {
-              throw new Error('Error retrieving user information: ' + response.status);
-            }
+              console.log("report", parsedData)
+              if (parsedData.result === "Success"){
+                const report = parsedData.list.find(stall => stall.stallID === stallID);
+                setReportID(report.reportID);
+                if (report.image){
+                    const pathReference = ref(storage, 'reports/'+stallID+'_'+report.reportID+'.jpg');
+                    try{
+                        const url = await getDownloadURL(pathReference); 
+                        setImageURL(url);
+                    }catch(error) {console.log(error)};
+                }else{
+                    setImageURL("https://i.imgur.com/45cWimK.png")
+                }        
+    
+            } 
+            // }}else {
+            //   throw new Error('Error retrieving user information: ' + response.status);
+            // }}
           } catch (error) {
             console.error('Error getting user information:', error);
           }
@@ -50,12 +63,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     
         // Call the async function
         fetchData();
-        const storage = getStorage();
-        const pathReference = ref(storage, 'reports/'+stallID+'_'+(parsedData.list.find(stall => stall.stallID === stallID).reportID)+'.jpg');
         
-        try{
-            const url = getDownloadURL(pathReference); setImageURL(url);
-            }catch(error) {console.log(error)};
       },[stallID]); 
 
     const [upvoted, setUpvoted] = useState(false);
@@ -64,6 +72,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     const [downvoteCount, setDownvoteCount] = useState(downvote);
 
     const handleUpvote = async () => {
+        console.log("upvote", upvote)
         if (!upvoted) {
         setUpvoteCount(upvoteCount + 1);
         if (downvoted) {
@@ -95,6 +104,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     };
 
   const handleDownvote = async () => {
+    console.log("downvote", downvote)
     if (!downvoted) {
       setDownvoteCount(downvoteCount + 1);
       if (upvoted) {
@@ -125,12 +135,10 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     }
   };
 
-
-
     return (
         <View style={styleType.default}>
             <View style={styleType.innerContainer}>
-            {imageURL? <Image style={styleType.image} source={{uri: `${imageURL}`}} /> : <Image style={styleType.image} source={{uri: `${image}`}} />}
+            <Image style={styleType.image} source={{uri: `${imageURL}`}} /> 
                 <View style={styleType.overlayContainer}>
                     <View style={styleType.mainUserContainer} >
                         <View style={styleType.userContainer}>
@@ -141,7 +149,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
                             </View>
                             <View style={styleType.userDetails}>
                                 <Text style={styleType.name}>{username}</Text>
-                                <Text style={styleType.date}>{date}</Text>
+                                <Text style={styleType.date}>{Date(date.toLocaleString("en-US", { timeZone: "Asia/Singapore" }))}</Text>
                             </View>
                             <View style={styleType.votesContainer}>
                                 <View style={styleType.vote}>
@@ -265,7 +273,7 @@ const styles = StyleSheet.create({
         fontSize: 8,
        // fontFamily: 'Open-Sans-Bold',
         color: 'black',
-        paddingRight: 2,
+        paddingRight: 7,
 
     },
     date: {
@@ -396,6 +404,7 @@ const viewStyles = StyleSheet.create({
         fontSize: 8,
         //fontFamily: 'Open-Sans-Bold',
         color: 'black',
+        paddingRight: 7,
 
     },
     date: {

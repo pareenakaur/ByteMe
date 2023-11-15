@@ -8,11 +8,28 @@ import Banner from "./Banner";
 import Details from "./HawkerStallDetails";
 import ReportsList from "./ReportsList";
 import ReviewsList from "./ReviewsList";
+import { initializeApp } from "firebase/app";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 // import { getReports, getReviews, getImage } from '../testing-for-stall/main';
 
 //need to retrieve place id from explore function --> figure out which component in which js file to import to call function and/or get place id
 
 const Profile = ({navigation, route}) => {
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
+    authDomain: "byte-403ce.firebaseapp.com",
+    databaseURL:
+      "https://byte-403ce-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "byte-403ce",
+    storageBucket: "byte-403ce.appspot.com",
+    messagingSenderId: "777425915236",
+    appId: "1:777425915236:web:7cc5b449392ee76696fe71",
+    measurementId: "G-CBGM27NVK3",
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
   const { centre, place } = route.params;
     // const placeId = navigation.getParam('placeId', 'NO-ID');
   // const placeId = 'ChIJv4Mk4QYa2jERx51-KDobWrA';
@@ -100,7 +117,6 @@ const Profile = ({navigation, route}) => {
   }, [place]);
 
   const [reviews1, setStallReviews] = useState(null);
-  const [numberOfReviews, setNumberOfReviews] = useState(0);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -116,7 +132,6 @@ const Profile = ({navigation, route}) => {
           const parsedData = JSON.parse(jsonString);
           console.log(parsedData.list);
           setStallReviews(parsedData.list);
-          if(reviews1 !== null) setNumberOfReviews(reviews1.length);
         } else {
           throw new Error(
             "Error retrieving stall information: " + response.status
@@ -165,19 +180,15 @@ const Profile = ({navigation, route}) => {
       <View style={styles.overlayContainer}>
         <View style={styles.containers}>
           <View style={styles.details}>
-            {stallData && stallImage && (
+            {/* {console.log("Details: "+ stallData[""])} */}
+            {stallData && stallImage && reviews1 && (
               <Details
                 name={stallData["name"]}
                 address={stallData["address"]}
-                openingHours={() => {
-                  if (stallData && stallData.hasOwnProperty("weekday_text")) {
-                    return stallData.weekday_text;
-                  } else {
-                    return "Not available";
-                  }
-                }}
-                rating={stallData.rating}
-                numOfReviews={numberOfReviews}
+                openStatus ={stallData["open_now"]}
+                openingHours={stallData["opening_hours"]}
+                rating={stallData["rating"]}
+                reviews={reviews1}
                 
               />
             )}
@@ -187,13 +198,17 @@ const Profile = ({navigation, route}) => {
             <View style={styles.reportContainer}>
               <View style={styles.reportHeader}>
                 <View style={styles.reportHeaderFlex}>
-                  <Text style={styles.text}>Latest Reports</Text>
-                  <Octicons
-                    name="report"
-                    size={20}
-                    color="black"
-                    onPress={() => navigation.navigate("ReportForm", {centre: centre, place: place})}
-                  />
+                  <View style={styles.reportTitle}>
+                    <Text style={styles.text}>Latest Reports</Text>
+                  </View>
+                  <View style={styles.addReportIcon}>
+                    <Octicons
+                      name="report"
+                      size={20}
+                      color="black"
+                      onPress={() => navigation.navigate("ReportForm", {centre: centre, place: place})}
+                    />
+                  </View>
                 </View>
               </View>
               <View style={styles.reportMainContainer}>
@@ -222,6 +237,8 @@ const Profile = ({navigation, route}) => {
                           reports1: reports1,
                           image: stallImage,
                           stallID: place["place_id"],
+                          centre: centre,
+                          place: place
                         });
                       } else {
                         // Handle the case where reports1 is null or
@@ -274,6 +291,8 @@ const Profile = ({navigation, route}) => {
                         reviews1: reviews1,
                         image: stallImage,
                         stallID: place["place_id"],
+                        centre: centre,
+                        place: place
                       });
                     } else {
                       // Handle the case where reviews1 is
@@ -363,10 +382,24 @@ const styles = StyleSheet.create({
   },
 
   reportHeaderFlex: {
-    flex: 1,
+    flex: 3,
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 10,
+  },
+  reportTitle: {
+    flex: 2.1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    
+  },
+  addReportIcon: {
+    flex: 0.9,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingRight: 3
+    
+    
   },
   text: {
     //fontFamily: 'Open-Sans-Bold',

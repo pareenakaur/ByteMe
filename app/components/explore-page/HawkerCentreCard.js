@@ -137,7 +137,7 @@ export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo
           alignItems: "center",
         }}
       >
-        <TouchableOpacity onPress={() => navigation.navigate('MainPage')}>
+        <TouchableOpacity onPress={() => navigation.navigate('MainPage', {hawkerCentre: hawkerCentreInfo})}>
           <Text
             style={{
               color: "#787878",

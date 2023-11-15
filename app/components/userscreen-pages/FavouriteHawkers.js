@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { Text, StyleSheet, ScrollView, View} from "react-native";
 import FavHawkerBtn from "../user-functions/FavHawkerBtn"
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IconButton } from "react-native-paper";
 
 export default function FavouriteHawkers({navigation}){
-    //call api to get a list of array of hawker
     const [HawkerArr, setHawkerArr] = useState([]);
-    // const [refresh, setRefresh] = useState(0);
 
     const getFavStalls = async() => {
         try {
@@ -24,8 +22,8 @@ export default function FavouriteHawkers({navigation}){
                             name = {data[i].name} 
                             address={data[i].formatted_address} 
                             photo={data[i].photo_data[0].photo_reference}
-                            handleRemove={()=>{handleRemove(data[i].place_id)}}
-                            handleNav={()=>{navigation.navigate("Profile", {placeId1 : data[i].place_id, stallId1 : data[i].place_id, navigation: navigation})}}/>
+                            handleRemove={()=>{handleRemove(data[i].place_id)}}/>
+                            // handleNav={()=>{navigation.navigate("Profile", {centre: centre, place: place})}}/>
                     )
                 }
                 console.log("done")
@@ -45,7 +43,6 @@ export default function FavouriteHawkers({navigation}){
             const data = await response.json();
             console.log(data.result);
             getFavStalls();
-            // setRefresh((prev)=>prev+1);
             
           }catch(error){ 
             console.log(error)

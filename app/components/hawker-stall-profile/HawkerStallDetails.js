@@ -3,78 +3,84 @@ import { StyleSheet, Text, View } from 'react-native';
 import StarRating from './StarRating';
 
 
-const Details = ({name, address, contact, openingHours, rating, numOfReviews}) => {
+const Details = ({name, address, openStatus, openingHours, rating, reviews}) => {
 
     //SEE IF STALL IS OPEN OR NOT
     const currentTime = new Date();
     const currentDay = currentTime.getDay();
+
+    function getDay() {
+        const d = new Date();
+        let day = d.getDay();
+        return (day + 6) % 7;
+    }
     
-    function parseOpeningHours(openingHours) {
-        console.log(openingHours);
-        if (openingHours === 'Not available') {
-            return null;
-        }
+//     function parseOpeningHours(openingHours) {
+//         console.log(openingHours);
+//         if (openingHours === 'Not available') {
+//             return null;
+//         }
     
-        const [day, timeRange] = openingHours.split(': ', 2);
-        console.log('Hello' + timeRange);
-        const [start, end] = timeRange.split('–').map(time => time.trim());; // Adjust the split based on the actual separator
-        console.log('end' + end);
-  // Add AM/PM information to the parsed result
-  const startTime = parseTimeWithAmPm(start);
-  const endTime = parseTimeWithAmPm(end);
+//         const [day, timeRange] = openingHours.split(': ', 2);
+//         console.log('Hello' + timeRange);
+//         const [start, end] = timeRange.split('–').map(time => time.trim());; // Adjust the split based on the actual separator
+//         console.log('end' + end);
+//   // Add AM/PM information to the parsed result
+//   const startTime = parseTimeWithAmPm(start);
+//   const endTime = parseTimeWithAmPm(end);
 
-  return { day, start: startTime, end: endTime };
-}
+//   return { day, start: startTime, end: endTime };
+// }
 
-function parseTimeWithAmPm(timeString) {
-    console.log('tiemstring'+ timeString)
-  const [time, period] = timeString.split(/\s+/);
-  console.log('time'+time);
-  console.log('period'+period);
+// function parseTimeWithAmPm(timeString) {
+//     console.log('tiemstring'+ timeString)
+//   const [time, period] = timeString.split(/\s+/);
+//   console.log('time'+time);
+//   console.log('period'+period);
 
-  if (time && period) {
-    // Assuming the time is in the format HH:mm
-    const [hours, minutes] = time.split(':');
-    let parsedHours = parseInt(hours, 10);
+//   if (time && period) {
+//     // Assuming the time is in the format HH:mm
+//     const [hours, minutes] = time.split(':');
+//     let parsedHours = parseInt(hours, 10);
 
-    // Adjust hours for PM
-    if (period.toUpperCase() === 'PM' && parsedHours !== 12) {
-      parsedHours += 12;
-    }
+//     // Adjust hours for PM
+//     if (period.toUpperCase() === 'PM' && parsedHours !== 12) {
+//       parsedHours += 12;
+//     }
 
-    // Adjust hours for AM when it's 12 AM
-    if (period.toUpperCase() === 'AM' && parsedHours === 12) {
-      parsedHours = 0;
-    }
+//     // Adjust hours for AM when it's 12 AM
+//     if (period.toUpperCase() === 'AM' && parsedHours === 12) {
+//       parsedHours = 0;
+//     }
 
-    const parsedTime = new Date();
-    parsedTime.setHours(parsedHours);
-    parsedTime.setMinutes(parseInt(minutes, 10));
+//     const parsedTime = new Date();
+//     parsedTime.setHours(parsedHours);
+//     parsedTime.setMinutes(parseInt(minutes, 10));
 
-    return parsedTime;
-  }
+//     return parsedTime;
+//   }
 
-  return null;
-}
-    function isOpen(openingHours) {
-    if (!openingHours || openingHours === 'Not available') {
-        return 'Not Available';
-    }
+//   return null;
+// }
+//     function isOpen(openingHours) {
+//     if (!openingHours || openingHours === 'Not available') {
+//         return 'Not Available';
+//     }
 
-    const { start, end } = parseOpeningHours(openingHours);
+//     const { start, end } = parseOpeningHours(openingHours);
     
-    // Check if end time is on the next day
-    if (end < start) {
-        return currentTime >= start || currentTime <= end;
-    }
+//     // Check if end time is on the next day
+//     if (end < start) {
+//         return currentTime >= start || currentTime <= end;
+//     }
 
-    // Standard case: end time is on the same day
-    return currentTime >= start && currentTime <= end;
-    }
+//     // Standard case: end time is on the same day
+//     return currentTime >= start && currentTime <= end;
+//     }
 
-    const isOpenNow = isOpen(openingHours[currentDay]);
+//     const isOpenNow = isOpen(openingHours[currentDay]);
 
-    const statusText = isOpenNow === 'Not Available' ? 'Not Available' : isOpenNow ? 'Open' : 'Closed';
+//     const statusText = isOpenNow === 'Not Available' ? 'Not Available' : isOpenNow ? 'Open' : 'Closed';
 
     
 
@@ -90,9 +96,15 @@ function parseTimeWithAmPm(timeString) {
                             <Text style={styles.text} >{cuisine}</Text>
                         
                         </View> */}
-                        <View style={styles.openWord}>
-                            <Text style={styles.text}>{statusText}</Text>
-                        </View>   
+                        {openStatus===true?
+                           <View style={styles.openWord}>
+                            <Text style={styles.text}>Open</Text>
+                            </View>
+                        : <View style={styles.closeWord}>
+                            <Text style={styles.text}>Not Open</Text>
+                            </View>
+                        }
+                           
                     </View>
                 </View>
                 <View style={styles.detailsMainContainer}>
@@ -100,12 +112,11 @@ function parseTimeWithAmPm(timeString) {
                         <View style={styles.detailsSplit} >
                             <View style={styles.detailsLeftContainer}>
                                 <Text style={styles.detailsAddress}>{address}</Text>
-                                <Text style={styles.detailsOthers}>Contact: {contact}</Text>
-                                <Text style={styles.detailsOthers}>Opening Hours: {openingHours}</Text>
+                                <Text style={styles.detailsOthers}>{openingHours === "not available" ? "Opening hours: Not Available" : openingHours[getDay()]}</Text>
                             </View>
                             <View style={styles.detailsRightContainer}>
                                 <StarRating rating={rating} size={14} />
-                                <Text style={styles.reviewsText} numberOfLines={1} ellipsizeMode="tail">{numOfReviews} Reviews</Text>
+                                <Text style={styles.reviewsText} numberOfLines={1} ellipsizeMode="tail">{reviews.length} Reviews</Text>
                             </View>
                         </View>
                     </View>
@@ -156,9 +167,12 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     openWord: {
-        backgroundColor: '#7698CC',
-        borderWidth: 1,
-        borderColor: '#7698CC',
+        backgroundColor: '#FCC827',
+        borderRadius: 1000,
+        marginRight: 5,
+    },
+    closeWord:{
+        backgroundColor: '#FA4A0C',
         borderRadius: 1000,
         marginRight: 5,
     },

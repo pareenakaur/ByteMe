@@ -27,9 +27,8 @@ const Review = ({
 
   const [reviewID, setReviewID] = useState(null);
   const [imageURL, setImageURL] = useState(null);
-
+  const storage = getStorage();
   const firebaseConfig = {
-    // ...
     apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
     authDomain: "byte-403ce.firebaseapp.com",
     databaseURL:
@@ -54,21 +53,41 @@ const Review = ({
           }
         );
 
-        if (response.status === 200) {
+        // if (response.status === 200) {
           const jsonString = await response.text();
           const parsedData = JSON.parse(jsonString);
-          console.log(parsedData);
-          if(parsedData.res === "Success"){
-            setReviewID(
-                parsedData.list.find((stall) => stall.stallID === stallID).reviewID
+          // console.log(parsedData);
+          if (parsedData.result === "Success") {
+            const review = parsedData.list.find(
+              (stall) => stall.stallID === stallID
+            );
+            // console.log(
+            //   "parsedData for Review: ",
+            //   parsedData.list.find((stall) => stall.stallID === stallID).reviewID,
+            //   review.reviewID
+            // );
+            setReviewID(review.reviewID);
+            if (review.image) {
+              const pathReference = ref(
+                storage,
+                "reviews/" + stallID + "_" + review.reviewID + ".jpg"
               );
+
+              // const pathReference = ref(storage, `https://firebasestorage.googleapis.com/b/bucket/o/reports%20${stallID}_${review_id}.jpg`);
+
+              // console.log("Path Reference " + pathReference);
+
+              try {
+                const url = await getDownloadURL(pathReference);
+                setImageURL(url);
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              setImageURL("https://i.imgur.com/45cWimK.png");
+            }
           }
-          
-        } else {
-          throw new Error(
-            "Error retrieving user information: " + response.status
-          );
-        }
+
       } catch (error) {
         console.error("Error getting user information:", error);
       }
@@ -76,27 +95,7 @@ const Review = ({
 
     // Call the async function
     fetchData();
-    const storage = getStorage();
-    if(reviewID){
-        const pathReference = ref(
-            storage,
-            "reviews/" +
-              stallID +
-              "_" +
-              reviewID +
-              ".jpg"
-          );
-      
-          try {
-            const url = getDownloadURL(pathReference);
-            setImageURL(url);
-          } catch (error) {
-            console.log(error);
-          }
-    }else{
-        setImageURL("https://i.imgur.com/45cWimK.png")
-    }
-    
+    // }, []);
   }, [stallID]);
 
   const handleUpvote = async () => {
@@ -115,9 +114,9 @@ const Review = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          "username": global.usrName,
-          "reviewID": stallID,
-          "upvote": true,
+          username: global.usrName,
+          reviewID: reviewID,
+          upvote: true,
         }),
       };
       const response = await fetch(
@@ -148,7 +147,7 @@ const Review = ({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: global.usrName,
-          reviewID: stallID,
+          reviewID: reviewID,
           upvote: false,
         }),
       };
@@ -181,8 +180,14 @@ const Review = ({
                 </View>
               </View>
               <View style={styleType.userDetails}>
-                <Text style={styleType.name}>{username}</Text>
-                <Text style={styles.date}>{date}</Text>
+                <View styles={styleType.userInnerContainer}>
+                  <View styles={styleType.nameContainer}>
+                    <Text style={styleType.name}>{username}</Text>
+                  </View>
+                  <View styles={styleType.dateContainer}>
+                    <Text style={styles.date}>{Date(date.toLocaleString("en-US", { timeZone: "Asia/Singapore" }))}</Text>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
@@ -200,7 +205,7 @@ const Review = ({
           </View>
           <View style={styleType.votesContainer}>
             <View style={styleType.vote}>
-              <View style={styleType.emptyView}></View>
+              <View style={styleType.emptyView}></View> 
               <TouchableOpacity onPress={handleUpvote} disabled={downvoted}>
                 <View style={styleType.upvote}>
                   <FontAwesome
@@ -222,7 +227,7 @@ const Review = ({
                   <Text style={styleType.voteNum}>{downvoteCount}</Text>
                 </View>
               </TouchableOpacity>
-              <View style={styleType.emptyView}></View>
+              <View style={styleType.emptyView}></View> 
             </View>
           </View>
         </View>
@@ -275,8 +280,12 @@ const styles = StyleSheet.create({
     flex: 5,
     flexDirection: "row",
   },
+  userInnerContainer: {
+    flex: 2,
+    flexDirection: "column",
+  },
   profileLogo: {
-    flex: 1,
+    flex: 1.5,
     padding: 5,
   },
   profileLogoContainer: {
@@ -292,17 +301,23 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   userDetails: {
-    flex: 4,
+    flex: 3.5,
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
     paddingTop: 5,
+  },
+  nameContainer: {
+    flex: 1,
   },
   name: {
     fontSize: 12,
     //fontFamily: 'Open-Sans-Regular',
     color: "black",
     paddingRight: 2,
+  },
+  dateContainer: {
+    flex: 1,
   },
   date: {
     fontSize: 7,
@@ -334,15 +349,19 @@ const styles = StyleSheet.create({
   vote: {
     flex: 4,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   upvote: {
-    flex: 1,
-    alignItems: "center",
+    flex: 1.5,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginRight: 10,
   },
   downvote: {
-    flex: 1,
-    alignItems: "center",
+    flex: 1.5,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 10,
   },
   voteNum: {
     fontSize: 8,
@@ -351,9 +370,10 @@ const styles = StyleSheet.create({
   voteNum: {
     fontSize: 8,
     // fontFamily: 'Open-Sans-Regular',
+    textAlign: 'center',
   },
   emptyView: {
-    flex: 1,
+    flex: 0.5,
   },
 });
 
@@ -399,6 +419,10 @@ const viewStyles = StyleSheet.create({
     flex: 5,
     flexDirection: "row",
   },
+  userInnerContainer: {
+    flex: 2,
+    flexDirection: "column",
+  },
   profileLogo: {
     flex: 1,
     padding: 5,
@@ -422,10 +446,16 @@ const viewStyles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 5,
   },
+  nameContainer: {
+    flex: 1,
+  },
   name: {
     fontSize: 12,
     //  fontFamily: 'Open-Sans-Regular',
     color: "black",
+  },
+  dateContainer: {
+    flex: 1,
   },
   date: {
     fontSize: 7,
@@ -458,19 +488,23 @@ const viewStyles = StyleSheet.create({
   vote: {
     flex: 4,
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 5,
+    justifyContent: "space-between",
   },
   upvote: {
-    flex: 1,
-    alignItems: "center",
+    flex: 1.5,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginRight: 10,
   },
   downvote: {
-    flex: 1,
-    alignItems: "center",
+    flex: 1.5,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginLeft: 10,
   },
   voteNum: {
     fontSize: 8,
+    textAlign: 'center',
     // fontFamily: 'Open-Sans-Regular',
   },
   voteNum: {
@@ -478,6 +512,6 @@ const viewStyles = StyleSheet.create({
     // fontFamily: 'Open-Sans-Regular',
   },
   emptyView: {
-    flex: 1,
+    flex: 0.5,
   },
 });

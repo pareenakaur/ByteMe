@@ -105,7 +105,7 @@ export default function ReportForm({ navigation , route}) {
         if (photo) {
           const storageRef = ref(
             storage,
-            "reports/" + stall_id + "_" + data.result + "jpg"
+            "reports/" + place["place_id"] + "_" + data.result + ".jpg"
           );
           const response = await fetch(photo);
           const blob = await response.blob();

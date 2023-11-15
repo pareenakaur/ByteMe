@@ -105,7 +105,7 @@ export default function ReviewForm({ navigation, route}) {
         if (photo) {
           const storageRef = ref(
             storage,
-            "reviews/" + place["place_id"] + "_" + data.result + "jpg"
+            "reviews/" + place["place_id"] + "_" + data.result + ".jpg"
           );
           const response = await fetch(photo);
           const blob = await response.blob();

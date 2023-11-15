@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity, Alert} from "react-native";
 import SignOut from "../user-functions/SignOut";
-// import FavouriteHawkers from "./FavouriteHawkers";
-import ProfileBtn from "../user-functions/ProfileBtn";
 import SafeAreaView from "react-native-safe-area-view";
 import { IconButton } from "react-native-paper";
 
@@ -80,12 +78,33 @@ export default function ProfilePage({navigation}){
                         <IconButton icon={"chevron-right"}></IconButton>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("ViewAllReviews")}>
+                    <TouchableOpacity style={styles.button} onPress={()=>{
+                        Alert.alert(
+                            "Sorry!", "Work In Progress...",
+                            [
+                              {
+                                text: "OK",
+                                onPress: () => navigation.navigate("ProfilePage"), //back to explore or back to the stall page ?
+                                style: "cancel",
+                              },
+                            ]
+                          );}}>
                         <Text style={styles.text}>Past Reviews</Text>
                         <IconButton icon={"chevron-right"}></IconButton>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("ViewAllReports")}>
+                    <TouchableOpacity style={styles.button} onPress={()=> {
+                        Alert.alert(
+                            "Sorry!"," Work In Progress...",
+                            [
+                              {
+                                text: "OK",
+                                onPress: () => navigation.navigate("ProfilePage"), //back to explore or back to the stall page ?
+                                style: "cancel",
+                              },
+                            ]
+                          );
+                    }}>
                         <Text style={styles.text}>Past Reports</Text>
                         <IconButton icon={"chevron-right"}></IconButton>
                     </TouchableOpacity>

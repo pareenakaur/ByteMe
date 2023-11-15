@@ -72,22 +72,15 @@ def getStallInfo():
 @hawkersAPI.route('/getNearbyHawkerCentres', methods=['GET'])
 def getNearbyHawkerCentres():
     distance = request.args.get('distance')
-    longitude = request.args.get('longitude')
-    latitude = request.args.get('latitude')
+    place_id =  request.args.get('id')
     format = request.args.get('format')
-    user_location = {'longitude':longitude, 'latitude':latitude}
 
     if distance is None:
         return "Please provide a 'distance' query parameter", 400
-    
-    elif longitude is None:
-        return "Please provide a 'longitude', query parameter", 400
-    
-    elif latitude is None:
-        return "Please provide a 'latitude', query parameter", 400
-    
+    elif place_id is None:
+        return "Please provide a 'place_id' query parameter", 400
     else:
-        nearby_hawker_centre_details = hawkerManager.getNearbyHawkerCentres(user_location, distance, format)
+        nearby_hawker_centre_details = hawkerManager.getNearbyHawkerCentres(place_id, distance, format)
         response = jsonify(nearby_hawker_centre_details)
         print(f"{len(nearby_hawker_centre_details)} nearby hawker centres found")
         return response

@@ -112,7 +112,7 @@ export default function MapContainer(props) {
             size={30}
             onPress={showModal}
           />
-          <MapInput changeHawkerCentreInfo={props.setHawkerCentreInfo} userTap={props.userTap} setHawkerStalls={setHawkerStalls} notifyChange={(loc) => getCoordsFromName(loc)} />
+          <MapInput changeCrowdedColor={props.setCrowdedColor} changeHawkerCentreInfo={props.setHawkerCentreInfo} userTap={props.userTap} setHawkerStalls={setHawkerStalls} setStallTap={props.setStallTap} notifyChange={(loc) => getCoordsFromName(loc)} />
         </View>
       </View>
 

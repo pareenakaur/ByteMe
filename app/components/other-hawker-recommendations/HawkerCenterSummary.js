@@ -3,15 +3,23 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import StarRating from '../hawker-stall-profile/StarRating';
 
 
-const Summary = ({ image, name, cuisineList, crowdLevel, address, openingHours, rating, reviews }) => {
+const Summary = ({ name, crowdColor, crowdLevel, cuisineList,  address, openingHours, rating, reviews }) => {
 
-    const numOfReviews = reviews.length;
+    let foodOptions = [];
+    let cuisines = [];
+    if (cuisineList !== null){
+        console.log(cuisineList);
+        if(cuisineList["vegetarian"]!== "not available"){
+            foodOptions.push("Vegetarian");
+        }
+        foodOptions.push("Halal");
 
-    const cuisines = cuisineList.map((cuisine, index) => (
-        <View key={index} style={styles.keywordStyle}>
-            <Text style={styles.text}>{cuisine}</Text>
-        </View>
-      ));
+        cuisines = foodOptions.map((cuisine, index) => (
+            <View key={index} style={styles.keywordStyle}>
+                <Text style={styles.text}>{cuisine}</Text>
+            </View>
+       ));
+    }
     
 
     return (
@@ -27,7 +35,7 @@ const Summary = ({ image, name, cuisineList, crowdLevel, address, openingHours, 
                                 <Text style={styles.detailsOthers}>Opening Hours: {openingHours}</Text>
                             </View>
                             <View style={styles.summaryRightContainer}>
-                                <View style={styles.crowdLevel}>
+                                <View style={{backgroundColor:crowdColor, borderRadius:1000}}>
                                     <Text style={styles.crowd} >{crowdLevel}</Text>
                                 </View>
                             </View>
@@ -47,7 +55,7 @@ const Summary = ({ image, name, cuisineList, crowdLevel, address, openingHours, 
                             </View>
                             <View style={styles.detailsRightContainer}>
                                 <StarRating rating={rating} size={18} />
-                                <Text style={styles.reviewsText}>{numOfReviews} Reviews</Text>
+                                <Text style={styles.reviewsText}>{reviews} Reviews</Text>
                             </View>
                         </View>
                     </View>
@@ -184,10 +192,7 @@ const styles = StyleSheet.create({
     },
     crowdLevel: {
         backgroundColor: 'gold',
-        borderWidth: 1,
-        borderColor: 'gold',
         borderRadius: 1000,
-        
     },
     crowd: {
        // fontFamily: 'Open-Sans-Bold',

@@ -107,6 +107,7 @@ export default function Mappy(props) {
     const responseStalls = await fetch(`http://127.0.0.1:5000/hawkers/getHawkerCentreStalls?id=${item.place_id}&format=1`);
     const resStalls = await responseStalls.json();
     props.setHawkerStalls(resStalls);
+    props.setStallTap(false);
     // console.log("response_stalls: ");
     // for (let i=0; i<resStalls.length; i++){
     //   console.log(resStalls[i]["name"]);

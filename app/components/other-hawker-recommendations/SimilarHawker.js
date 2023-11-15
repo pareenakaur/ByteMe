@@ -5,8 +5,14 @@ import { AntDesign } from '@expo/vector-icons';
 const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
     const API_KEY = 'AIzaSyD3YKpWEopq3wrYDEj8c2AAajWoXPTl2zo';
 
-    const [placeId, setPlaceId] = useState(null);
-   
+
+    useEffect(() => {
+    //    console.log(similarHawker);
+        // const c = decideColor(similarHawker.crowdedness);
+        // console.log(c);
+        console.log(decideCrowdText('rgba(0,255,0,0.15)'));
+        console.log(decideTextColor(similarHawker.crowdedness));
+      },[]); 
     // const [image, setImage] = useState(null);
     // const [distanceAway, setDistanceAway] = useState(null);
     // const [crowdLevel, setCrowdLevel] = useState(null);
@@ -46,26 +52,39 @@ const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
       
       
 
-    function decideColor(capacity){
-        if(capacity > 0.3){
-            return "rgba(255,0,0,0.75)";
-        } else if (capacity > 0.3 && capacity <= 0.6){
-            return "rgba(255, 95, 21, 0.75)";
+    // function decideColor(capacity) {
+    //     if (capacity === "not available"){
+    //     return "rgba(0,0,0,0.15)"
+    //     } else if (capacity < 0.3) {
+    //     return "rgba(255,0,0,0.15)";
+    //     } else if (capacity >= 0.3 && capacity <= 0.6) {
+    //     return"rgba(255,95,21,0.15)";
+    //     } else {
+    //     return "rgba(0,255,0,0.15)";
+    //     }
+    // }
 
+    function decideCrowdText(capacity){
+        if (capacity === "not available"){
+            return "Untracked"
+        } else if (capacity < 0.3) {
+            return "Severe Crowd";
+        } else if (capacity >= 0.3 && capacity <= 0.6) {
+            return "Moderate Crowd";
         } else {
-            return "rgba(0, 255, 0, 0.75)"
+            return "Low Crowd";
         }
     }
 
-    function decideCrowdLevel(color){
-        if (color === 'rgba(255,0,0,0.75)' ){
-            return "Severe";
-        } else if (color === "rgba(255, 95, 21, 0.75)"){
-            return "Moderate";
-        } else if (color === "rgba(0, 255, 0, 0.75)"){
-            return "Low";
+    function decideTextColor(capacity) {
+        if (capacity === "not available"){
+        return "rgba(0,0,0,0.75)"
+        } else if (capacity < 0.3) {
+        return "rgba(255,0,0,0.75)";
+        } else if (capacity >= 0.3 && capacity <= 0.6) {
+        return"rgba(255,95,21,0.75)";
         } else {
-            return "Untracked"
+        return "rgba(0,255,0,0.75)";
         }
     }
 
@@ -85,7 +104,7 @@ const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
                     <View style={styles.similarDetailsContainer}>
                         <View style={styles.similarDetailsInnerContainer}>
                             <Text style={styles.name}>{similarHawker.name}</Text>
-                            <Text style={{ paddingTop: 5, fontSize: 12, color: decideColor(similarHawker.crowdedness)}}>Crowd: {decideCrowdLevel(decideColor(similarHawker.crowdedness))}</Text>
+                            <Text style={{ paddingTop: 5, fontSize: 12, color: decideTextColor(similarHawker.crowdedness)}}>Crowd: {decideCrowdText(similarHawker.crowdedness)}</Text>
                             <Text style={styles.distance}>{calculateDistance(similarHawker.latitude, similarHawker.longitude, latitude, longitude)}km away</Text>
                         </View>
                     </View>
