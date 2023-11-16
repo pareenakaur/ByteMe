@@ -1,29 +1,19 @@
 from flask import Flask
 from firebase_admin import firestore,credentials,initialize_app
-from classes.HawkerManager import HawkerManager
 import os
-import googlemaps
 
+print(" * Initializing Firestore Database Instance...")
 current_dir = os.path.dirname(__file__)
-# first server
 key_path = os.path.join(current_dir, '..', 'config', 'key.json')
-
-# second server
-#key_path = os.path.join(current_dir, '..', 'config', 'key2.json')
 
 cred = credentials.Certificate(key_path)
 default_app = initialize_app(cred)
 
 db = firestore.client()
-gmaps = googlemaps.Client(key='AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E')
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'qweasdqweasd'
-
-    hawkerManager = HawkerManager(db, gmaps)
-    print("Initializing database...")
-    # hawkerManager.initializeHawkerCentreCollection()
     
     from .userAPI import userAPI
     from .reviewsAPI import reviewsAPI

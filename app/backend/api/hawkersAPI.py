@@ -1,12 +1,10 @@
-import uuid
 import googlemaps
 from classes.HawkerManager import HawkerManager
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 
 db = firestore.client()
-# gmaps = googlemaps.Client(key='AIzaSyB4OexlmStr943doK3Cjo15V8FnSI0dNQk')
-gmaps = googlemaps.Client(key='AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E')
+gmaps = googlemaps.Client(db.collection('admin').document('google_api_key').get().to_dict()['key'])
 
 hawkerManager = HawkerManager(db, gmaps)
 
@@ -115,30 +113,12 @@ def getPlaceIDFromLatLong():
     else:
         place_id = hawkerManager.getPlaceIDFromLatLong(lat, long)
         return jsonify(place_id)
-# @hawkersAPI.route('/get', methods=['GET'])
-# def get():
-#     try:
-#         id = uuid.uuid4()
-#         usersColl.document(id.hex).set(request.json)
-#         return jsonify({"success": True})
-#    except Exception as e:
-#         return f"An Error Occured: {e}"
-
-# @reviewsAPI.route('/add', methods=['POST'])
-# def create():
-#     try:
-#         id = uuid.uuid4()
-#         usersColl.document(id.hex).set(request.json)
-#         return jsonify({"success": True})
-#     except Exception as e:
-#         return f"An Error Occured: {e}"
     
-# @reviewsAPI.route('/list') # by hawker id
-# def read():
-#     try:
-#         all_users = [doc.to_dict() for doc in usersColl.stream()]
-#         return jsonify(all_users)
-#     except Exception as e:
-#         return f"An Error has Occured: {e}"
+@hawkersAPI.route('/updateHawkerCentreCrowdedness', methods=['GET'])
+def updateHawkerCentreCrowdedness():
+    try:
+        hawkerManager.updateHawkerCentreCollection()
+        return jsonify(True)
     
-        
+    except:
+        return "Error while updating crowdedness, please try again later", 404

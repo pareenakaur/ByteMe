@@ -1,26 +1,33 @@
 import numpy as np
-import math
 from firebase_admin import firestore
-from utils.functions import getReviewCount
-from utils.functions import getReportCount
-from utils.functions import getAvgReviewRating
 from utils.functions import haversine
 from utils.functions import format_hawker_response
 from utils.functions import get_carpark_availability
-from firebase_admin import firestore
-
-#import firebase_admin
-#from firebase_admin import credentials
-#cred = credentials.Certificate("api/key.json")
-#firebase_admin.initialize_app(cred)
 
 class HawkerManager:
+    """Manage operations related to hawker centres, stalls, and associated data.
+
+    Args:
+        db (Firestore, optional): Firestore database instance. Defaults to None.
+        gmaps (GoogleMaps, optional): Google Maps API instance. Defaults to None.
+    """
 
     def __init__(self, db=None, gmaps=None):
+        """Initialize the HawkerManager instance.
+
+        Args:
+            db (Firestore, optional): Firestore database instance. Defaults to None.
+            gmaps (GoogleMaps, optional): Google Maps API instance. Defaults to None.
+        """
         self.db = db
         self.gmaps = gmaps
     
     def getAllHawkerCentres(self):
+        """Retrieve information about all hawker centres.
+
+        Returns:
+            list: List of dictionaries containing hawker centre information.
+        """
         hawker_centre_response = []
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre_documents = hawkerCentresColl.stream()
@@ -33,6 +40,15 @@ class HawkerManager:
         return hawker_centre_response
     
     def getFilteredHawkerCentres(self, vegetarian, minrating):
+        """Filter hawker centres based on vegetarian options and minimum rating.
+
+        Args:
+            vegetarian (bool): Flag indicating whether to filter vegetarian options.
+            minrating (float): Minimum rating threshold.
+
+        Returns:
+            list: List of dictionaries containing filtered hawker centre information.
+        """
         hawker_centre_response = []
         hawkerCentresColl = self.db.collection('hawkercentres')
         if vegetarian == True:
@@ -54,6 +70,16 @@ class HawkerManager:
 
 
     def getNearbyHawkerCentres(self, place_id, distance, format):
+        """Retrieve information about nearby hawker centres.
+
+        Args:
+            place_id (str): Place ID of the reference location.
+            distance (float): Maximum distance in kilometers.
+            format (bool): Flag indicating whether to format the response.
+
+        Returns:
+            list: List of dictionaries containing nearby hawker centre information.
+        """
         nearby_hawker_centre_details = []
         distance_list = []
 
@@ -87,10 +113,20 @@ class HawkerManager:
             place_id = nearby_place_document.id
             nearby_hawker_centre_details.append(self.getHawkerCentreInfo(place_id, format))      
 
-        print(f"{len(nearby_hawker_centre_details)} hawker centres found nearby")
         return nearby_hawker_centre_details
     
     def getHawkerCentreInfo(self, centreID, format):
+        """Retrieve detailed information about a hawker centre.
+
+        Args:
+            centreID (str): Unique identifier of the hawker centre.
+            format (bool): Flag indicating whether to format the response.
+
+        Returns:
+            dict: Dictionary containing hawker centre information, including user ratings,
+                review count, report count, and crowdedness.
+        """
+       
         response = self.gmaps.place(place_id=centreID)['result']
         if format:
             response = format_hawker_response(response)
@@ -110,6 +146,19 @@ class HawkerManager:
 
     
     def updateHawkerCentreStalls(self, centreID, format):
+        """Update and retrieve information about hawker stalls near a hawker centre.
+
+        Args:
+            centreID (str): Unique identifier of the hawker centre.
+            format (bool): Flag indicating whether to format the response.
+
+        Returns:
+            List[dict] or None: List of dictionaries containing information about hawker stalls
+                                near the specified hawker centre, including user ratings,
+                                review count, report count, and crowdedness. Returns None if no
+                                hawker stalls are found.
+        """
+
         hawker_stalls_list = []
         hawkerCentresColl = self.db.collection('hawkercentres')
         location = hawkerCentresColl.document(centreID).get().to_dict()
@@ -124,6 +173,19 @@ class HawkerManager:
         return hawker_stalls_list
     
     def getHawkerCentreStalls(self, centreID, format):
+        """Retrieve information about hawker stalls associated with a hawker centre.
+
+        Args:
+            centreID (str): Unique identifier of the hawker centre.
+            format (bool): Flag indicating whether to format the response.
+
+        Returns:
+            Union[List[dict], str]: List of dictionaries containing information about hawker stalls
+                                    associated with the specified hawker centre, including user ratings,
+                                    review count, report count, and crowdedness. Returns 'not available'
+                                    if no hawker stalls are associated with the hawker centre.
+        """
+
         hawker_stalls_list = []
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre = hawkerCentresColl.document(centreID).get().to_dict()
@@ -133,26 +195,58 @@ class HawkerManager:
                 hawker_stall_response = self.getStallInfo(hawker_stall_id, format)
                 hawker_stalls_list.append(hawker_stall_response)
         else:
-            print("Not available")
+            return 'not available'
 
         return hawker_stalls_list
 
-    def getStallInfo(self, stallID, format):      
+    def getStallInfo(self, stallID, format):
+        """Retrieve information about a hawker stall.
+
+        Args:
+            stallID (str): Unique identifier of the hawker stall.
+            format (bool): Flag indicating whether to format the response.
+
+        Returns:
+            dict: Dictionary containing information about the specified hawker stall,
+                including user rating, review count, and report count. The 'format'
+                parameter determines whether the response is formatted.
+        """
+        from ReviewManager import ReviewManager
+        from ReportManager import ReportManager
+
         response = self.gmaps.place(place_id = stallID)['result']
         if format:
             response = format_hawker_response(response)
 
-        response['user_rating'] = getAvgReviewRating(stallID, self.db.collection('reviews'))
-        response['user_review_count'] = getReviewCount(stallID, self.db.collection('reviews'))
-        response['user_report_count'] = getReportCount(stallID, self.db.collection('reports'))
+        response['user_rating'] = ReviewManager.getAvgReviewRating(stallID, self.db.collection('reviews'))
+        response['user_review_count'] = ReviewManager.getReviewCount(stallID, self.db.collection('reviews'))
+        response['user_report_count'] = ReportManager.getReportCount(stallID, self.db.collection('reports'))
         return response
 
     def getHawkerCentreLocation(self, placeID):
+        """Retrieve the location information of a hawker centre.
+
+        Args:
+            placeID (str): Unique identifier of the hawker centre.
+
+        Returns:
+            google.cloud.firestore_v1.document.DocumentSnapshot: A document snapshot representing the location
+            information of the specified hawker centre.
+        """
         hawkerCentresColl = self.db.collection('hawkercentres')
         location = hawkerCentresColl.document(placeID).get()
         return location
     
     def getPlaceIDFromLatLong(self, lat, long):
+        """Retrieve the unique identifier (placeID) of the nearest hawker centre based on latitude and longitude.
+
+        Args:
+            lat (float): Latitude of the target location.
+            long (float): Longitude of the target location.
+
+        Returns:
+            str: Unique identifier (placeID) of the nearest hawker centre based on the specified latitude and longitude.
+        """
         distance_list = []
 
         hawkerCentresColl = self.db.collection('hawkercentres')
@@ -174,6 +268,15 @@ class HawkerManager:
         return place_id
 
     def getHawkerCentreReviewCount(self, placeID):
+        """Retrieve the number of reviews for a specific hawker centre.
+
+        Args:
+            placeID (str): Unique identifier of the hawker centre.
+
+        Returns:
+            int: Number of reviews associated with the specified hawker centre.
+        """
+        
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre =  hawkerCentresColl.document(placeID).get().to_dict()
         if 'reviews' in hawker_centre:
@@ -184,6 +287,15 @@ class HawkerManager:
         return count
 
     def getHawkerCentreReportCount(self, placeID):
+        """Retrieve the number of reports for a specific hawker centre.
+
+        Args:
+            placeID (str): Unique identifier of the hawker centre.
+
+        Returns:
+            int: Number of reports associated with the specified hawker centre.
+        """
+
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre = hawkerCentresColl.document(placeID).get().to_dict()
         if 'reports' in hawker_centre:
@@ -194,6 +306,15 @@ class HawkerManager:
         return count
 
     def getHawkerCentreRating(self, placeID):
+        """Retrieve the average rating of a hawker centre based on user reviews.
+
+        Args:
+            placeID (str): Unique identifier of the hawker centre.
+
+        Returns:
+            Union[float, None]: Average rating of the hawker centre or None if there are no reviews.
+        """
+
         hawkerCentresColl = self.db.collection('hawkercentres')
         reviewsColl = self.db.collection('reviews')
         hawker_centre = hawkerCentresColl.document(placeID).get().to_dict()
@@ -202,7 +323,6 @@ class HawkerManager:
             total_rating = 0
             for review_id in review_id_list:
                 review = reviewsColl.document(review_id).get().to_dict()
-                print(f"review: {review}")
                 total_rating += review['rating']
             return round(total_rating / len(review_id_list), 2)
         else:
@@ -210,9 +330,19 @@ class HawkerManager:
 
         
     def getHawkerCentreCrowdedness(self, placeID, carpark_dict):
+        """Retrieve the crowdedness of a hawker centre based on nearby carpark data.
+
+        Args:
+            placeID (str): Unique identifier of the hawker centre.
+            carpark_dict (Dict): Dictionary containing carpark information.
+
+        Returns:
+            Union[str, float]: Crowdedness of the hawker centre (as a ratio of available lots to total lots)
+                            or 'not available' if no carpark data is found.
+        """
+
         hawker_centre = self.db.collection('hawkercentres').document(placeID).get().to_dict()
-        live_carpark_data = get_carpark_availability()['value']
-        # print(f"live: {live_carpark_data}")
+        live_carpark_data = get_carpark_availability(self.db.collection('admin').document('lta_carpark_key').get().to_dict()['key'])['value']
 
         live_nearby_carparks = []
         # Get live carpark data for nearby carparks
@@ -221,7 +351,6 @@ class HawkerManager:
             carpark_lat = float(carpark_coords[0])
             carpark_long = float(carpark_coords[1])
             distance = haversine(carpark_lat, carpark_long, hawker_centre['latitude'], hawker_centre['longitude'])
-            #print(f"carpark: {carpark_lat}, {carpark_long} | hawker: {hawker_centre['latitude']}, {hawker_centre['longitude']} | distance: {distance}")
             if distance < 300:
                 live_nearby_carparks.append(live_carpark)
 
@@ -238,7 +367,22 @@ class HawkerManager:
         else:
             return available_lots / total_lots
         
-    def initializeHawkerCentreCollection(self):
+    def updateHawkerCentreCollection(self):
+        """Update the crowdedness and user rating for all hawker centres in the collection.
+
+        This method iterates through all hawker centres in the collection, retrieves
+        the crowdedness and user rating based on nearby carpark data and its respective reviews, 
+        and updates the corresponding fields in the hawker centre documents.
+
+        Note:
+            This method assumes the existence of 'carparks' and 'admin' collections
+            in the Firestore database.
+
+        Returns:
+            None
+        """
+
+        print("Updating Hawker Centres Crowdedness...")
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre_documents = hawkerCentresColl.stream()
         
@@ -262,17 +406,69 @@ class HawkerManager:
             hawkerCentresColl.document(place_id).update(hawker_centre) 
         
     def addHawkerReview(self, centreID,reviewID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
+        """Add a review to a specific hawker centre.
+
+        This method updates the 'reviews' field in the hawker centre document by adding
+        the specified review ID to the array of reviews.
+
+        Args:
+            centreID (str): The unique identifier of the hawker centre.
+            reviewID (str): The unique identifier of the review to be added.
+
+        Returns:
+            None
+        """
+
+        self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
         return
 
     def deleteHawkerReview(self,centreID,reviewID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
+        """Remove a review from a specific hawker centre.
+
+        This method updates the 'reviews' field in the hawker centre document by removing
+        the specified review ID from the array of reviews.
+
+        Args:
+            centreID (str): The unique identifier of the hawker centre.
+            reviewID (str): The unique identifier of the review to be removed.
+
+        Returns:
+            None
+        """
+
+        self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayRemove([reviewID])})
         return
 
     def addHawkerReport(self, centreID,reportID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
+        """Add a report to a specific hawker centre.
+
+        This method updates the 'reports' field in the hawker centre document by adding
+        the specified report ID to the array of reports.
+
+        Args:
+            centreID (str): The unique identifier of the hawker centre.
+            reportID (str): The unique identifier of the report to be added.
+
+        Returns:
+            None
+        """
+
+        self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayUnion([reportID])})
         return
 
     def deleteHawkerReport(self, centreID,reportID):
-        hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
+        """Delete a report from a specific hawker centre.
+
+        This method updates the 'reports' field in the hawker centre document by removing
+        the specified report ID from the array of reports.
+
+        Args:
+            centreID (str): The unique identifier of the hawker centre.
+            reportID (str): The unique identifier of the report to be removed.
+
+        Returns:
+            None
+        """
+        
+        self.db.collection('hawkercentres').document(centreID).update({"reports": firestore.ArrayRemove([reportID])})
         return

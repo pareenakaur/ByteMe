@@ -1,4 +1,3 @@
-import uuid
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 from classes.ReportManager import ReportManager
