@@ -116,7 +116,7 @@ const Details = ({name, address, openStatus, openingHours, rating, reviews}) => 
                             </View>
                             <View style={styles.detailsRightContainer}>
                                 <StarRating rating={rating} size={14} />
-                                <Text style={styles.reviewsText} numberOfLines={1} ellipsizeMode="tail">{reviews.length} Reviews</Text>
+                                <Text style={styles.reviewsText} numberOfLines={1} ellipsizeMode="tail">{reviews} Reviews</Text>
                             </View>
                         </View>
                     </View>

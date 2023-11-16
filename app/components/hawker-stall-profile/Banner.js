@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
 const Banner = ({image}) => {
+    
     return (
         <View style={styles.default}>
             <View style={styles.container}>

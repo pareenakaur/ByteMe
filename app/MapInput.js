@@ -23,7 +23,7 @@ function MapInput(props) {
     const res = await response.json();
     console.log(res);
     // const formattedResponse = {'place_id': res["place_id"], 'name': res["name"], 'address':res["formatted_address"], 'opening_hours': "placeholder", 'rating': res["rating"], 'url':res["url"]}
-    const formattedResponse = {'place_id': res["place_id"], 'name': res["name"], 'address':res["formatted_address"], 'opening_hours': res["opening_hours"], 'rating': res["google_rating"], 'review': res["google_review_count"], "tags": res["filter_tags"], "photo_reference": res["photo_data"][0]["photo_reference"]}
+    const formattedResponse = {'place_id': res["place_id"], 'name': res["name"], 'address':res["formatted_address"], 'opening_hours': res["opening_hours"], 'rating': res["user_rating"], 'review': res["user_review_count"], "tags": res["filter_tags"], "photo_reference": res["photo_data"][0]["photo_reference"]}
     // console.log(formattedResponse);
     props.userTap(true);
     props.changeHawkerCentreInfo(formattedResponse);

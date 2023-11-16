@@ -95,10 +95,17 @@ class HawkerManager:
         if format:
             response = format_hawker_response(response)
 
+        carparksColl = self.db.collection('carparks')
+        carparks_documents = carparksColl.stream()
+
+        carparks_list  = [carpark_document.to_dict() for carpark_document in carparks_documents]
+        carparks_dict = {carpark['CarParkID']: carpark for carpark in carparks_list}
+
+
         response['user_rating'] = self.getHawkerCentreRating(centreID)
         response['user_review_count'] = self.getHawkerCentreReviewCount(centreID)
         response['user_report_count'] = self.getHawkerCentreReportCount(centreID)
-        response['crowdedness'] = self.getHawkerCentreCrowdedness(centreID)
+        response['crowdedness'] = self.getHawkerCentreCrowdedness(centreID, carparks_dict)
         return response
 
     
@@ -202,7 +209,7 @@ class HawkerManager:
             return None
 
         
-    def getHawkerCentreCrowdedness(self, placeID):
+    def getHawkerCentreCrowdedness(self, placeID, carpark_dict):
         hawker_centre = self.db.collection('hawkercentres').document(placeID).get().to_dict()
         live_carpark_data = get_carpark_availability()['value']
         # print(f"live: {live_carpark_data}")
@@ -222,9 +229,9 @@ class HawkerManager:
         total_lots = 0
         available_lots = 0
         for live_nearby_carpark in live_nearby_carparks:
-            carpark_total_lots = self.db.collection('carparks').document(live_nearby_carpark['CarParkID']).get().to_dict()
-            if(carpark_total_lots):
-                total_lots += carpark_total_lots['TotalLots']
+            carpark_total = carpark_dict[live_nearby_carpark["CarParkID"]]
+            if(carpark_total):
+                total_lots += carpark_total['TotalLots']
                 available_lots += live_nearby_carpark['AvailableLots']
         if total_lots == 0:
             return 'not available'
@@ -234,16 +241,25 @@ class HawkerManager:
     def initializeHawkerCentreCollection(self):
         hawkerCentresColl = self.db.collection('hawkercentres')
         hawker_centre_documents = hawkerCentresColl.stream()
+        
+        carparksColl = self.db.collection('carparks')
+        carparks_documents = carparksColl.stream()
 
-        batch = self.db.batch()
+        carparks_list  = [carpark_document.to_dict() for carpark_document in carparks_documents]
+        carparks_dict = {carpark['CarParkID']: carpark for carpark in carparks_list}
 
         for hawker_centre_document in hawker_centre_documents:
-            place_id = hawker_centre_document.id
+
             hawker_centre = hawker_centre_document.to_dict()
-            crowdedness = self.getHawkerCentreCrowdedness(place_id)
+            place_id = hawker_centre_document.id
+            
+            crowdedness = self.getHawkerCentreCrowdedness(place_id, carparks_dict)
             hawker_centre['crowdedness'] = crowdedness
-            doc_ref = hawkerCentresColl.document(place_id)
-            batch.update(doc_ref, hawker_centre)
+            
+            user_rating = self.getHawkerCentreRating(place_id)
+            hawker_centre['user_rating'] = user_rating
+
+            hawkerCentresColl.document(place_id).update(hawker_centre) 
         
     def addHawkerReview(self, centreID,reviewID):
         hawkerCentreLocationsColl = self.db.collection('hawkercentres').document(centreID).update({"reviews": firestore.ArrayUnion([reviewID])})
