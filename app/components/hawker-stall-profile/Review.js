@@ -29,15 +29,13 @@ const Review = ({
   const [imageURL, setImageURL] = useState(null);
   const storage = getStorage();
   const firebaseConfig = {
-    apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
-    authDomain: "byte-403ce.firebaseapp.com",
-    databaseURL:
-      "https://byte-403ce-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "byte-403ce",
-    storageBucket: "byte-403ce.appspot.com",
-    messagingSenderId: "777425915236",
-    appId: "1:777425915236:web:7cc5b449392ee76696fe71",
-    measurementId: "G-CBGM27NVK3",
+    apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
+    authDomain: "sgbytes.firebaseapp.com",
+    projectId: "sgbytes",
+    storageBucket: "sgbytes.appspot.com",
+    messagingSenderId: "766295476965",
+    appId: "1:766295476965:web:131a044224867bf452e20c",
+    measurementId: "G-RWGZJLPD4G"
   };
 
   // Initialize Firebase
@@ -327,6 +325,8 @@ const styles = StyleSheet.create({
 
   descriptionContainer: {
     flex: 2,
+    paddingLeft: 2,
+    paddingRight: 2,
     paddingTop: 20,
 
     flexDirection: "row",
@@ -362,10 +362,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     marginLeft: 10,
-  },
-  voteNum: {
-    fontSize: 8,
-    // fontFamily: 'Open-Sans-Regular',
   },
   voteNum: {
     fontSize: 8,
@@ -505,10 +501,6 @@ const viewStyles = StyleSheet.create({
   voteNum: {
     fontSize: 8,
     textAlign: 'center',
-    // fontFamily: 'Open-Sans-Regular',
-  },
-  voteNum: {
-    fontSize: 8,
     // fontFamily: 'Open-Sans-Regular',
   },
   emptyView: {

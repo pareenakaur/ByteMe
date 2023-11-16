@@ -30,7 +30,7 @@ export default function FavouriteHawkers({navigation}){
                 setHawkerArr(arr);
                 
             }else{
-                setHawkerArr([<Text style={{color: "#FA4A0C"}}>You have not added any favourite stalls</Text>]);
+                setHawkerArr([<Text key={0} style={{color: "#FA4A0C"}}>You have not added any favourite stalls</Text>]);
             }
         } catch (error) {
             console.error(error);

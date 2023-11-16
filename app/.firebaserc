@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "byte-403ce",
+    "default":"sgbytes",
     "byte": "byte-403ce"
   },
   "targets": {},

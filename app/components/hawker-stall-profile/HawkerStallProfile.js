@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { IconButton } from "react-native-paper";
 // import JSONPath from 'jsonpath'
 import { StyleSheet, Text, View } from "react-native";
 import { Octicons } from "@expo/vector-icons";
@@ -17,15 +18,13 @@ import { getDownloadURL, getStorage, ref } from "firebase/storage";
 const Profile = ({navigation, route}) => {
   
   const firebaseConfig = {
-    apiKey: "AIzaSyCpNGxq6dkVp0A-hvBbBc5LZleOL-c_4-c",
-    authDomain: "byte-403ce.firebaseapp.com",
-    databaseURL:
-      "https://byte-403ce-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "byte-403ce",
-    storageBucket: "byte-403ce.appspot.com",
-    messagingSenderId: "777425915236",
-    appId: "1:777425915236:web:7cc5b449392ee76696fe71",
-    measurementId: "G-CBGM27NVK3",
+    apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
+    authDomain: "sgbytes.firebaseapp.com",
+    projectId: "sgbytes",
+    storageBucket: "sgbytes.appspot.com",
+    messagingSenderId: "766295476965",
+    appId: "1:766295476965:web:131a044224867bf452e20c",
+    measurementId: "G-RWGZJLPD4G"
   };
 
   // Initialize Firebase
@@ -40,13 +39,18 @@ const Profile = ({navigation, route}) => {
   const [stallData, setStallData] = useState(null);
   const [stallImage, setStallImage] = useState(null);
 
-  useEffect(() => {
-    function fetchData(){
-        setStallData(place);
-        setStallImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${place.photo_reference}&key=${API_KEY}`);
-    };
+  async function fetchStallData(){
+    setStallData(place);
+    if(place.photo_reference){
+      setStallImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${place.photo_reference}&key=${API_KEY}`);
+    } else {
+      setStallImage("https://i.imgur.com/45cWimK.png");
+    }
+    
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchStallData();
   }, [place]);
 
 //   useEffect(() => {
@@ -84,66 +88,66 @@ const Profile = ({navigation, route}) => {
 //   }, [placeId]);
 
   const [reports1, setStallReports] = useState(null);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          "http://127.0.0.1:5000/reports/getStallReports?stallID=" + place["place_id"],
-          {
-            method: "GET",
-          }
-        );
-
-        if (response.status === 200) {
-          const jsonString = await response.text();
-          const parsedData = JSON.parse(jsonString);
-          console.log(parsedData);
-          if (parsedData.res == "Stall has no reports") {
-            setStallReports(null);
-          }
-          setStallReports(parsedData.list);
-        } else {
-          throw new Error(
-            "Error retrieving stall information: " + response.status
-          );
+  async function fetchReportData() {
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:5000/reports/getStallReports?stallID=" + place["place_id"],
+        {
+          method: "GET",
         }
-      } catch (error) {
-        console.error("Error getting stall information:", error);
-      }
-    }
+      );
 
+      if (response.status === 200) {
+        const jsonString = await response.text();
+        const parsedData = JSON.parse(jsonString);
+        console.log(parsedData);
+        if (parsedData.res == "Stall has no reports") {
+          setStallReports(null);
+        }
+        setStallReports(parsedData.list);
+      } else {
+        throw new Error(
+          "Error retrieving stall information: " + response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error getting stall information:", error);
+    }
+  };
+
+  useEffect(() => {
     // Call the async function
-    fetchData();
+    fetchReportData();
   }, [place]);
 
   const [reviews1, setStallReviews] = useState(null);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          "http://127.0.0.1:5000/reviews/getStallReviews?stallID=" + place["place_id"],
-          {
-            method: "GET",
-          }
-        );
-
-        if (response.status === 200) {
-          const jsonString = await response.text();
-          const parsedData = JSON.parse(jsonString);
-          console.log(parsedData.list);
-          setStallReviews(parsedData.list);
-        } else {
-          throw new Error(
-            "Error retrieving stall information: " + response.status
-          );
+  async function fetchReviewData() {
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:5000/reviews/getStallReviews?stallID=" + place["place_id"],
+        {
+          method: "GET",
         }
-      } catch (error) {
-        console.error("Error getting stall information:", error);
-      }
-    }
+      );
 
+      if (response.status === 200) {
+        const jsonString = await response.text();
+        const parsedData = JSON.parse(jsonString);
+        console.log(parsedData.list);
+        setStallReviews(parsedData.list);
+      } else {
+        throw new Error(
+          "Error retrieving stall information: " + response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error getting stall information:", error);
+    }
+  };
+
+  useEffect(() => {
     // Call the async function
-    fetchData();
+    fetchReviewData();
   }, [place]);
 
   // const report = {
@@ -167,9 +171,17 @@ const Profile = ({navigation, route}) => {
   //     description: "Very nice! Honestly the best fried rice I have eaten ever :>"
   // }
 
+  const getAllReviewsReports = async() => {
+    await fetchReportData();
+    await fetchReviewData();
+    await fetchStallData();
+  }
+
   return (
     <View style={styles.default}>
-      <Banner image={stallImage} />
+      {stallImage && <Banner image={
+          stallImage} />}
+      
       <AntDesign
         style={styles.navigationButton}
         name="leftcircle"
@@ -180,20 +192,24 @@ const Profile = ({navigation, route}) => {
       <View style={styles.overlayContainer}>
         <View style={styles.containers}>
           <View style={styles.details}>
+            <IconButton 
+              icon={"refresh"} 
+              iconColor={"orange"} 
+              style={{position: "absolute", top: 10, right: 5}} 
+              onPress={getAllReviewsReports}/>
             {/* {console.log("Details: "+ stallData[""])} */}
-            {stallData && stallImage && reviews1 && (
+            {stallData && stallImage && (
               <Details
                 name={stallData["name"]}
                 address={stallData["address"]}
                 openStatus ={stallData["open_now"]}
                 openingHours={stallData["opening_hours"]}
                 rating={stallData["rating"]}
-                reviews={reviews1}
+                reviews={stallData["review"]}
                 
               />
             )}
           </View>
-
           <View style={styles.reports}>
             <View style={styles.reportContainer}>
               <View style={styles.reportHeader}>

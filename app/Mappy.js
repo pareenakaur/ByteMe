@@ -96,7 +96,7 @@ export default function Mappy(props) {
     const res = await response.json();
     // console.log("Mappy, getHawkerCentreInfo")
     // console.log(res);
-    const formattedResponse = {'place_id': item.place_id, 'name': item.name, 'address':item.formatted_address, 'opening_hours': res["opening_hours"], 'rating': res["google_rating"], 'review': res["google_review_count"], "tags": res["filter_tags"], "photo_reference": res["photo_data"][0]["photo_reference"]}
+    const formattedResponse = {'place_id': item.place_id, 'name': item.name, 'address':item.formatted_address, 'opening_hours': res["opening_hours"], 'rating': res["user_rating"], 'review': res["user_review_count"], "tags": res["filter_tags"], "photo_reference": res["photo_data"][0]["photo_reference"]}
     // console.log(formattedResponse);
     props.userTap(true);
     props.changeHawkerCentreInfo(formattedResponse);
@@ -123,7 +123,7 @@ export default function Mappy(props) {
     const response = await fetch("http://127.0.0.1:5000/hawkers/getStallInfo?id=" + item.place_id + "&format=1");
     const res = await response.json();
     // console.log(res);
-    const formattedResponse = {'place_id': res["place_id"], 'name': res["name"], 'address':res["formatted_address"], 'opening_hours': res["opening_hours"], 'open_now': res["open_now"], 'rating': res["google_rating"], 'review': res["google_review_count"], photo_reference: res["photo_data"][0]["photo_reference"], 'tags': res["filter_tags"]}
+    const formattedResponse = {'place_id': res["place_id"], 'name': res["name"], 'address':res["formatted_address"], 'opening_hours': res["opening_hours"], 'open_now': res["open_now"], 'rating': (res["user_rating"]==="User has no reviews"? res["google_rating"]: res["user_rating"]) , 'review': (res["user_review_count"]!==0? res["user_review_count"]: res["google_review_count"]), photo_reference: res["photo_data"][0]["photo_reference"], 'tags': res["filter_tags"]}
     // console.log("formatted_response: ")
     // console.log(formattedResponse);
     props.changeHawkerStallInfo(formattedResponse)
