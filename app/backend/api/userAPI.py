@@ -1,4 +1,3 @@
-import uuid
 from flask import Blueprint, request, jsonify
 from firebase_admin import firestore
 from classes.AccountManager import AccountManager
@@ -75,13 +74,5 @@ def getUser():
         return jsonify({"result": res, "user_details":user_details})
     except Exception as e:
         return f"An Error Occured: {e}"
-    
-# @userAPI.route('/list', methods=['GET'])
-# def read():
-#     try:
-#         all_users = [doc.to_dict() for doc in usersColl.stream()]
-#         return jsonify(all_users)
-#     except Exception as e:
-#         return f"An Error has Occured: {e}"
     
         
