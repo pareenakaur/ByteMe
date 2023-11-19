@@ -31,3 +31,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 # APIs used
 - Frontend: Google maps api, place details api, place nearby search api, LTA carpark availability API, Firebase API
+
+# Potential Issues
+- if you face "Permission Denied" when starting running "npx expo start", run "rm -rf node_modules" then "npm install" to delete and re-download the node_modules file.
+- if you face firebase access issues, try "npm uninstall firebase" and "npm install firebase" again.
