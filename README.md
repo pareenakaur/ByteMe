@@ -1,26 +1,38 @@
-# ByteMe
+# 👋 Welcome to SC2006 SCS4, Team ByteMe Project. 
 
-## To run the app
-- add your api_key in MapInput
-- run npx expo start
-- download expo go on ios/android, scan QR code in terminal to view app in expo go 
+# Project Introduction
 
-## Nagivate to 'pages' to view all screens
-- UserScreen, HeartScreen, ProfileScreen are included in TabNavigation to add the bottom navigation bar
-- FirstScreen contains the FirstPage and Login/Register Pages without the bottom navigation bar
-- Imported FirstScreen and TabNavigation in App.js 
+ByteMe! is a mobile application optimised for android to help Singaporeans gauge the crowd levels of hawker centres and provide hawker stall information in a single-tap! This app seeks to solve the poor user experience associated with queing for food/squeezing with the crowd by predicting crowd levels using LTA carpark availability API and redirect users to other hawker centres near them. By viewing the hawker stall information, users can also judge the quality of the food/service through reviews & reports left by other users within our app.
 
-## Navigate to 'components' to view detailed components for each page
-- explore-page: explore function components
-- hawker-stall-profile: to view hawker stall details, includes view reports and reviews
-- other-hawker-recommendations: see nearby hawkers
-- user-functions: components that make up the user functions
-- user-screen-pages: user functions including view liked hawker stalls, register, login, create report and review, profile page
+# Getting Started
 
-## Navigate to 'utils' to view other functions
-- helper functions for user login/register
-- location service
-- get details for nearby hawker centers and for hawker stall profile
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+1) Install necessary dependencies and packages
+- Install python packages: pip install -r requirements.txt
+- Install react-native packages: npm install 
 
-## To add:
-- API Key in MapInput, NearbyHawkers, PlaceDetails
+2) Obtain a google cloud API key and create a .env file containing that key
+- Get google cloud API key here (https://developers.google.com/workspace/guides/manage-credentials)
+- Create a text file and name it as ".env". Declare your api key: API_KEY = your_api_key (replace with your actual key)
+
+3) (Use ANDROID phone) Syncing port used by expo to port used by localhost for server
+- Enable developer mode on android phone (https://www.youtube.com/watch?v=GERlhgCcoBc)
+- Running app on personal mobile device  (https://reactnative.dev/docs/running-on-device)
+- Go to powershell terminal and run command: adb reverse tcp:5000 tcp:5000
+
+4) Launching app on ANDROID phone
+- Navigate to app folder and open 2 terminals
+- 1st terminal: Run main.py in "backend\main.py"
+- 2nd terminal: Run command npm run android
+
+# Framework used
+- Frontend: React Native, Expo
+- Backend: Flask, Firebase
+
+# APIs used
+- Frontend: Google maps api, place details api, place nearby search api, LTA carpark availability API, Firebase API
+
+# Potential Issues
+- if you face "Permission Denied" when starting running "npx expo start", run "rm -rf node_modules" then "npm install" to delete and re-download the node_modules file.
+- if you face firebase access issues, try "npm uninstall firebase" and "npm install firebase" again.
+
