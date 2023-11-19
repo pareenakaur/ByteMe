@@ -19,26 +19,6 @@ const ReviewsList = ({ image, reviews, type, stallID }) => {
                      type={type}
                    />
       ));
-            
-        
-    
-    
-    // Map the array of reports to Report components
-//     const reviewsList = reviews.map((reviewObj, index) => {
-//         const review = reviewObj[index];
-//       <Review
-//         key={index}
-//         image={hawkerStall.image}
-//         username={review.username}
-//         profilePic={'app/assets/avatar.png'}
-//         upvote={review.upvote}
-//         downvote={0}
-//         description={review.description}
-//         date={"7 Sept 2023, 11:00 am"}
-//         rating={review.rating}
-//         type={type}
-//       />
-// });
   
     return (<View style={styles.default}>
                 <View style={styles.container}>

@@ -1,6 +1,6 @@
 import React, { View, Text, useState } from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-const GOOGLE_APIKEY = "AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E" 
+import {GOOGLE_API_KEY} from '@env'
 
 function MapInput(props) {
 
@@ -55,7 +55,7 @@ function MapInput(props) {
         props.notifyChange(details.geometry.location);
       }}
       query={{
-        key:  GOOGLE_APIKEY,
+        key:  "AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0",
         language: "en",
         components: "country:sg",
       }}

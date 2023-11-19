@@ -1,3 +1,4 @@
+import {GOOGLE_API_KEY} from '@env'
 import { Dimensions, StyleSheet, View } from "react-native";
 import {
   Card,
@@ -10,18 +11,14 @@ import {
 import { useState, useEffect } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
 
-//Todo: hawkerStallInfo 
 export default function HawkerStallCard({hawkerCentreInfo, hawkerStallInfo, navigation }) {
   const [liked, setLiked] = useState(false);
-  // const [likeNumber, setLikeNumber] = useState(false);
   const [foundHawker, setFoundHawker] = useState(null);
 
   useEffect(() => {
     const getUserLike = async() => {
       const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=${global.usrName}&format=1`);
-      // const response = await fetch(`http://127.0.0.1:5000/user/getFavouriteStalls?id=seung&format=1`);
       const res = await response.json();
-      // console.log(res);
       for (let i =0; i<res.length; i++){
         if (hawkerStallInfo["name"] === res[i]["name"]){
           console.log(`This stall is liked! ${hawkerStallInfo["name"]} matches with ${res[i]["name"]}`)
@@ -49,25 +46,20 @@ export default function HawkerStallCard({hawkerCentreInfo, hawkerStallInfo, navi
   }
 
   async function handleLikePress(){
-    // console.log(liked, likeNumber);
     setLiked(!liked);
     if (liked !== true){
       const response = await fetch('http://127.0.0.1:5000/user/addFavouriteStall?username='+ global.usrName+'&stallID=' + hawkerStallInfo["place_id"]);
-      // const response = await fetch('http://127.0.0.1:5000/user/addFavouriteStall?username=seung'+'&stallID=' + hawkerStallInfo["place_id"]);
       const data = await response.json();
       console.log(data.result);
       setFoundHawker(hawkerStallInfo);
     }
     else if (liked !== false){
       const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username='+ global.usrName+'&stallID=' + hawkerStallInfo["place_id"]);
-      // const response = await fetch('http://127.0.0.1:5000/user/removeFavouriteStall?username=seung'+'&stallID=' + hawkerStallInfo["place_id"]);
       const data = await response.json();
       console.log(data.result);
       setFoundHawker(null);
     }
 
-    // console.log(liked, likeNumber);
-    // setLikeNumber(liked ? likeNumber - 1 : likeNumber + 1);
   };
 
   return (
@@ -79,9 +71,8 @@ export default function HawkerStallCard({hawkerCentreInfo, hawkerStallInfo, navi
           borderBottomRightRadius: 0,
         }}
         source={{
-          // uri: "https://fastly.4sqi.net/img/general/200x200/9301872_YzBYs5OsgbuPNtrgKZOC4YgjE74Tu03KFoskwHkuZDE.jpg",
           uri: ( hawkerStallInfo["photo_reference"] ?
-          `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${hawkerStallInfo.photo_reference}&key=AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E`
+          `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${hawkerStallInfo.photo_reference}&key=${GOOGLE_API_KEY.replace('"', '')}`
           : "https://i.imgur.com/45cWimK.png")
         }}
       />
@@ -99,22 +90,18 @@ export default function HawkerStallCard({hawkerCentreInfo, hawkerStallInfo, navi
           mode="contained-tonal"
           iconColor="#FA4A0C"
           size={25}
-          // onPress={(hawkerStallInfo) => navigation.navigate('TabNavigation', {screen: "Explore", params: {screen: "Profile", params: {placeId: hawkerStallInfo["place_id"]}} })}
           onPress={() => navigation.navigate("Profile", {centre: hawkerCentreInfo, place: hawkerStallInfo})}
         ></IconButton>
       </View>
       <View style={{ flexDirection: "row", marginVertical: 5 }}>
         <Card.Content style={{ flex: 1.5 }}>
           <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
-            {/* Adam Fishball Noodle */}
             {hawkerStallInfo["name"]}
           </Text>
           <Text variant="bodySmall" style={{ color: "#FA4A0C" }}>
-            {/* 2 Adam Rd, Singapore 289876, Floor 1, Stall 25 */}
             {hawkerStallInfo["address"]}
           </Text>
           <Text variant="bodySmall">
-            {/* Opening Hours: 6am - 3am */}
             {hawkerStallInfo["opening_hours"] === "not available" ? "Opening hours: Not Available" : hawkerStallInfo["opening_hours"][getDay()]}
           </Text>
         </Card.Content>
@@ -190,21 +177,14 @@ const styles = StyleSheet.create({
   icon: {
     backgroundColor: "#FCC827",
     justifyContent: "center",
-    // marginHorizontal:5,
   },
   closedIcon:{
     backgroundColor: "#FA4A0C",
     justifyContent: "center",
   },
-  // labelContainer: {
-  //   backgroundColor: "#F4F4F8",
-  //   // borderColor: "red",
-  //   borderWidth: 1,
-  //   borderRadius: 10,
-  // },
+ 
   labelContainer: {
     backgroundColor: "#F4F4F8",
-    // borderColor: "red",
     borderWidth: 1,
     borderRadius: 10,
     flexDirection: "row",

@@ -1,31 +1,17 @@
+import {GOOGLE_API_KEY} from '@env'
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; 
 
 const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
-    const API_KEY = 'AIzaSyD3YKpWEopq3wrYDEj8c2AAajWoXPTl2zo';
+    const API_KEY = GOOGLE_API_KEY;
 
 
     useEffect(() => {
-    //    console.log(similarHawker);
-        // const c = decideColor(similarHawker.crowdedness);
-        // console.log(c);
-        console.log(decideCrowdText('rgba(0,255,0,0.15)'));
+        console.log(similarHawker.name);
+        console.log(decideCrowdText(similarHawker.crowdedness));
         console.log(decideTextColor(similarHawker.crowdedness));
       },[]); 
-    // const [image, setImage] = useState(null);
-    // const [distanceAway, setDistanceAway] = useState(null);
-    // const [crowdLevel, setCrowdLevel] = useState(null);
-    
-    // if(similarHawkers !== null){
-    //     setImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${similarHawkers.photos[0].photo_reference}&key=${API_KEY}`);
-
-    //     setDistanceAway(calculateDistance(similarHawkers.latitude, similarHawkers.longitude, latitude, longitude));
-
-    //     setCrowdLevel(decideColor(similarHawkers.crowdedness));
-    // }
-    
-    
 
     function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371; // Radius of the Earth in kilometers
@@ -42,28 +28,11 @@ const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
       
         return distance.toFixed(2);
       }
-
-      
-      
       
       function degToRad(degrees) {
         return degrees * (Math.PI / 180);
       }
       
-      
-
-    // function decideColor(capacity) {
-    //     if (capacity === "not available"){
-    //     return "rgba(0,0,0,0.15)"
-    //     } else if (capacity < 0.3) {
-    //     return "rgba(255,0,0,0.15)";
-    //     } else if (capacity >= 0.3 && capacity <= 0.6) {
-    //     return"rgba(255,95,21,0.15)";
-    //     } else {
-    //     return "rgba(0,255,0,0.15)";
-    //     }
-    // }
-
     function decideCrowdText(capacity){
         if (capacity === "not available"){
             return "Untracked"
@@ -98,7 +67,7 @@ const SimilarHawker = ({similarHawker, latitude, longitude, navigation}) => {
                     <View style={styles.similarImageContainer}>
                         <View style={styles.imageLogoContainer}>
                             {similarHawker && <Image  style={styles.image} 
-                                    source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${similarHawker.photo_data[0].photo_reference}&key=${API_KEY}`}} /> }
+                                    source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${similarHawker.photo_data[0].photo_reference}&key=${GOOGLE_API_KEY.replace('"', '')}`}} /> }
                         </View>
                     </View>
                     <View style={styles.similarDetailsContainer}>
@@ -135,7 +104,6 @@ const styles = StyleSheet.create({
         paddingRight: 15,
     },
     detailsContainer: {
-        //marginTop: 10,
         borderWidth: 2,
         borderRadius: 30,
         borderColor: '#F4F4F8',
@@ -189,21 +157,17 @@ const styles = StyleSheet.create({
         
     },
     name: {
-        //fontFamily: 'Open-Sans-Bold',
         fontSize: 13,
     
     },
     crowd: {
-       // fontFamily: 'Open-Sans-Regular',
         paddingTop: 5,
         fontSize: 12
     },
     distance: {
-        //fontFamily: 'Open-Sans-Regular',
         fontSize: 12
     },
     header: {
-        //fontFamily: 'Open-Sans-Bold',
         fontSize: 16,
         padding: 10,
     },

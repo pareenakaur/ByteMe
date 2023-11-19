@@ -1,3 +1,4 @@
+import {GOOGLE_API_KEY} from '@env'
 import React, { useState, useEffect } from "react";
 import { IconButton } from "react-native-paper";
 // import JSONPath from 'jsonpath'
@@ -29,12 +30,10 @@ const Profile = ({navigation, route}) => {
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+
   const { centre, place } = route.params;
-    // const placeId = navigation.getParam('placeId', 'NO-ID');
-  // const placeId = 'ChIJv4Mk4QYa2jERx51-KDobWrA';
-  // const stallId = '9oQZA2Gxr9NCFMi4lBtW';
   console.log(place);
-  const API_KEY = "AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0";
+  const API_KEY = GOOGLE_API_KEY;
 
   const [stallData, setStallData] = useState(null);
   const [stallImage, setStallImage] = useState(null);
@@ -42,7 +41,7 @@ const Profile = ({navigation, route}) => {
   async function fetchStallData(){
     setStallData(place);
     if(place.photo_reference){
-      setStallImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${place.photo_reference}&key=${API_KEY}`);
+      setStallImage(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${place.photo_reference}&key=${API_KEY.replace('"', '')}`);
     } else {
       setStallImage("https://i.imgur.com/45cWimK.png");
     }
@@ -52,40 +51,6 @@ const Profile = ({navigation, route}) => {
   useEffect(() => {
     fetchStallData();
   }, [place]);
-
-//   useEffect(() => {
-//     async function fetchData() {
-//       try {
-//         const response = await fetch(
-//           "http://127.0.0.1:5000/hawkers/getStallInfo?id=" + placeId,
-//           {
-//             method: "GET",
-//           }
-//         );
-
-//         if (response.status === 200) {
-//           const jsonString = await response.text();
-//           const parsedData = JSON.parse(jsonString);
-//           console.log(parsedData);
-
-//           setStallData(parsedData);
-//           console.log(parsedData.photos[0].photo_reference);
-//           setStallImage(
-//             `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${parsedData.photos[0].photo_reference}&key=${API_KEY}`
-//           );
-//         } else {
-//           throw new Error(
-//             "Error retrieving stall information: " + response.status
-//           );
-//         }
-//       } catch (error) {
-//         console.error("Error getting stall information:", error);
-//       }
-//     }
-
-//     // Call the async function
-//     fetchData();
-//   }, [placeId]);
 
   const [reports1, setStallReports] = useState(null);
   async function fetchReportData() {
@@ -150,27 +115,6 @@ const Profile = ({navigation, route}) => {
     fetchReviewData();
   }, [place]);
 
-  // const report = {
-  //     image: require("../../assets/HawkerStallImage.jpg"),
-  //     username: "User1",
-  //     date: "7 Sept 2023, 11:00 am",
-  //     profilePic:  require("../../assets/img5.jpg"),
-  //     upvote: 100,
-  //     downvote: 0,
-  //     description: "The stall is closed! Y'all should go to some other stall today!"
-  // }
-
-  // const review = {
-  //     image: require("../../assets/Uncles_Best_Fried_Rice.png"),
-  //     username: "User1",
-  //     date: "7 Sept 2023, 11:00 am",
-  //     profilePic: require("../../assets/img5.jpg"),
-  //     rating: 4,
-  //     upvote: 1,
-  //     downvote: 1,
-  //     description: "Very nice! Honestly the best fried rice I have eaten ever :>"
-  // }
-
   const getAllReviewsReports = async() => {
     await fetchReportData();
     await fetchReviewData();
@@ -197,7 +141,6 @@ const Profile = ({navigation, route}) => {
               iconColor={"orange"} 
               style={{position: "absolute", top: 10, right: 5}} 
               onPress={getAllReviewsReports}/>
-            {/* {console.log("Details: "+ stallData[""])} */}
             {stallData && stallImage && (
               <Details
                 name={stallData["name"]}
@@ -418,7 +361,6 @@ const styles = StyleSheet.create({
     
   },
   text: {
-    //fontFamily: 'Open-Sans-Bold',
     fontWeight: "bold",
     fontSize: 20,
     color: "#EB6C05",
@@ -443,7 +385,6 @@ const styles = StyleSheet.create({
   },
 
   viewAllReportText: {
-    // fontFamily: 'Open-Sans-Regular',
     color: "black",
     textDecorationLine: "underline",
     textAlign: "center",
@@ -497,7 +438,6 @@ const styles = StyleSheet.create({
   },
 
   viewAllReviewText: {
-    //fontFamily: 'Open-Sans-Regular',
     color: "black",
     textDecorationLine: "underline",
     textAlign: "center",

@@ -56,6 +56,5 @@ const styles = StyleSheet.create({
   container: {
     width: 325,
     paddingBottom: 20,
-    // height: 100
   },
 });

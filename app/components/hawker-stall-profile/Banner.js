@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
 const Banner = ({image}) => {
@@ -7,7 +7,7 @@ const Banner = ({image}) => {
         <View style={styles.default}>
             <View style={styles.container}>
                 <Image
-                    source={{ uri: `${image}`}}//{require('../assets/HawkerStallImage.jpg') /*image*/ }
+                    source={{ uri: `${image}`}}
                     style={styles.image}
                 />
             </View>

@@ -13,7 +13,6 @@ export default function FirstScreen() {
     return (
       <FirstStack.Navigator initialRouteName="FirstPage" screenOptions={{ headerShown: false }}>
         <FirstStack.Screen name="FirstPage" component={FirstPage} />
-        {/* <FirstStack.Screen name="RegisterLogin" component={RegisterLogin} /> */}
         <FirstStack.Screen name="LoginTab" component={LoginTab} />
         <FirstStack.Screen name="RegisterTab" component={RegisterTab} />
         <FirstStack.Screen name="ResetPassword" component={ResetPassword} />
