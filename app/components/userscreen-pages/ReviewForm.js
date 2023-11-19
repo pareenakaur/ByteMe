@@ -1,3 +1,4 @@
+import {GOOGLE_API_KEY} from '@env'
 import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
@@ -30,6 +31,7 @@ export default function ReviewForm({ navigation, route}) {
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+
   const storage = getStorage();
 
   const {centre, place} = route.params;

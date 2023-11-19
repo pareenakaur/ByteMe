@@ -42,8 +42,6 @@ export default function App() {
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
           <Stack.Screen name="ResetPassword" component={ResetPassword} />
 
-          {/* <Stack.Screen name="FirstScreen" component={FirstScreen} />
-          <Stack.Screen name="TabNavigation" component={TabNavigation} /> */}  
         </Stack.Navigator>
       </NavigationContainer>
     

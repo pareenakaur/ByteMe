@@ -57,40 +57,8 @@ export default function Mappy(props) {
     }
   }
 
-  // function getCrowdedness(hawkerCentreName) {
-  //   // console.log(hawkerCentreName)
-  //   if (!availability.hasOwnProperty(hawkerCentreName)){
-  //     hawkerCentreName = hawkerCentreName.substring(0,hawkerCentreName.length - 1);
-  //   }
-
-  //   let hawkerCentreData = availability[hawkerCentreName];
-  //   if (typeof(hawkerCentreData) === "undefined") {
-  //     return "rgba(0,0,0,0.15)"
-  //     // return "rgba(0,0,0,0)"
-  //   }
-
-  //   let totalAvailableLots = 0;
-  //   let totalLots = 0;
-  //   // console.log(availability);
-  //   // console.log(hawkerCentreData);
-  //   hawkerCentreData.forEach((carpark) => {
-  //     totalAvailableLots = totalAvailableLots + carpark["AvailableLots"];
-  //     totalLots = totalLots + carpark["TotalLots"];
-  //   });
-  //   let capacity = totalAvailableLots / totalLots;
-  //   return decideColor(capacity); 
-  // }
-
   async function handleMarkerPress(item){
-    // console.log("Marker pressed: " + props.region.latitude + " , " + props.region.longitude);
-    // loc_str = JSON.stringify(props.region, null ,4);
-    // console.log(loc_str)
-
-    //Get placeId of hawker centre
-    // const responsePlace = await fetch(`http://127.0.0.1:5000/hawkers/getPlaceIDFromLatLong?lat=${item.latitude}&long=${item.longitude}`);
-    // const resPlace = await responsePlace.json();
-    // console.log("mappy latlong: "+ item.latitude +"," + item.longitude);
-    // console.log("mappy: "+ resPlace);
+   
     //Get info of hawker centre
     const response = await fetch(`http://127.0.0.1:5000/hawkers/getHawkerCentreInfo?id=${item.place_id}&format=1`);
     const res = await response.json();
@@ -108,11 +76,7 @@ export default function Mappy(props) {
     const resStalls = await responseStalls.json();
     props.setHawkerStalls(resStalls);
     props.setStallTap(false);
-    // console.log("response_stalls: ");
-    // for (let i=0; i<resStalls.length; i++){
-    //   console.log(resStalls[i]["name"]);
-    //   console.log(resStalls[i]["latitude"] + "," + resStalls[i]["longitude"]);
-    // }
+    
 
     return formattedResponse;
   }
@@ -142,20 +106,13 @@ export default function Mappy(props) {
       style={styles.map}
       region={props.region}
       showsUserLocation={true}
-      // showsMyLocationButton={true}
-      // mapPadding={{top:300}}
-      // onRegionChange={(reg) => props.onRegionChange(reg)}
-      // initialRegion={initialRegion}
       loadingEnabled={true}
       loadingIndicatorColor="#FA4A0C"
       minZoomLevel={props.zoom}
       showsCompass={false}
-      // onMarkerPress={handleMarkerPress}
       onRegionChange={handleMapPress}
     >
-      {/* <Marker coordinate={props.region} /> */}
-      {/* {console.log("region")}
-      {console.log(props.region)} */}
+     
       {props.hawkerCentreLocations.map((item, index) => (
         <Marker
           key={item.name}

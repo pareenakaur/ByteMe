@@ -1,4 +1,5 @@
-import { Dimensions, StyleSheet, View, ScrollView, TouchableOpacity } from "react-native";
+import {GOOGLE_API_KEY} from '@env';
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import React from 'react';
 
 import {
@@ -9,9 +10,7 @@ import {
   IconButton,
   Tooltip,
 } from "react-native-paper";
-import { useState } from "react";
 import StarRating from "../hawker-stall-profile/StarRating";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo, setHawkerStallInfo, navigation, crowdedColor}) {
 
@@ -48,7 +47,7 @@ export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo
           borderBottomRightRadius: 0,
         }}
         source={{
-          uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${hawkerCentreInfo.photo_reference}&key=AIzaSyB1rVWeBKL1WRUVi7qdKLO9JbRRo5D6H_E`
+          uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${hawkerCentreInfo.photo_reference}&key=${GOOGLE_API_KEY.replace('"', '')}`
         }}
       />
       <View
@@ -66,22 +65,18 @@ export default function HawkerCentreCard({hawkerCentreInfo,  setHawkerCentreInfo
           mode="contained-tonal"
           iconColor="#FA4A0C"
           size={25}
-          onPress={handleClose} //for now
+          onPress={handleClose} 
         ></IconButton>
       </View>
       <View style={{ flexDirection: "row", marginVertical: 5 }}>
         <Card.Content style={{ flex: 1.6 }}>
           <Text variant="titleSmall" style={{fontWeight: "bold" }}>
-            {/* Adam Road Food Centre */}
-            {/* {console.log("hehe: "+ hawkerCentreInfo["name"])} */}
             {hawkerCentreInfo["name"]}
           </Text>
           <Text variant="bodySmall" style={{ color: "#FA4A0C" }}>
-            {/* 2 Adam Rd, Singapore 289876 */}
             {hawkerCentreInfo["address"]}
           </Text>
           <Text variant="bodySmall" style={{}}>
-             {/* Opening Hours: 6am - 3am Todo */}
             {hawkerCentreInfo["opening_hours"][getDay()]}
           </Text>
         </Card.Content>

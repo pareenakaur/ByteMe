@@ -28,6 +28,7 @@ const Review = ({
   const [reviewID, setReviewID] = useState(null);
   const [imageURL, setImageURL] = useState(null);
   const storage = getStorage();
+
   const firebaseConfig = {
     apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
     authDomain: "sgbytes.firebaseapp.com",
@@ -51,29 +52,19 @@ const Review = ({
           }
         );
 
-        // if (response.status === 200) {
           const jsonString = await response.text();
           const parsedData = JSON.parse(jsonString);
-          // console.log(parsedData);
           if (parsedData.result === "Success") {
             const review = parsedData.list.find(
               (stall) => stall.stallID === stallID
             );
-            // console.log(
-            //   "parsedData for Review: ",
-            //   parsedData.list.find((stall) => stall.stallID === stallID).reviewID,
-            //   review.reviewID
-            // );
+
             setReviewID(review.reviewID);
             if (review.image) {
               const pathReference = ref(
                 storage,
                 "reviews/" + stallID + "_" + review.reviewID + ".jpg"
               );
-
-              // const pathReference = ref(storage, `https://firebasestorage.googleapis.com/b/bucket/o/reports%20${stallID}_${review_id}.jpg`);
-
-              // console.log("Path Reference " + pathReference);
 
               try {
                 const url = await getDownloadURL(pathReference);
@@ -93,7 +84,6 @@ const Review = ({
 
     // Call the async function
     fetchData();
-    // }, []);
   }, [stallID]);
 
   const handleUpvote = async () => {
@@ -160,14 +150,27 @@ const Review = ({
     }
   };
 
+  function convertGMTToSG(date) {
+  // Create a Date object from the GMT time string
+  const gmtDate = new Date(date);
+
+  // Get the UTC offset for Singapore
+  const singaporeOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+
+  // Convert the GMT time to UTC time
+  const utcDate = new Date(gmtDate.getTime() + singaporeOffset);
+
+  // Convert the UTC time to Singapore time format
+  const singaporeTime = utcDate.toLocaleString('en-SG', { timeZone: 'Asia/Singapore' });
+
+//   console.log(singaporeTime)
+
+  return singaporeTime;
+} 
+
   return (
     <View style={styleType.container}>
       <View style={styleType.innerContainer}>
-        {/* {imageURL ? (
-          <Image style={styleType.image} source={{ uri: `${imageURL}` }} />
-        ) : (
-          <Image style={styleType.image} source={{ uri: `${image}` }} />
-        )} */}
         <Image style={styleType.image} source={{ uri: `${imageURL}` }} />
         <View style={styleType.overlayContainer}>
           <View style={styleType.mainUserContainer}>
@@ -183,7 +186,7 @@ const Review = ({
                     <Text style={styleType.name}>{username}</Text>
                   </View>
                   <View styles={styleType.dateContainer}>
-                    <Text style={styles.date}>{Date(date.toLocaleString("en-US", { timeZone: "Asia/Singapore" }))}</Text>
+                    <Text style={styles.date}>{convertGMTToSG(date)}</Text>
                   </View>
                 </View>
               </View>
@@ -310,7 +313,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 12,
-    //fontFamily: 'Open-Sans-Regular',
     color: "black",
     paddingRight: 2,
   },
@@ -319,7 +321,6 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 7,
-    // fontFamily: 'Open-Sans-Regular',
     color: "black",
   },
 
@@ -365,7 +366,6 @@ const styles = StyleSheet.create({
   },
   voteNum: {
     fontSize: 8,
-    // fontFamily: 'Open-Sans-Regular',
     textAlign: 'center',
   },
   emptyView: {
@@ -447,7 +447,6 @@ const viewStyles = StyleSheet.create({
   },
   name: {
     fontSize: 12,
-    //  fontFamily: 'Open-Sans-Regular',
     color: "black",
   },
   dateContainer: {
@@ -455,7 +454,6 @@ const viewStyles = StyleSheet.create({
   },
   date: {
     fontSize: 7,
-    // fontFamily: 'Open-Sans-Regular',
     color: "black",
   },
 
@@ -501,7 +499,6 @@ const viewStyles = StyleSheet.create({
   voteNum: {
     fontSize: 8,
     textAlign: 'center',
-    // fontFamily: 'Open-Sans-Regular',
   },
   emptyView: {
     flex: 0.5,

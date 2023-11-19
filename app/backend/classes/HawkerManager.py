@@ -200,6 +200,7 @@ class HawkerManager:
         return hawker_stalls_list
 
     def getStallInfo(self, stallID, format):
+        
         """Retrieve information about a hawker stall.
 
         Args:
@@ -211,16 +212,17 @@ class HawkerManager:
                 including user rating, review count, and report count. The 'format'
                 parameter determines whether the response is formatted.
         """
-        from ReviewManager import ReviewManager
-        from ReportManager import ReportManager
+        
+        from .ReviewManager import ReviewManager
+        from .ReportManager import ReportManager
 
         response = self.gmaps.place(place_id = stallID)['result']
         if format:
             response = format_hawker_response(response)
 
-        response['user_rating'] = ReviewManager.getAvgReviewRating(stallID, self.db.collection('reviews'))
-        response['user_review_count'] = ReviewManager.getReviewCount(stallID, self.db.collection('reviews'))
-        response['user_report_count'] = ReportManager.getReportCount(stallID, self.db.collection('reports'))
+        response['user_rating'] = ReviewManager.getAvgReviewRating(stallID)
+        response['user_review_count'] = ReviewManager.getReviewCount(stallID)
+        response['user_report_count'] = ReportManager.getReportCount(stallID)
         return response
 
     def getHawkerCentreLocation(self, placeID):

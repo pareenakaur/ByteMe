@@ -14,13 +14,6 @@ const ViewAllReviews = ({navigation, route}) => {
 
   const HawkerStall = { 
     image: require("../../assets/HawkerStallImage.jpg"),
-    //name: stallData.name,
-    //address: stallData.formatted_address,
-    //contact: stallData.formatted_phone_number,
-    //openingHours: "6am - 3pm",
-    //rating: stallData.rating,
-    //reviews: reviews1,
-    //reports: reports1,
 }
     return(
         <View style={styles.default}>

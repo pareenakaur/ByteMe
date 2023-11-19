@@ -12,6 +12,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     const [reportID, setReportID] = useState(null);
     const [imageURL, setImageURL] = useState(null);
     const storage = getStorage();
+
     const firebaseConfig = {
         apiKey: "AIzaSyA35CAAxfnVPCZuAmD44ic9AZG_TExU8dw",
         authDomain: "sgbytes.firebaseapp.com",
@@ -22,7 +23,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
         measurementId: "G-RWGZJLPD4G"
       };
     
-      // Initialize Firebase
+    //   Initialize Firebase
     const app = initializeApp(firebaseConfig);
 
 
@@ -30,6 +31,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
         async function fetchData() {
           try {
             console.log("username", username)
+            console.log("timestamp: "+ date)
             const response = await fetch('http://127.0.0.1:5000/reports/getUserReports?username=' + username , {
               method: 'GET'
             });
@@ -52,9 +54,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
                 }        
     
             } 
-            // }}else {
-            //   throw new Error('Error retrieving user information: ' + response.status);
-            // }}
+            
           } catch (error) {
             console.error('Error getting user information:', error);
           }
@@ -134,6 +134,24 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
     }
   };
 
+function convertGMTToSG(date) {
+  // Create a Date object from the GMT time string
+  const gmtDate = new Date(date);
+
+  // Get the UTC offset for Singapore
+  const singaporeOffset = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+
+  // Convert the GMT time to UTC time
+  const utcDate = new Date(gmtDate.getTime() + singaporeOffset);
+
+  // Convert the UTC time to Singapore time format
+  const singaporeTime = utcDate.toLocaleString('en-SG', { timeZone: 'Asia/Singapore' });
+
+//   console.log(singaporeTime)
+
+  return singaporeTime;
+} 
+
     return (
         <View style={styleType.default}>
             <View style={styleType.innerContainer}>
@@ -148,7 +166,7 @@ const Report = ({image, username, profilePic, upvote, downvote, description, dat
                             </View>
                             <View style={styleType.userDetails}>
                                 <Text style={styleType.name}>{username}</Text>
-                                <Text style={styleType.date}>{Date(date.toLocaleString("en-US", { timeZone: "Asia/Singapore" }))}</Text>
+                                <Text style={styleType.date}>{convertGMTToSG(date)}</Text>
                             </View>
                             <View style={styleType.votesContainer}>
                                 <View style={styleType.vote}>
@@ -253,8 +271,6 @@ const styles = StyleSheet.create({
 
     },
 
-
-
     profileLogoContainer: {
         borderWidth: 1,
         borderColor: 'transparent',
@@ -270,14 +286,12 @@ const styles = StyleSheet.create({
     
     name: {
         fontSize: 8,
-       // fontFamily: 'Open-Sans-Bold',
         color: 'black',
         paddingRight: 7,
 
     },
     date: {
         fontSize: 8,
-      //  fontFamily: 'Open-Sans-Regular',
         color: 'black',
     },
     
@@ -299,7 +313,6 @@ const styles = StyleSheet.create({
     },
     voteNum: {
         fontSize: 8,
-       // fontFamily: 'Open-Sans-Regular',
     },
     
     text: {
@@ -320,7 +333,6 @@ const viewStyles = StyleSheet.create({
         borderRadius: 30,
         width: '45%',
         height: '16%', 
-        //overflow: 'hidden', // Clip any content that overflows the container
         shadowColor: "#000000",
         shadowOpacity: 0.2,
         shadowRadius: 10,
@@ -401,14 +413,12 @@ const viewStyles = StyleSheet.create({
     
     name: {
         fontSize: 8,
-        //fontFamily: 'Open-Sans-Bold',
         color: 'black',
         paddingRight: 7,
 
     },
     date: {
         fontSize: 8,
-       // fontFamily: 'Open-Sans-Regular',
         color: 'black',
     },
     
@@ -431,7 +441,6 @@ const viewStyles = StyleSheet.create({
     voteNum: {
         fontSize: 8,
         textAlign: 'center',
-        //fontFamily: 'Open-Sans-Regular',
     },
     
     text: {

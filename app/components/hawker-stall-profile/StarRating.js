@@ -3,7 +3,6 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 const StarRating = ({rating, size}) => {
-    //let rating = 2.3;
     const starElements = [];
     const numberOfFullStars = Math.floor(rating);
     const fractionalPart = rating - numberOfFullStars;

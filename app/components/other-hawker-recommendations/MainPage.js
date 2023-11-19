@@ -11,12 +11,9 @@ import { getNearbyHawkerCenters, getHawkerStallDetails } from '../../utils/Retri
 
 const MainPage = ({route, navigation}) => {
 
-    // const { hawkerCentre, longitude, latitude, placeId } = route.params;
     const {hawkerCentre} = route.params;
     
     const [nearbyHawkerCentres, setNearbyHawkerCentres] = useState(null);
-    //const longitude = 103.81412810881211;
-    //const latitude = 1.3244235882227136;
     const distance = 5000;
     useEffect(() => {
         async function fetchData() {
@@ -47,29 +44,6 @@ const MainPage = ({route, navigation}) => {
         // Call the async function
         fetchData();
       },[hawkerCentre]); 
-
-
-    // const review = { //replace with review details array from backend
-    //     image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
-    //     username: "User1",
-    //     date: "7 Sept 2023, 11:00 am",
-    //     profilePic: require("../../assets/img5.jpg"),
-    //     rating: 4,
-    //     upvote: 1,
-    //     downvote: 1,
-    //     description: "Very nice"
-    // }
-
-    // const HawkerCentre = { //replace with hawker centre details array values
-    //     image: "https://mustsharenews.com/wp-content/uploads/2023/08/MSN-Featured-8.png",
-    //     name: "Adam Road Food Centre",
-    //     crowdLevel: "Moderate",
-    //     cuisineList: ["Halal", "Vegetarian", "Chinese Cuisine", "Indian Cuisine"],
-    //     address: "2 Adam Rd, Singapore 289876",
-    //     openingHours: "6am - 3pm",
-    //     rating: 4.35,
-    //     reviews: [review, review, review, review],
-    // }
 
     function getDay(){
         const d = new Date();

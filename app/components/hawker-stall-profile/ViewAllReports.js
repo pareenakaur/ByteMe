@@ -13,17 +13,8 @@ const ViewAllReports = ({navigation, route }) => {
     setStoredReports(reports1);
   }, [reports1]);
 
-    
-
     const HawkerStall = { 
         image: require("../../assets/HawkerStallImage.jpg"),
-        //name: stallData.name,
-        //address: stallData.formatted_address,
-        //contact: stallData.formatted_phone_number,
-        //openingHours: "6am - 3pm",
-        //rating: stallData.rating,
-        //reviews: reviews1,
-        //reports: reports1,
     }
     
     return(
@@ -56,16 +47,11 @@ const styles = StyleSheet.create({
     },
     reportContainer: {
         flex: 1.9,
-        
-        
     },
     textContainer: {
         flex: 0.1,
-        
-        
     },
     text: {
-       // fontFamily: 'Open-Sans-Bold',
        fontWeight: 'bold',
         fontSize: 20,
         color: '#EB6C05',
@@ -73,7 +59,6 @@ const styles = StyleSheet.create({
 
     },
     viewAllReportText: {
-      //  fontFamily: 'Open-Sans-Regular',
         color: 'black',
         textDecorationLine: 'underline',
         textAlign: 'center',

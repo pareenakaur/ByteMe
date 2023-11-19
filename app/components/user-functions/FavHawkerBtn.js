@@ -1,10 +1,11 @@
+import {GOOGLE_API_KEY} from '@env'
 import React from 'react'
 import { Share, Alert, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Avatar, IconButton, Modal, Portal } from 'react-native-paper';
 
 export default function FavHawkerBtn({name, address, photo, handleRemove}){
 // export default function FavHawkerBtn({hawkerDetails}){ 
-    const api_key = 'AIzaSyCl5--iXN-xsw8CoZFKjCXlnYXnDa5CyP0';
+    const api_key = GOOGLE_API_KEY;
     const onShare = async () => {
         try {
           const result = await Share.share({
@@ -29,7 +30,7 @@ export default function FavHawkerBtn({name, address, photo, handleRemove}){
     return(
         <View style={styles.container}>
             <View style ={styles.stall_image}>
-                <Avatar.Image size={90} source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo}&key=${api_key}`}}></Avatar.Image>
+                <Avatar.Image size={90} source={{uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo}&key=${GOOGLE_API_KEY.replace('"', '')}`}}></Avatar.Image>
             </View>
             <View style={styles.desc}>
               {/* <TouchableOpacity > */}
@@ -67,13 +68,10 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         justifyContent: "center",
         alignItems: "flex-start",
-        // backgroundColor: "orange"
     },
     icon: {
         flex: 1,
         justifyContent: "space-around",
-        // alignItems: "flex-start",
-        // backgroundColor: "white"
     }
 })
 
