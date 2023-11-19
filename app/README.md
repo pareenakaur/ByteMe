@@ -13,7 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 2) Obtain a google cloud API key and create a .env file containing that key
 - Get google cloud API key here (https://developers.google.com/workspace/guides/manage-credentials)
-- Example of .env file:
+- Create a text file and name it as ".env". Declare your api key: API_KEY = your_api_key (replace with your actual key)
 
 3) (Use ANDROID phone) Syncing port used by expo to port used by localhost for server
 - Enable developer mode on android phone (https://www.youtube.com/watch?v=GERlhgCcoBc)
